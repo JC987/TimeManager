@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     public void showAlert(View view){
+        View v =view;
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setMessage("Do you want to end the day?")
 
@@ -33,12 +34,16 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Toast.makeText(MainActivity.this, "Day has ended!", Toast.LENGTH_SHORT).show();
                         dialogInterface.dismiss();
+
+                        showDayStats();
                         reset();
                     }
                 })
                 .create();
         alert.show();
     }
+
+
 
     Button button;
     Button reset;
@@ -47,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton ib_g,ib_o,ib_r,ib_p,ib_b,ib_c,ib_y,ib_gr;
     long lastPause= 0,lastPause_o = 0,lastPause_r = 0,lastPause_p = 0,lastPause_b= 0,lastPause_c= 0,lastPause_y= 0,lastPause_gr= 0;
     String lastBtn = "";
+    Double p_g,p_r,p_p;
     public void reset(){
         lastPause= 0;lastPause_o = 0;lastPause_r = 0;lastPause_p = 0;lastPause_b= 0;lastPause_c= 0;lastPause_y= 0;lastPause_gr= 0;
         cm_g.stop();cm_b.stop();cm_r.stop();cm_p.stop();cm_o.stop();cm_c.stop();cm_y.stop();cm_gr.stop();
@@ -54,6 +60,39 @@ public class MainActivity extends AppCompatActivity {
         cm_c.setBase(SystemClock.elapsedRealtime());cm_y.setBase(SystemClock.elapsedRealtime());cm_gr.setBase(SystemClock.elapsedRealtime());
         lastBtn="";
         ib_g.setEnabled(true);
+    }
+    public void showDayStats() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        CharSequence zx = cm_r.getText();
+        String[] rtmp = zx.toString().split(":");
+        String[] gtmp = cm_g.getText().toString().split(":");
+        String[] otmp = cm_o.getText().toString().split(":");
+        String[] ptmp = cm_p.getText().toString().split(":");
+        double g = Integer.parseInt(gtmp[0]) * 60
+                + Integer.parseInt(gtmp[1]) ;
+        double r =Integer.parseInt(rtmp[0]) * 60
+                + Integer.parseInt(rtmp[1]) ;
+        double p =Integer.parseInt(ptmp[0]) * 60
+                + Integer.parseInt(ptmp[1]) ;
+        double o =Integer.parseInt(otmp[0]) * 60
+                + Integer.parseInt(otmp[1]) ;
+
+        // int zz =Integer.parseInt(zx.toString());
+
+        //r=(Math.ceil((r/g)*10000)/100);
+
+        alert.setMessage("You spent " + Math.ceil((o/g)*10000)/100  +"% of your day on Leisure"+"\n"+"You spent " + Math.ceil((r/g)*10000)/100  +"% of your day on Exercise"+"\n"+"You spent " + Math.ceil((p/g)*10000)/100  +"% of your day Education")
+
+                .setPositiveButton("OK!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(MainActivity.this, "Day has ended!", Toast.LENGTH_SHORT).show();
+                        dialogInterface.dismiss();
+                        reset();
+                    }
+                })
+                .create();
+        alert.show();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 text.setText("");
-                showAlert(v);
+                 showAlert(v);
             }
         });
 
@@ -482,7 +521,57 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+/*
+        ib_gr.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(lastBtn=="o") {
+                    lastPause_o=SystemClock.elapsedRealtime();
+                    cm_o.stop();
+                }
 
+                if(lastBtn=="r") {
+                    lastPause_r=SystemClock.elapsedRealtime();
+                    cm_r.stop();
+                }
+
+                if(lastBtn=="p") {
+                    lastPause_p=SystemClock.elapsedRealtime();
+                    cm_p.stop();
+                }
+
+                if(lastBtn=="c"){
+                    lastPause_c=SystemClock.elapsedRealtime();
+                    cm_c.stop();
+                }
+                if(lastBtn=="y"){
+                    lastPause_y=SystemClock.elapsedRealtime();
+                    cm_y.stop();
+                }
+                if(lastBtn=="b"){
+                    lastPause_b=SystemClock.elapsedRealtime();
+                    cm_b.stop();
+                }
+
+                if(lastBtn!="gr") {
+                    if (lastPause_gr != 0)
+                        cm_gr.setBase(cm_gr.getBase() + SystemClock.elapsedRealtime() - lastPause_gr);
+                    else
+                        cm_gr.setBase(SystemClock.elapsedRealtime());
+                    if(ib_g.isEnabled()){
+                        cm_g.setBase(SystemClock.elapsedRealtime());
+                        cm_g.start();
+                        ib_g.setEnabled(false);
+                    }
+                    cm_gr.start();
+                    lastBtn = "gr";
+                }
+                else {
+                    lastPause_gr=SystemClock.elapsedRealtime();
+                    cm_gr.stop();
+                    lastBtn="";
+                }
+            }
+        });*/
     }
 
 

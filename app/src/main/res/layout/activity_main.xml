@@ -15,10 +15,11 @@
         android:text="End Day!"
 
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.945"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.977" />
+        app:layout_constraintVertical_bias="0.964" />
 
     <Button
         android:id="@+id/btn_reset"
@@ -28,11 +29,11 @@
         android:text="Reset"
         android:textColor="#ff00ff"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.949"
+        app:layout_constraintHorizontal_bias="0.926"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.963" />
+        app:layout_constraintVertical_bias="0.732" />
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -43,7 +44,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:color/holo_green_light"
+        android:background="@drawable/greenbtn"
         app:layout_constraintVertical_bias="0.41"
         />
 
@@ -54,7 +55,7 @@
         android:layout_height="20dp"
         android:text="Wake Up!"
         android:textAlignment="center"
-        android:textColor="#ffffff"
+        android:textColor="#000000"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@id/imageButton"
         app:layout_constraintHorizontal_bias="0.5"
@@ -81,14 +82,15 @@
         android:id="@+id/imgBtnOrange"
         android:layout_width="112dp"
         android:layout_height="112dp"
-
-        android:src="@drawable/orangebtn"
+        android:background="@drawable/orangebtn"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.01"
+
+
          />
 
     <TextView
@@ -97,7 +99,7 @@
         android:layout_height="wrap_content"
         android:text="Leisure"
         android:textAlignment="center"
-        android:textColor="#ffffff"
+        android:textColor="#000000"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@id/imgBtnOrange"
         app:layout_constraintHorizontal_bias="0.5"
@@ -129,7 +131,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.01"
-        app:srcCompat="@android:color/holo_red_light" />
+        android:background="@drawable/redbtn" />
 
     <TextView
         android:id="@+id/txtViewRed"
@@ -137,7 +139,7 @@
         android:layout_height="wrap_content"
         android:text="Exercise"
         android:textAlignment="center"
-        android:textColor="#ffffff"
+        android:textColor="#000000"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@id/imgBtnRed"
         app:layout_constraintHorizontal_bias="0.5"
@@ -165,12 +167,12 @@
         android:layout_width="112dp"
         android:layout_height="112dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintHorizontal_bias="0.99"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.01"
-        app:srcCompat="@android:color/holo_purple" />
+        android:background="@drawable/purplebtn" />
 
     <TextView
         android:id="@+id/txtViewPurple"
@@ -178,7 +180,7 @@
         android:layout_height="wrap_content"
         android:text="Education"
         android:textAlignment="center"
-        android:textColor="#ffffff"
+        android:textColor="#000000"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@id/imgBtnPurple"
         app:layout_constraintHorizontal_bias="0.5"
@@ -207,11 +209,11 @@
         android:layout_width="112dp"
         android:layout_height="112dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:color/holo_blue_dark"
+        android:background="@drawable/bluebtn"
         app:layout_constraintVertical_bias="0.41"
         />
 
@@ -221,7 +223,7 @@
         android:layout_height="wrap_content"
         android:text="Work"
         android:textAlignment="center"
-        android:textColor="#ffffff"
+        android:textColor="#000000"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@id/imgBtnBlue"
         app:layout_constraintHorizontal_bias="0.5"
@@ -250,12 +252,12 @@
         android:layout_width="112dp"
         android:layout_height="112dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.81"
-        app:srcCompat="@android:color/holo_blue_bright"
+        android:background="@drawable/cyanbtn"
 
         />
 
@@ -265,7 +267,7 @@
         android:layout_height="wrap_content"
         android:text="Preperation"
         android:textAlignment="center"
-        android:textColor="#ffffff"
+        android:textColor="#000000"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@id/imgBtnC"
         app:layout_constraintHorizontal_bias="0.5"
@@ -297,7 +299,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.81"
-        app:srcCompat="@android:color/holo_orange_light" />
+        android:background="@drawable/yellowbtn" />
 
     <TextView
         android:id="@+id/txtViewYellow"
@@ -305,7 +307,7 @@
         android:layout_height="wrap_content"
         android:text="Travling"
         android:textAlignment="center"
-        android:textColor="#ffffff"
+        android:textColor="#000000"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@id/imgBtnYellow"
         app:layout_constraintHorizontal_bias="0.5"
@@ -327,92 +329,137 @@
         app:layout_constraintRight_toRightOf="@id/imgBtnYellow"
         app:layout_constraintTop_toTopOf="@id/imgBtnYellow"
         app:layout_constraintVertical_bias="0.6" />
+    <!--
+        <ImageButton
+            android:id="@+id/imgBtnDkGray"
+            android:layout_width="112dp"
+            android:layout_height="112dp"
+            android:background="@drawable/greybtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.99"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.81" />
 
-    <ImageButton
-        android:id="@+id/imgBtnGrey"
-        android:layout_width="112dp"
-        android:layout_height="112dp"
+        <EditText
+            android:id="@+id/txtViewDkGray"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Another"
 
-        android:src="@drawable/pinkhalfcicrle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/imgBtnDkGray"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintLeft_toLeftOf="@id/imgBtnDkGray"
+            app:layout_constraintRight_toRightOf="@id/imgBtnDkGray"
+            app:layout_constraintTop_toTopOf="@id/imgBtnDkGray"
+            app:layout_constraintVertical_bias="0.2" />
 
-        app:layout_constraintVertical_bias="0.41"
-        />
+        <Chronometer
+            android:id="@+id/chronometer_dkgray"
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/imgBtnDkGray"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintLeft_toLeftOf="@id/imgBtnDkGray"
+            app:layout_constraintRight_toRightOf="@id/imgBtnDkGray"
+            app:layout_constraintTop_toTopOf="@id/imgBtnDkGray"
+            app:layout_constraintVertical_bias="0.6" />
+     -->
+        <ImageButton
+            android:id="@+id/imgBtnGrey"
+            android:layout_width="112dp"
+            android:layout_height="112dp"
 
-    <EditText
-        android:id="@+id/txtViewGrey"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Other"
+            android:background="@drawable/greybtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.99"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
 
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/imgBtnGrey"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="@id/imgBtnGrey"
-        app:layout_constraintRight_toRightOf="@id/imgBtnGrey"
-        app:layout_constraintTop_toTopOf="@id/imgBtnGrey"
-        app:layout_constraintVertical_bias="0.2" />
+            app:layout_constraintVertical_bias="0.41"
+            />
 
-    <Chronometer
-        android:id="@+id/chronometer_grey"
-        android:layout_width="60dp"
-        android:layout_height="20dp"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/imgBtnGrey"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="@id/imgBtnGrey"
-        app:layout_constraintRight_toRightOf="@id/imgBtnGrey"
-        app:layout_constraintTop_toTopOf="@id/imgBtnGrey"
-        app:layout_constraintVertical_bias="0.6" />
+        <EditText
+            android:id="@+id/txtViewGrey"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Other"
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="17dp"
-        android:layout_marginEnd="308dp"
-        android:layout_marginLeft="16dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/imgBtnGrey"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintLeft_toLeftOf="@id/imgBtnGrey"
+            app:layout_constraintRight_toRightOf="@id/imgBtnGrey"
+            app:layout_constraintTop_toTopOf="@id/imgBtnGrey"
+            app:layout_constraintVertical_bias="0.2" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
+        <Chronometer
+            android:id="@+id/chronometer_grey"
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/imgBtnGrey"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintLeft_toLeftOf="@id/imgBtnGrey"
+            app:layout_constraintRight_toRightOf="@id/imgBtnGrey"
+            app:layout_constraintTop_toTopOf="@id/imgBtnGrey"
+            app:layout_constraintVertical_bias="0.6" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="0dp" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="232dp"
+            android:layout_marginLeft="16dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="-42dp" />
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.0" />
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="0dp" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="-42dp" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.0" />
 
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
