@@ -1,24 +1,27 @@
 package com.example.jc.timemanager;
 
 import android.app.AlertDialog;
-import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.SystemClock;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+
 import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
     public void showAlert(View view){
-        View v =view;
+
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setMessage("Do you want to end the day?")
 
@@ -48,11 +51,13 @@ public class MainActivity extends AppCompatActivity {
     Button button;
     Button reset;
     TextView text;
+    ConstraintLayout cl;
     Chronometer cm_g,cm_o,cm_r,cm_p,cm_b,cm_c,cm_y,cm_gr;
     ImageButton ib_g,ib_o,ib_r,ib_p,ib_b,ib_c,ib_y,ib_gr;
+    TextView tv;
     long lastPause= 0,lastPause_o = 0,lastPause_r = 0,lastPause_p = 0,lastPause_b= 0,lastPause_c= 0,lastPause_y= 0,lastPause_gr= 0;
     String lastBtn = "";
-    Double p_g,p_r,p_p;
+
     public void reset(){
         lastPause= 0;lastPause_o = 0;lastPause_r = 0;lastPause_p = 0;lastPause_b= 0;lastPause_c= 0;lastPause_y= 0;lastPause_gr= 0;
         cm_g.stop();cm_b.stop();cm_r.stop();cm_p.stop();cm_o.stop();cm_c.stop();cm_y.stop();cm_gr.stop();
@@ -63,25 +68,46 @@ public class MainActivity extends AppCompatActivity {
     }
     public void showDayStats() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        CharSequence zx = cm_r.getText();
-        String[] rtmp = zx.toString().split(":");
+        //Read the value form the chronometer (such as 00:00) and split it at the :
+        String[] rtmp = cm_r.getText().toString().split(":");
         String[] gtmp = cm_g.getText().toString().split(":");
         String[] otmp = cm_o.getText().toString().split(":");
         String[] ptmp = cm_p.getText().toString().split(":");
-        double g = Integer.parseInt(gtmp[0]) * 60
-                + Integer.parseInt(gtmp[1]) ;
+        String[] btmp = cm_b.getText().toString().split(":");
+        String[] grtmp = cm_gr.getText().toString().split(":");
+        String[] ctmp = cm_c.getText().toString().split(":");
+        String[] ytmp = cm_y.getText().toString().split(":");
+        /* g is for the green timer which is the wake up timer
+            g will be the base we use to get the percent for the other values
+         */
+
+        double g = Integer.parseInt(gtmp[0]) * 60//multiply by 60 to convert the minutes to second
+                + Integer.parseInt(gtmp[1]) ;// add the seconds
         double r =Integer.parseInt(rtmp[0]) * 60
                 + Integer.parseInt(rtmp[1]) ;
         double p =Integer.parseInt(ptmp[0]) * 60
                 + Integer.parseInt(ptmp[1]) ;
         double o =Integer.parseInt(otmp[0]) * 60
                 + Integer.parseInt(otmp[1]) ;
+        double b =Integer.parseInt(btmp[0]) * 60
+                + Integer.parseInt(btmp[1]) ;
+        double gr =Integer.parseInt(grtmp[0]) * 60
+                + Integer.parseInt(grtmp[1]) ;
+        double c =Integer.parseInt(ctmp[0]) * 60
+                + Integer.parseInt(ctmp[1]) ;
+        double y =Integer.parseInt(ytmp[0]) * 60
+                + Integer.parseInt(ytmp[1]) ;
 
-        // int zz =Integer.parseInt(zx.toString());
 
-        //r=(Math.ceil((r/g)*10000)/100);
-
-        alert.setMessage("You spent " + Math.ceil((o/g)*10000)/100  +"% of your day on Leisure"+"\n"+"You spent " + Math.ceil((r/g)*10000)/100  +"% of your day on Exercise"+"\n"+"You spent " + Math.ceil((p/g)*10000)/100  +"% of your day Education")
+        //Send a message to the user with the data and a ok button to exit
+        alert.setMessage("Your day was "+ cm_g.getText()+ " long!"+
+                "\n"+"You spent " + Math.ceil((o/g)*10000)/100  +"% of your day on Leisure"+
+                "\n"+"You spent " + Math.ceil((r/g)*10000)/100  +"% of your day on Exercise"+
+                "\n"+"You spent " + Math.ceil((p/g)*10000)/100  +"% of your day Education"+
+                "\n"+"You spent " +Math.ceil((b/g)*10000)/100  +"% of your day on Work"+
+                "\n"+"You spent " +Math.ceil((gr/g)*10000)/100  +"% of your day on Other" +
+                "\n"+"You spent "+ Math.ceil((c/g)*10000)/100  +"% of your day on Preparation"+
+                "\n"+"You spent "+Math.ceil((y/g)*10000)/100  +"% of your day on Traveling")
 
                 .setPositiveButton("OK!", new DialogInterface.OnClickListener() {
                     @Override
@@ -101,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         text =  findViewById(R.id.textView);
         button =  findViewById(R.id.button);
         reset = findViewById(R.id.btn_reset);
-
+        Boolean etOpen=false;
         ib_g =  findViewById(R.id.imageButton);
         cm_g =  findViewById(R.id.chronometer2);
 
@@ -126,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
         ib_gr =  findViewById(R.id.imgBtnGrey);
         cm_gr =  findViewById(R.id.chronometer_grey);
 
+        tv= findViewById(R.id.txtViewGrey);
 
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -159,38 +186,64 @@ public class MainActivity extends AppCompatActivity {
         ex_p.setOnClick();
         ex_r.pauseAll(ex_o);
         ex_r.setOnClick();*/
-
-        ib_o.setOnClickListener(new View.OnClickListener() {
+        tv.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(lastBtn=="p") {//If the last btn pressed was the purple one
+               // etOpen = true;
+                tv.setEnabled(true);
+                if (v.getId() == tv.getId())
+                {
+                    tv.setCursorVisible(true);
+                }
+            }
+        });
+        tv.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                tv.setCursorVisible(false);
+                if (event != null && ((event.getKeyCode() == KeyEvent.KEYCODE_ENTER) || (event.getKeyCode() == KeyEvent.KEYCODE_BACK))) {
+
+                    InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    in.hideSoftInputFromWindow(tv.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+
+                return false;
+            }
+
+        });
+
+
+                ib_o.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(lastBtn.equals("p")) {//If the last btn pressed was the purple one
                     lastPause_p = SystemClock.elapsedRealtime();//Set the last time we paused to Realtime
                     cm_p.stop();//Stop the purple timer
                 }
 
-                if(lastBtn=="r") {
+                if(lastBtn.equals("r")) {
                     lastPause_r = SystemClock.elapsedRealtime();
                     cm_r.stop();
                     //}
                 }
 
-                if(lastBtn=="b"){
+                if(lastBtn.equals("b")){
                     lastPause_b=SystemClock.elapsedRealtime();
                     cm_b.stop();
                 }
-                if(lastBtn=="c"){
+                if(lastBtn.equals("c")){
                     lastPause_c=SystemClock.elapsedRealtime();
                     cm_c.stop();
                 }
-                if(lastBtn=="y"){
+                if(lastBtn.equals("y")){
                     lastPause_y=SystemClock.elapsedRealtime();
                     cm_y.stop();
                 }
-                if(lastBtn=="gr"){
+                if(lastBtn.equals("gr")){
                     lastPause_gr=SystemClock.elapsedRealtime();
                     cm_gr.stop();
                 }
 
-                if(lastBtn!="o") {
+                if(!lastBtn.equals("o")) {
                     if (lastPause_o != 0)//Check to see if we have paused this timer before
                         cm_o.setBase(cm_o.getBase() + SystemClock.elapsedRealtime() - lastPause_o);//Yes, set the base to our current time plus Realtime minus the time from last pause
                     else
@@ -216,34 +269,34 @@ public class MainActivity extends AppCompatActivity {
         ib_p.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                if(lastBtn=="o") {
+                if(lastBtn.equals("o")) {
                     lastPause_o = SystemClock.elapsedRealtime();
                     cm_o.stop();
                 }
 
-                if(lastBtn=="r") {
+                if(lastBtn.equals("r")) {
                     lastPause_r = SystemClock.elapsedRealtime();
                     cm_r.stop();
                 }
 
-                if(lastBtn=="b") {
+                if(lastBtn.equals("b")) {
                     lastPause_b=SystemClock.elapsedRealtime();
                     cm_b.stop();
                 }
 
-                if(lastBtn=="c"){
+                if(lastBtn.equals("c")){
                     lastPause_c=SystemClock.elapsedRealtime();
                     cm_c.stop();
                 }
-                if(lastBtn=="y"){
+                if(lastBtn.equals("y")){
                     lastPause_y=SystemClock.elapsedRealtime();
                     cm_y.stop();
                 }
-                if(lastBtn=="gr"){
+                if(lastBtn.equals("gr")){
                     lastPause_gr=SystemClock.elapsedRealtime();
                     cm_gr.stop();
                 }
-                if(lastBtn!="p") {
+                if(!lastBtn.equals("p")) {
                     if (lastPause_p != 0)
                         cm_p.setBase(cm_p.getBase() + SystemClock.elapsedRealtime() - lastPause_p);
                     else
@@ -266,35 +319,35 @@ public class MainActivity extends AppCompatActivity {
         });
         ib_r.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(lastBtn=="o") {
+                if(lastBtn.equals("o")){
                     lastPause_o = SystemClock.elapsedRealtime();
                     cm_o.stop();
                 }
 
-                if(lastBtn=="p") {
+                if(lastBtn.equals("p")) {
                     lastPause_p = SystemClock.elapsedRealtime();
                     cm_p.stop();
                 }
 
-                if(lastBtn=="b") {
+                if(lastBtn.equals("b")) {
                     lastPause_b=SystemClock.elapsedRealtime();
                     cm_b.stop();
                 }
 
-                if(lastBtn=="c"){
+                if(lastBtn.equals("c")){
                     lastPause_c=SystemClock.elapsedRealtime();
                     cm_c.stop();
                 }
-                if(lastBtn=="y"){
+                if(lastBtn.equals("y")){
                     lastPause_y=SystemClock.elapsedRealtime();
                     cm_y.stop();
                 }
-                if(lastBtn=="gr"){
+                if(lastBtn.equals("gr")){
                     lastPause_gr=SystemClock.elapsedRealtime();
                     cm_gr.stop();
                 }
 
-                if(lastBtn!="r") {
+                if(!lastBtn.equals("r")) {
                     if (lastPause_r != 0)
                         cm_r.setBase(cm_r.getBase() + SystemClock.elapsedRealtime() - lastPause_r);
                     else
@@ -317,35 +370,35 @@ public class MainActivity extends AppCompatActivity {
 
         ib_b.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(lastBtn=="o") {
+                if(lastBtn.equals("o")) {
                     lastPause_o=SystemClock.elapsedRealtime();
                     cm_o.stop();
                 }
 
-                if(lastBtn=="r") {
+                if(lastBtn.equals("r")) {
                     lastPause_r=SystemClock.elapsedRealtime();
                     cm_r.stop();
                 }
 
-                if(lastBtn=="p") {
+                if(lastBtn.equals("p")) {
                     lastPause_p=SystemClock.elapsedRealtime();
                     cm_p.stop();
                 }
 
-                if(lastBtn=="c"){
+                if(lastBtn.equals("c")){
                     lastPause_c=SystemClock.elapsedRealtime();
                     cm_c.stop();
                 }
-                if(lastBtn=="y"){
+                if(lastBtn.equals("y")){
                     lastPause_y=SystemClock.elapsedRealtime();
                     cm_y.stop();
                 }
-                if(lastBtn=="gr"){
+                if(lastBtn.equals("gr")){
                     lastPause_gr=SystemClock.elapsedRealtime();
                     cm_gr.stop();
                 }
 
-                if(lastBtn!="b") {
+                if(!lastBtn.equals("b")) {
                     if (lastPause_b != 0)
                         cm_b.setBase(cm_b.getBase() + SystemClock.elapsedRealtime() - lastPause_b);
                     else
@@ -369,35 +422,35 @@ public class MainActivity extends AppCompatActivity {
 
         ib_c.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(lastBtn=="o") {
+                if(lastBtn.equals("o")) {
                     lastPause_o=SystemClock.elapsedRealtime();
                     cm_o.stop();
                 }
 
-                if(lastBtn=="r") {
+                if(lastBtn.equals("r")) {
                     lastPause_r=SystemClock.elapsedRealtime();
                     cm_r.stop();
                 }
 
-                if(lastBtn=="p") {
+                if(lastBtn.equals("p")) {
                     lastPause_p=SystemClock.elapsedRealtime();
                     cm_p.stop();
                 }
 
-                if(lastBtn=="b"){
+                if(lastBtn.equals("b")){
                     lastPause_b=SystemClock.elapsedRealtime();
                     cm_b.stop();
                 }
-                if(lastBtn=="y"){
+                if(lastBtn.equals("y")){
                     lastPause_y=SystemClock.elapsedRealtime();
                     cm_y.stop();
                 }
-                if(lastBtn=="gr"){
+                if(lastBtn.equals("gr")){
                     lastPause_gr=SystemClock.elapsedRealtime();
                     cm_gr.stop();
                 }
 
-                if(lastBtn!="c") {
+                if(!lastBtn.equals("c")) {
                     if (lastPause_c != 0)
                         cm_c.setBase(cm_c.getBase() + SystemClock.elapsedRealtime() - lastPause_c);
                     else
@@ -421,35 +474,35 @@ public class MainActivity extends AppCompatActivity {
 
         ib_y.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(lastBtn=="o") {
+                if(lastBtn.equals("o")) {
                     lastPause_o=SystemClock.elapsedRealtime();
                     cm_o.stop();
                 }
 
-                if(lastBtn=="r") {
+                if(lastBtn.equals("r")) {
                     lastPause_r=SystemClock.elapsedRealtime();
                     cm_r.stop();
                 }
 
-                if(lastBtn=="p") {
+                if(lastBtn.equals("p")) {
                     lastPause_p=SystemClock.elapsedRealtime();
                     cm_p.stop();
                 }
 
-                if(lastBtn=="c"){
+                if(lastBtn.equals("c")){
                     lastPause_c=SystemClock.elapsedRealtime();
                     cm_c.stop();
                 }
-                if(lastBtn=="b"){
+                if(lastBtn.equals("b")){
                     lastPause_b=SystemClock.elapsedRealtime();
                     cm_b.stop();
                 }
-                if(lastBtn=="gr"){
+                if(lastBtn.equals("gr")){
                     lastPause_gr=SystemClock.elapsedRealtime();
                     cm_gr.stop();
                 }
 
-                if(lastBtn!="y") {
+                if(!lastBtn.equals("y")) {
                     if (lastPause_y != 0)
                         cm_y.setBase(cm_y.getBase() + SystemClock.elapsedRealtime() - lastPause_y);
                     else
@@ -473,35 +526,35 @@ public class MainActivity extends AppCompatActivity {
 
         ib_gr.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(lastBtn=="o") {
+                if(lastBtn.equals("o")) {
                     lastPause_o=SystemClock.elapsedRealtime();
                     cm_o.stop();
                 }
 
-                if(lastBtn=="r") {
+                if(lastBtn.equals("r")) {
                     lastPause_r=SystemClock.elapsedRealtime();
                     cm_r.stop();
                 }
 
-                if(lastBtn=="p") {
+                if(lastBtn.equals("p")) {
                     lastPause_p=SystemClock.elapsedRealtime();
                     cm_p.stop();
                 }
 
-                if(lastBtn=="c"){
+                if(lastBtn.equals("c")){
                     lastPause_c=SystemClock.elapsedRealtime();
                     cm_c.stop();
                 }
-                if(lastBtn=="y"){
+                if(lastBtn.equals("y")){
                     lastPause_y=SystemClock.elapsedRealtime();
                     cm_y.stop();
                 }
-                if(lastBtn=="b"){
+                if(lastBtn.equals("b")){
                     lastPause_b=SystemClock.elapsedRealtime();
                     cm_b.stop();
                 }
 
-                if(lastBtn!="gr") {
+                if(!lastBtn.equals("gr")) {
                     if (lastPause_gr != 0)
                         cm_gr.setBase(cm_gr.getBase() + SystemClock.elapsedRealtime() - lastPause_gr);
                     else
