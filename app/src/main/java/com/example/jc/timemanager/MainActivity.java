@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Day has ended!", Toast.LENGTH_SHORT).show();
                         dialogInterface.dismiss();
 
-                        showDayStats();
+                       // showDayStats();
                         reset();
                     }
                 })
@@ -48,26 +48,81 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    Button button;
+    Button button ,adjust;
     Button reset;
     TextView text;
     ConstraintLayout cl;
-    Chronometer cm_g,cm_o,cm_r,cm_p,cm_b,cm_c,cm_y,cm_gr;
-    ImageButton ib_g,ib_o,ib_r,ib_p,ib_b,ib_c,ib_y,ib_gr;
+    Chronometer cm_g,cm_o,cm_r,cm_p,cm_b,cm_c,cm_y,cm_gr,cm_pk;
+    ImageButton ib_g,ib_o,ib_r,ib_p,ib_b,ib_c,ib_y,ib_gr,ib_pk;
     TextView tv;
-    long lastPause= 0,lastPause_o = 0,lastPause_r = 0,lastPause_p = 0,lastPause_b= 0,lastPause_c= 0,lastPause_y= 0,lastPause_gr= 0;
+    long lastPause= 0,lastPause_o = 0,lastPause_r = 0,lastPause_p = 0,lastPause_pk = 0,lastPause_b= 0,lastPause_c= 0,lastPause_y= 0,lastPause_gr= 0;
     String lastBtn = "";
 
     public void reset(){
-        lastPause= 0;lastPause_o = 0;lastPause_r = 0;lastPause_p = 0;lastPause_b= 0;lastPause_c= 0;lastPause_y= 0;lastPause_gr= 0;
-        cm_g.stop();cm_b.stop();cm_r.stop();cm_p.stop();cm_o.stop();cm_c.stop();cm_y.stop();cm_gr.stop();
-        cm_g.setBase(SystemClock.elapsedRealtime());cm_o.setBase(SystemClock.elapsedRealtime());cm_p.setBase(SystemClock.elapsedRealtime());cm_r.setBase(SystemClock.elapsedRealtime());cm_b.setBase(SystemClock.elapsedRealtime());
+        lastPause= 0;lastPause_o = 0;lastPause_r = 0;lastPause_p = 0;lastPause_pk = 0;lastPause_b= 0;lastPause_c= 0;lastPause_y= 0;lastPause_gr= 0;
+        cm_g.stop();cm_b.stop();cm_r.stop();cm_p.stop();cm_pk.stop();cm_o.stop();cm_c.stop();cm_y.stop();cm_gr.stop();
+        cm_g.setBase(SystemClock.elapsedRealtime());cm_o.setBase(SystemClock.elapsedRealtime());cm_pk.setBase(SystemClock.elapsedRealtime());cm_p.setBase(SystemClock.elapsedRealtime());cm_r.setBase(SystemClock.elapsedRealtime());cm_b.setBase(SystemClock.elapsedRealtime());
         cm_c.setBase(SystemClock.elapsedRealtime());cm_y.setBase(SystemClock.elapsedRealtime());cm_gr.setBase(SystemClock.elapsedRealtime());
         lastBtn="";
         ib_g.setEnabled(true);
+        ib_b.setEnabled(true);
+        ib_c.setEnabled(true);
+        ib_gr.setEnabled(true);
+        ib_o.setEnabled(true);
+        ib_r.setEnabled(true);
+        ib_p.setEnabled(true);
+        ib_pk.setEnabled(true);
+        ib_y.setEnabled(true);
     }
+    public void pause(){
+        if(lastBtn.equals("p")) {//If the last btn pressed was the purple one
+            lastPause_p = SystemClock.elapsedRealtime();//Set the last time we paused to Realtime
+            cm_p.stop();//Stop the purple timer
+        }
+
+        if(lastBtn.equals("r")) {
+            lastPause_r = SystemClock.elapsedRealtime();
+            cm_r.stop();
+            //}
+        }
+
+        if(lastBtn.equals("b")){
+            lastPause_b=SystemClock.elapsedRealtime();
+            cm_b.stop();
+        }
+        if(lastBtn.equals("c")){
+            lastPause_c=SystemClock.elapsedRealtime();
+            cm_c.stop();
+        }
+        if(lastBtn.equals("y")){
+            lastPause_y=SystemClock.elapsedRealtime();
+            cm_y.stop();
+        }
+        if(lastBtn.equals("gr")){
+            lastPause_gr=SystemClock.elapsedRealtime();
+            cm_gr.stop();
+        }
+        if(lastBtn.equals("o")){
+            lastPause_o=SystemClock.elapsedRealtime();
+            cm_o.stop();
+        }
+        if(lastBtn.equals("pk")){
+            lastPause_pk=SystemClock.elapsedRealtime();
+            cm_pk.stop();
+        }
+        cm_g.stop();
+        ib_b.setEnabled(false);
+        ib_c.setEnabled(false);
+        ib_gr.setEnabled(false);
+        ib_o.setEnabled(false);
+        ib_r.setEnabled(false);
+        ib_p.setEnabled(false);
+        ib_y.setEnabled(false);
+        //ib_c.setEnabled(false);
+    }
+
     public void showDayStats() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+       /* AlertDialog.Builder alert = new AlertDialog.Builder(this);
         //Read the value form the chronometer (such as 00:00) and split it at the :
         String[] rtmp = cm_r.getText().toString().split(":");
         String[] gtmp = cm_g.getText().toString().split(":");
@@ -81,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             g will be the base we use to get the percent for the other values
          */
 
-        double g = Integer.parseInt(gtmp[0]) * 60//multiply by 60 to convert the minutes to second
+      /*  double g = Integer.parseInt(gtmp[0]) * 60//multiply by 60 to convert the minutes to second
                 + Integer.parseInt(gtmp[1]) ;// add the seconds
         double r =Integer.parseInt(rtmp[0]) * 60
                 + Integer.parseInt(rtmp[1]) ;
@@ -118,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .create();
-        alert.show();
+        alert.show();*/
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         text =  findViewById(R.id.textView);
         button =  findViewById(R.id.button);
+        adjust = findViewById(R.id.adjust);
         reset = findViewById(R.id.btn_reset);
         Boolean etOpen=false;
         ib_g =  findViewById(R.id.imageButton);
@@ -152,6 +208,9 @@ public class MainActivity extends AppCompatActivity {
         ib_gr =  findViewById(R.id.imgBtnGrey);
         cm_gr =  findViewById(R.id.chronometer_grey);
 
+        ib_pk =  findViewById(R.id.imgBtnPink);
+        cm_pk =  findViewById(R.id.chronometer_pink);
+
         tv= findViewById(R.id.txtViewGrey);
 
 
@@ -161,10 +220,16 @@ public class MainActivity extends AppCompatActivity {
                  showAlert(v);
             }
         });
+        adjust.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                text.setText("");
+                showAlert(v);
+            }
+        });
 
         reset.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                reset();
+                pause();
             }
         });
 
@@ -242,6 +307,10 @@ public class MainActivity extends AppCompatActivity {
                     lastPause_gr=SystemClock.elapsedRealtime();
                     cm_gr.stop();
                 }
+                if(lastBtn=="pk"){
+                    lastPause_pk=SystemClock.elapsedRealtime();
+                    cm_pk.stop();
+                }
 
                 if(!lastBtn.equals("o")) {
                     if (lastPause_o != 0)//Check to see if we have paused this timer before
@@ -257,9 +326,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 else {
-                    lastPause_o=SystemClock.elapsedRealtime();
+                   ;/* lastPause_o=SystemClock.elapsedRealtime();
                     cm_o.stop();
-                    lastBtn="";
+                    lastBtn="";*/
                 }
 
 
@@ -296,6 +365,10 @@ public class MainActivity extends AppCompatActivity {
                     lastPause_gr=SystemClock.elapsedRealtime();
                     cm_gr.stop();
                 }
+                if(lastBtn=="pk"){
+                    lastPause_pk=SystemClock.elapsedRealtime();
+                    cm_pk.stop();
+                }
                 if(!lastBtn.equals("p")) {
                     if (lastPause_p != 0)
                         cm_p.setBase(cm_p.getBase() + SystemClock.elapsedRealtime() - lastPause_p);
@@ -310,9 +383,9 @@ public class MainActivity extends AppCompatActivity {
                     lastBtn = "p";
                 }
                 else {
-                    lastPause_p=SystemClock.elapsedRealtime();
+                   ;/* lastPause_p=SystemClock.elapsedRealtime();
                     cm_p.stop();
-                    lastBtn="";
+                    lastBtn="";*/
                 }
 
             }
@@ -346,7 +419,10 @@ public class MainActivity extends AppCompatActivity {
                     lastPause_gr=SystemClock.elapsedRealtime();
                     cm_gr.stop();
                 }
-
+                if(lastBtn=="pk"){
+                    lastPause_pk=SystemClock.elapsedRealtime();
+                    cm_pk.stop();
+                }
                 if(!lastBtn.equals("r")) {
                     if (lastPause_r != 0)
                         cm_r.setBase(cm_r.getBase() + SystemClock.elapsedRealtime() - lastPause_r);
@@ -361,9 +437,9 @@ public class MainActivity extends AppCompatActivity {
                     lastBtn = "r";
                 }
                 else {
-                    lastPause_r=SystemClock.elapsedRealtime();
+                   ;/* lastPause_r=SystemClock.elapsedRealtime();
                     cm_r.stop();
-                    lastBtn="";
+                    lastBtn="";*/
                 }
             }
         });
@@ -397,7 +473,10 @@ public class MainActivity extends AppCompatActivity {
                     lastPause_gr=SystemClock.elapsedRealtime();
                     cm_gr.stop();
                 }
-
+                if(lastBtn=="pk"){
+                    lastPause_pk=SystemClock.elapsedRealtime();
+                    cm_pk.stop();
+                }
                 if(!lastBtn.equals("b")) {
                     if (lastPause_b != 0)
                         cm_b.setBase(cm_b.getBase() + SystemClock.elapsedRealtime() - lastPause_b);
@@ -412,9 +491,9 @@ public class MainActivity extends AppCompatActivity {
                     lastBtn = "b";
                 }
                 else {
-                    lastPause_b=SystemClock.elapsedRealtime();
+                  ;/*  lastPause_b=SystemClock.elapsedRealtime();
                     cm_b.stop();
-                    lastBtn="";
+                    lastBtn="";*/
                 }
             }
         });
@@ -449,6 +528,10 @@ public class MainActivity extends AppCompatActivity {
                     lastPause_gr=SystemClock.elapsedRealtime();
                     cm_gr.stop();
                 }
+                if(lastBtn=="pk"){
+                    lastPause_pk=SystemClock.elapsedRealtime();
+                    cm_pk.stop();
+                }
 
                 if(!lastBtn.equals("c")) {
                     if (lastPause_c != 0)
@@ -464,9 +547,9 @@ public class MainActivity extends AppCompatActivity {
                     lastBtn = "c";
                 }
                 else {
-                    lastPause_c=SystemClock.elapsedRealtime();
+                    ;/*lastPause_c=SystemClock.elapsedRealtime();
                     cm_c.stop();
-                    lastBtn="";
+                    lastBtn="";*/
                 }
             }
         });
@@ -501,6 +584,10 @@ public class MainActivity extends AppCompatActivity {
                     lastPause_gr=SystemClock.elapsedRealtime();
                     cm_gr.stop();
                 }
+                if(lastBtn=="pk"){
+                    lastPause_pk=SystemClock.elapsedRealtime();
+                    cm_pk.stop();
+                }
 
                 if(!lastBtn.equals("y")) {
                     if (lastPause_y != 0)
@@ -516,9 +603,9 @@ public class MainActivity extends AppCompatActivity {
                     lastBtn = "y";
                 }
                 else {
-                    lastPause_y=SystemClock.elapsedRealtime();
+                    ;/*lastPause_y=SystemClock.elapsedRealtime();
                     cm_y.stop();
-                    lastBtn="";
+                    lastBtn="";*/
                 }
             }
         });
@@ -553,6 +640,10 @@ public class MainActivity extends AppCompatActivity {
                     lastPause_b=SystemClock.elapsedRealtime();
                     cm_b.stop();
                 }
+                if(lastBtn=="pk"){
+                    lastPause_pk=SystemClock.elapsedRealtime();
+                    cm_pk.stop();
+                }
 
                 if(!lastBtn.equals("gr")) {
                     if (lastPause_gr != 0)
@@ -568,14 +659,14 @@ public class MainActivity extends AppCompatActivity {
                     lastBtn = "gr";
                 }
                 else {
-                    lastPause_gr=SystemClock.elapsedRealtime();
+                   ;/* lastPause_gr=SystemClock.elapsedRealtime();
                     cm_gr.stop();
-                    lastBtn="";
+                    lastBtn="";*/
                 }
             }
         });
-/*
-        ib_gr.setOnClickListener(new View.OnClickListener() {
+
+        ib_pk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(lastBtn=="o") {
                     lastPause_o=SystemClock.elapsedRealtime();
@@ -604,27 +695,31 @@ public class MainActivity extends AppCompatActivity {
                     lastPause_b=SystemClock.elapsedRealtime();
                     cm_b.stop();
                 }
+                if(lastBtn=="gr"){
+                    lastPause_gr=SystemClock.elapsedRealtime();
+                    cm_gr.stop();
+                }
 
-                if(lastBtn!="gr") {
-                    if (lastPause_gr != 0)
-                        cm_gr.setBase(cm_gr.getBase() + SystemClock.elapsedRealtime() - lastPause_gr);
+                if(lastBtn!="pk") {
+                    if (lastPause_pk != 0)
+                        cm_pk.setBase(cm_pk.getBase() + SystemClock.elapsedRealtime() - lastPause_pk);
                     else
-                        cm_gr.setBase(SystemClock.elapsedRealtime());
+                        cm_pk.setBase(SystemClock.elapsedRealtime());
                     if(ib_g.isEnabled()){
                         cm_g.setBase(SystemClock.elapsedRealtime());
                         cm_g.start();
                         ib_g.setEnabled(false);
                     }
-                    cm_gr.start();
-                    lastBtn = "gr";
+                    cm_pk.start();
+                    lastBtn = "pk";
                 }
                 else {
-                    lastPause_gr=SystemClock.elapsedRealtime();
-                    cm_gr.stop();
+                    lastPause_pk=SystemClock.elapsedRealtime();
+                    cm_pk.stop();
                     lastBtn="";
                 }
             }
-        });*/
+        });
     }
 
 
