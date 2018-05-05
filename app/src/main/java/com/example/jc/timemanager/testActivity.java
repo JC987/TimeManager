@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +13,7 @@ import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class testActivity extends AppCompatActivity {
     Chronometer cm_o,cm_r,cm_p,cm_g,cm_b,cm_gr,cm_c,cm_y,cm_pk;
     public static final int FINAL_INT=0;
     ImageButton ib_o,ib_r,ib_p,ib_g,ib_b,ib_gr,ib_c,ib_y,ib_pk;
@@ -32,19 +32,17 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 })
-                .setPositiveButton("I'm ready!", new DialogInterface.OnClickListener() {
+                .setPositiveButton("All Done!", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        Toast.makeText(testActivity.this, "Day has ended!", Toast.LENGTH_SHORT).show();
                         dialogInterface.dismiss();
 
                         if(value) {
-                            Toast.makeText(MainActivity.this, "Day has ended!", Toast.LENGTH_SHORT).show();
                             setEnableBtns(value);
                             reset();
                         }
                         else{
-                            Toast.makeText(MainActivity.this, "Reflect on the day!", Toast.LENGTH_SHORT).show();
                             setEnableBtns(value);
                             myTimer.stopAll();
                         }
@@ -81,11 +79,11 @@ public class MainActivity extends AppCompatActivity {
         switch(requestCode) {
             case (FINAL_INT) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    result = data.getIntExtra("sub",0);
-                    String cat = data.getStringExtra("cat");
-                    if(cat.equals("Leisure")){
-                        orange.add(result);
-                    }
+                   result = data.getIntExtra("sub",0);
+                   String cat = data.getStringExtra("cat");
+                   if(cat.equals("Leisure")){
+                       orange.add(result);
+                   }
                     if(cat.equals("Exercise")){
                         red.add(result);
                     }
@@ -117,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_test);
         ib_o = findViewById(R.id.imgBtnOrange);
         ib_r = findViewById(R.id.imgBtnRed);
         ib_g = findViewById(R.id.imageButton);
@@ -156,14 +154,14 @@ public class MainActivity extends AppCompatActivity {
         adjust.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this,adjustTimers.class);
+                Intent i = new Intent(testActivity.this,adjustTimers.class);
                 startActivityForResult(i, FINAL_INT);
             }
         });
         endDay.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 showAlert(v,"Do you want to end the day",true);
-
+             //   setEnableBtns(true);
             }
         });
         reflect.setOnClickListener((new View.OnClickListener() {
@@ -171,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 showAlert(view,"Do you want to reflect on the day",false);
-
+             //   setEnableBtns(false);
             }
         }));
 
