@@ -9,7 +9,7 @@
     tools:context="com.example.jc.timemanager.MainActivity">
 
     <Button
-        android:id="@+id/endDay"
+        android:id="@+id/btnEndDay"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:background="@drawable/roundbtrn"
@@ -23,20 +23,22 @@
         app:layout_constraintVertical_bias="0.968" />
 
     <Button
-        android:id="@+id/adjust"
+        android:id="@+id/btnAdjust"
         android:layout_width="98dp"
         android:layout_height="wrap_content"
         android:background="@drawable/roundbtrn"
         android:text="+ / -"
         android:textSize="12pt"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.968" />
+        app:layout_constraintVertical_bias="0.968"
+        />
 
     <Button
-        android:id="@+id/btn_reset"
+        android:id="@+id/btnReset"
         android:layout_width="100dp"
         android:layout_height="60dp"
         android:background="@drawable/roundbtrn"
@@ -50,7 +52,7 @@
         app:layout_constraintVertical_bias="0.968" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/imgBtnGreen"
         android:layout_width="112dp"
         android:layout_height="112dp"
         android:contentDescription="Start your day"
@@ -64,32 +66,32 @@
 
 
     <TextView
-        android:id="@+id/textImageButton"
+        android:id="@+id/txtViewGreen"
         android:layout_width="80dp"
         android:layout_height="20dp"
         android:text="Wake Up!"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/imageButton"
+        app:layout_constraintBottom_toBottomOf="@id/imgBtnGreen"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="@id/imageButton"
-        app:layout_constraintRight_toRightOf="@id/imageButton"
-        app:layout_constraintTop_toTopOf="@id/imageButton"
+        app:layout_constraintLeft_toLeftOf="@id/imgBtnGreen"
+        app:layout_constraintRight_toRightOf="@id/imgBtnGreen"
+        app:layout_constraintTop_toTopOf="@id/imgBtnGreen"
         app:layout_constraintVertical_bias="0.2" />
 
     <Chronometer
-        android:id="@+id/chronometer_green"
-        android:layout_width="60dp"
+        android:id="@+id/chronometerGreen"
+        android:layout_width="105dp"
         android:layout_height="20dp"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/imageButton"
+        app:layout_constraintBottom_toBottomOf="@id/imgBtnGreen"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="@id/imageButton"
-        app:layout_constraintRight_toRightOf="@id/imageButton"
-        app:layout_constraintTop_toTopOf="@id/imageButton"
+        app:layout_constraintLeft_toLeftOf="@id/imgBtnGreen"
+        app:layout_constraintRight_toRightOf="@id/imgBtnGreen"
+        app:layout_constraintTop_toTopOf="@id/imgBtnGreen"
         app:layout_constraintVertical_bias="0.6" />
 
     <ImageButton
@@ -123,7 +125,7 @@
         app:layout_constraintVertical_bias="0.2" />
 
     <Chronometer
-        android:id="@+id/chronometer_orange"
+        android:id="@+id/chronometerOrange"
         android:layout_width="105dp"
         android:layout_height="20dp"
         android:textAlignment="center"
@@ -163,8 +165,8 @@
         app:layout_constraintVertical_bias="0.2" />
 
     <Chronometer
-        android:id="@+id/chronometer_red"
-        android:layout_width="103dp"
+        android:id="@+id/chronometerRed"
+        android:layout_width="105dp"
         android:layout_height="20dp"
         android:textAlignment="center"
         android:textColor="#000000"
@@ -204,8 +206,8 @@
         app:layout_constraintVertical_bias="0.2" />
 
     <Chronometer
-        android:id="@+id/chronometer_purple"
-        android:layout_width="107dp"
+        android:id="@+id/chronometerPurple"
+        android:layout_width="105dp"
         android:layout_height="20dp"
         android:textAlignment="center"
         android:textColor="#000000"
@@ -247,8 +249,8 @@
         app:layout_constraintVertical_bias="0.2" />
 
     <Chronometer
-        android:id="@+id/chronometer_blue"
-        android:layout_width="60dp"
+        android:id="@+id/chronometerBlue"
+        android:layout_width="105dp"
         android:layout_height="20dp"
         android:textAlignment="center"
         android:textColor="#000000"
@@ -262,7 +264,7 @@
 
 
     <ImageButton
-        android:id="@+id/imgBtnC"
+        android:id="@+id/imgBtnCyan"
         android:layout_width="112dp"
         android:layout_height="112dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -283,25 +285,25 @@
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/imgBtnC"
+        app:layout_constraintBottom_toBottomOf="@id/imgBtnCyan"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="@id/imgBtnC"
-        app:layout_constraintRight_toRightOf="@id/imgBtnC"
-        app:layout_constraintTop_toTopOf="@id/imgBtnC"
+        app:layout_constraintLeft_toLeftOf="@id/imgBtnCyan"
+        app:layout_constraintRight_toRightOf="@id/imgBtnCyan"
+        app:layout_constraintTop_toTopOf="@id/imgBtnCyan"
         app:layout_constraintVertical_bias="0.2" />
 
     <Chronometer
-        android:id="@+id/chronometer_cyan"
-        android:layout_width="60dp"
+        android:id="@+id/chronometerCyan"
+        android:layout_width="105dp"
         android:layout_height="20dp"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/imgBtnC"
+        app:layout_constraintBottom_toBottomOf="@id/imgBtnCyan"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="@id/imgBtnC"
-        app:layout_constraintRight_toRightOf="@id/imgBtnC"
-        app:layout_constraintTop_toTopOf="@id/imgBtnC"
+        app:layout_constraintLeft_toLeftOf="@id/imgBtnCyan"
+        app:layout_constraintRight_toRightOf="@id/imgBtnCyan"
+        app:layout_constraintTop_toTopOf="@id/imgBtnCyan"
         app:layout_constraintVertical_bias="0.6" />
 
     <ImageButton
@@ -331,8 +333,8 @@
         app:layout_constraintVertical_bias="0.2" />
 
     <Chronometer
-        android:id="@+id/chronometer_yellow"
-        android:layout_width="60dp"
+        android:id="@+id/chronometerYellow"
+        android:layout_width="105dp"
         android:layout_height="20dp"
         android:textAlignment="center"
         android:textColor="#000000"
@@ -374,8 +376,8 @@
             app:layout_constraintVertical_bias="0.2" />
 
         <Chronometer
-            android:id="@+id/chronometer_pink"
-            android:layout_width="60dp"
+            android:id="@+id/chronometerPink"
+            android:layout_width="105dp"
             android:layout_height="20dp"
             android:textAlignment="center"
             android:textColor="#000000"
@@ -422,8 +424,8 @@
             app:layout_constraintVertical_bias="0.2" />
 
         <Chronometer
-            android:id="@+id/chronometer_grey"
-            android:layout_width="60dp"
+            android:id="@+id/chronometerGrey"
+            android:layout_width="105dp"
             android:layout_height="20dp"
             android:textAlignment="center"
             android:textColor="#000000"

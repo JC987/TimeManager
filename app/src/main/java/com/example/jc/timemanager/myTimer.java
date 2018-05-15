@@ -18,9 +18,15 @@ public class myTimer {
         lastPause=0;
 
     }
-    public myTimer(Chronometer c){
-        wakeUp = c;
-        lastPause = SystemClock.elapsedRealtime();
+    public myTimer(Chronometer c,boolean isWakeUp){
+        if(isWakeUp) {
+            wakeUp = c;
+            lastPause = SystemClock.elapsedRealtime();
+        }
+        else{
+            timer = c;
+            lastPause = 0;
+        }
     }
 
     public  myTimer(Chronometer c, long l){
@@ -58,6 +64,7 @@ public class myTimer {
     }
     else{
         timer.setBase(timer.getBase()+SystemClock.elapsedRealtime()-lastPause + l);
+        lastPause = SystemClock.elapsedRealtime();
     }
     if(lastTimer!=null)
         wakeUp.setBase(wakeUp.getBase()+l);

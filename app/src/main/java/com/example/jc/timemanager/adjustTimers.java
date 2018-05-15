@@ -94,15 +94,16 @@ public class adjustTimers extends AppCompatActivity {
             @Override
 
             public void onClick(View v) {
-
-               int result ,hr = numPickerHours.getValue(), tmin = numPickerTensMins.getValue(), min = numPickerMins.getValue();
+                long result;
+               int result2 ,hr = numPickerHours.getValue(), tmin = numPickerTensMins.getValue(), min = numPickerMins.getValue();
                 Intent resultIntent = new Intent();
-                result=((int)Math.pow (-1,spnAdjustTime.getSelectedItemPosition()) *((60 * 1000 * min) + (60 * 10000 * tmin) + (60 * 60 * 1000 * hr)) );
+                result=((long)Math.pow (-1,spnAdjustTime.getSelectedItemPosition()) *((60 * 1000 * min) + (60 * 10000 * tmin) + (60 * 60 * 1000 * hr)) );
                 resultIntent.putExtra("sub",result);//(-1* ((60 * 1000 * min) + (60 * 10000 * tmin) + (60 * 60 * 1000 * hr))) );
                 resultIntent.putExtra("sign",spnAdjustTime.getSelectedItemPosition());
                 resultIntent.putExtra("cat",spnTimerCategories.getSelectedItem().toString());
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
+                overridePendingTransition(R.anim.slide_left, R.anim.slide_out_left);
 
             }
         });

@@ -140,7 +140,7 @@ public class testActivity extends AppCompatActivity {
         reflect = findViewById(R.id.btn_reset);
         adjust = findViewById(R.id.adjust);
 
-        green = new myTimer(cm_g);
+        green = new myTimer(cm_g,true);
         orange = new myTimer(cm_o,lp_o);
         red = new myTimer(cm_r,lp_r);
         purple = new myTimer(cm_p,lp_p);
@@ -230,3 +230,13 @@ public class testActivity extends AppCompatActivity {
         });
     }
 }
+/*<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+   android:interpolator="@android:anim/linear_interpolator">
+   <alpha
+       android:fromAlpha="1.0"
+       android:toAlpha="0.1"
+       android:duration="500"
+       android:repeatCount="1"
+       android:repeatMode="reverse" />
+</set>*/

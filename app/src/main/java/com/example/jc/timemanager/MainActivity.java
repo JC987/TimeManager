@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         switch(requestCode) {
             case (FINAL_INT) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    result = data.getIntExtra("sub",0);
+                    result = data.getLongExtra("sub",0);
                     String cat = data.getStringExtra("cat");
                     if(cat.equals("Leisure")){
                         orange.add(result);
@@ -114,118 +116,139 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ib_o = findViewById(R.id.imgBtnOrange);
         ib_r = findViewById(R.id.imgBtnRed);
-        ib_g = findViewById(R.id.imageButton);
+        ib_g = findViewById(R.id.imgBtnGreen);
         ib_p = findViewById(R.id.imgBtnPurple);
         ib_b = findViewById(R.id.imgBtnBlue);
         ib_gr = findViewById(R.id.imgBtnGrey);
-        ib_c = findViewById(R.id.imgBtnC);
+        ib_c = findViewById(R.id.imgBtnCyan);
         ib_y = findViewById(R.id.imgBtnYellow);
         ib_pk =findViewById(R.id.imgBtnPink);
 
-        cm_o = findViewById(R.id.chronometer_orange);
-        cm_r = findViewById(R.id.chronometer_red);
-        cm_p = findViewById(R.id.chronometer_purple);
-        cm_g = findViewById(R.id.chronometer_green);
-        cm_b = findViewById(R.id.chronometer_blue);
-        cm_gr = findViewById(R.id.chronometer_grey);
-        cm_c = findViewById(R.id.chronometer_cyan);
-        cm_y = findViewById(R.id.chronometer_yellow);
-        cm_pk = findViewById(R.id.chronometer_pink);
+        cm_o = findViewById(R.id.chronometerOrange);
+        cm_r = findViewById(R.id.chronometerRed);
+        cm_p = findViewById(R.id.chronometerPurple);
+        cm_g = findViewById(R.id.chronometerGreen);
+        cm_b = findViewById(R.id.chronometerBlue);
+        cm_gr = findViewById(R.id.chronometerGrey);
+        cm_c = findViewById(R.id.chronometerCyan);
+        cm_y = findViewById(R.id.chronometerYellow);
+        cm_pk = findViewById(R.id.chronometerPink);
 
-        endDay = findViewById(R.id.endDay);
-        reflect = findViewById(R.id.btn_reset);
-        adjust = findViewById(R.id.adjust);
+        endDay = findViewById(R.id.btnEndDay);
+        reflect = findViewById(R.id.btnReset);
+        adjust = findViewById(R.id.btnAdjust);
 
-        green = new myTimer(cm_g);
-        orange = new myTimer(cm_o,lp_o);
-        red = new myTimer(cm_r,lp_r);
-        purple = new myTimer(cm_p,lp_p);
-        blue = new myTimer(cm_b,lp_b);
-        grey = new myTimer(cm_gr,lp_gr);
-        cyan = new myTimer(cm_c,lp_c);
-        yellow = new myTimer(cm_y,0);
-        pink = new myTimer(cm_pk,0);
+        green = new myTimer(cm_g,true);
+        orange = new myTimer(cm_o,false);//lp_o);
+        red = new myTimer(cm_r,false);//lp_r);
+        purple = new myTimer(cm_p,false);//lp_p);
+        blue = new myTimer(cm_b,false);//lp_b);
+        grey = new myTimer(cm_gr,false);//lp_gr);
+        cyan = new myTimer(cm_c,false);//lp_c);
+        yellow = new myTimer(cm_y,false);//0);
+        pink = new myTimer(cm_pk,false);//0);
 
+        final Animation animAlpha = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
+        final Animation animScale = AnimationUtils.loadAnimation(this, R.anim.anim_scale);
 
         adjust.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                v.startAnimation(animScale);
+
                 Intent i = new Intent(MainActivity.this,adjustTimers.class);
                 startActivityForResult(i, FINAL_INT);
+                overridePendingTransition(R.anim.slide_right, R.anim.slide_out_right);
+
             }
         });
+       // animScale.setAnimationListener();
+
         endDay.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
+                v.startAnimation(animScale);
                 showAlert(v,"Do you want to end the day",true);
 
             }
         });
         reflect.setOnClickListener((new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
-                showAlert(view,"Do you want to reflect on the day",false);
+            public void onClick(View v) {
+                v.startAnimation(animScale);
+                showAlert(v,"Do you want to reflect on the day",false);
 
             }
         }));
 
         ib_g.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                v.startAnimation(animAlpha);
                 myTimer.wakeUp();
                 ib_g.setEnabled(false);
             }
         });
         ib_o.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                v.startAnimation(animAlpha);
                 orange.start();
+
                 ib_g.setEnabled(false);
             }
         });
         ib_r.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                v.startAnimation(animAlpha);
                 red.start();
+
                 ib_g.setEnabled(false);
             }
         });
         ib_p.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                v.startAnimation(animAlpha);
                 purple.start();
                 ib_g.setEnabled(false);
             }
         });
         ib_b.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                v.startAnimation(animAlpha);
                 blue.start();
                 ib_g.setEnabled(false);
             }
         });
         ib_gr.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                v.startAnimation(animAlpha);
                 grey.start();
                 ib_g.setEnabled(false);
             }
         });
         ib_c.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                v.startAnimation(animAlpha);
                 cyan.start();
                 ib_g.setEnabled(false);
             }
         });
         ib_y.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                v.startAnimation(animAlpha);
                 yellow.start();
                 ib_g.setEnabled(false);
             }
         });
         ib_pk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                v.startAnimation(animAlpha);
                 pink.start();
                 ib_g.setEnabled(false);
             }
