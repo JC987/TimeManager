@@ -6,7 +6,6 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.NumberPicker;
@@ -18,20 +17,21 @@ import java.util.List;
 
 public class adjustTimers extends AppCompatActivity {
     NumberPicker numPickerMins, numPickerTensMins,numPickerHours;
-    Spinner spnTimerCategories,spnAdjustTime;int i;
+    Spinner spnTimerCategories,spnAdjustTime;
     Button btnAdjust;
-    Boolean bl ;
-    Long l,time= SystemClock.elapsedRealtime();
 
-    String lastBtn;
-    long cm_o,cm_r,cm_p,lp_o,lp_r,lp_p;
+    //Long l,time= SystemClock.elapsedRealtime();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adjust_timers);
+        //assign number pickers
         numPickerMins = findViewById(R.id.numPickerMins);
         numPickerTensMins = findViewById(R.id.numPickerTensMins);
         numPickerHours = findViewById(R.id.numPickerHours);
+
+        //set number pickers
         numPickerMins.setMinValue(0);
         numPickerMins.setMaxValue(9);
         numPickerMins.computeScroll();
@@ -42,9 +42,14 @@ public class adjustTimers extends AppCompatActivity {
         numPickerHours.setMaxValue(23);
         numPickerHours.computeScroll();
 
+        //assign spinners
         spnTimerCategories=findViewById(R.id.spnTimerCategories);
         spnAdjustTime=findViewById(R.id.spnAdjustTime);
+
+        //assign button
         btnAdjust = findViewById(R.id.btnAdjust);
+
+        //categories to be added to the first spinner
         List<String> categories = new ArrayList<String>();
         categories.add("~~Please Select a Category~~");
         categories.add("Leisure");
@@ -56,6 +61,7 @@ public class adjustTimers extends AppCompatActivity {
         categories.add("Traveling");
         categories.add("Nap");
 
+        //categories to be added to second spinner
         List<String> categories2 = new ArrayList<String>();
         categories2.add("~~Add or Remove Time~~");
         categories2.add("Add Time");
@@ -72,35 +78,29 @@ public class adjustTimers extends AppCompatActivity {
         // attaching data adapter to spinner
         spnTimerCategories.setAdapter(dataAdapter);
         spnAdjustTime.setAdapter(dataAdapter2);
-        Intent intent = getIntent();
-        if (null != intent) {
-            l = intent.getLongExtra("cmBase", 0);
-            lastBtn=intent.getStringExtra("lastBtn");
 
-            cm_o= intent.getLongExtra("cm_o",0);
-            cm_r = intent.getLongExtra("cm_r",0);
-            cm_p = intent.getLongExtra("cm_p",0);
-            lp_o = intent.getLongExtra("lp_o",0);
-            lp_r = intent.getLongExtra("lp_r",0);
-            lp_p = intent.getLongExtra("lp_p",0);
-        }
-        i=spnAdjustTime.getSelectedItemPosition();
-        bl = i==1;
-
-
-
-
+        /**
+         * Return the desired value for adjusting time and the category to adjust
+         */
         btnAdjust.setOnClickListener(new View.OnClickListener() {
             @Override
 
             public void onClick(View v) {
                 long result;
-               int result2 ,hr = numPickerHours.getValue(), tmin = numPickerTensMins.getValue(), min = numPickerMins.getValue();
+               int hr = numPickerHours.getValue(), tmin = numPickerTensMins.getValue(), min = numPickerMins.getValue();
                 Intent resultIntent = new Intent();
+                //If result is negative then we are adding time, else if positive we are subtracting time
+
+                //-1 raised to the spinners position gives us the sign of result
+                //convert the desired min, ten min, and hour to millisecond then add them up and
+                    // multiple it by the sign to get the result
                 result=((long)Math.pow (-1,spnAdjustTime.getSelectedItemPosition()) *((60 * 1000 * min) + (60 * 10000 * tmin) + (60 * 60 * 1000 * hr)) );
+
+                //return the result and category
                 resultIntent.putExtra("sub",result);//(-1* ((60 * 1000 * min) + (60 * 10000 * tmin) + (60 * 60 * 1000 * hr))) );
                 resultIntent.putExtra("sign",spnAdjustTime.getSelectedItemPosition());
                 resultIntent.putExtra("cat",spnTimerCategories.getSelectedItem().toString());
+               //finish activity
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
                 overridePendingTransition(R.anim.slide_left, R.anim.slide_out_left);

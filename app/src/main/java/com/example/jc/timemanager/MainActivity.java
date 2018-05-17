@@ -14,17 +14,40 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
+/**
+ * MainActivity
+ * -Will contain 9 myTimers, 1 of which is a WakeUp timer.
+ * -As well as 3 buttons, one for ending the day, another for reflecting on the day,
+ * and another for adjusting the values for a myTimer
+ */
 public class MainActivity extends AppCompatActivity {
+    /**
+     * Chronometers to pass the id of the chronometers to a myTimer
+     */
     Chronometer cm_o,cm_r,cm_p,cm_g,cm_b,cm_gr,cm_c,cm_y,cm_pk;
     public static final int FINAL_INT=0;
+    /**
+     * ImageButtons for starting/swapping myTimers
+     * A long for retrieving the results from adjustTimer class
+     * myTimers for managing chronometers
+     */
     ImageButton ib_o,ib_r,ib_p,ib_g,ib_b,ib_gr,ib_c,ib_y,ib_pk;
-    long lp_o=0,lp_r=0,lp_p=0,lp_b=0,lp_gr=0,lp_c=0,result;
+    long result;
     myTimer orange,red,purple,green,blue,grey,cyan,yellow,pink;
     Button endDay,reflect,adjust;
+
+    /**
+     * -Display a dialog box that ask the users if they want to end the day
+     * or ask the user if they want to reflect on the day.
+     * @param view is never used however may be used in later versions
+     * @param msg the message to be displayed
+     * @param value to decide if we are ending the day or reflecting, and then
+     *             pass value to setEnableBtns
+     */
     public void showAlert(View view, String msg, final Boolean value ){
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        //Display msg
         alert.setMessage(msg)
 
                 .setNegativeButton("Not yet!", new DialogInterface.OnClickListener() {
@@ -42,13 +65,13 @@ public class MainActivity extends AppCompatActivity {
 
                         if(value) {
                             Toast.makeText(MainActivity.this, "Day has ended!", Toast.LENGTH_SHORT).show();
-                            setEnableBtns(value);
-                            reset();
+                            setEnableBtns(value);//activate all buttons, except adjust and endDay
+                            reset();//resets all timers
                         }
                         else{
                             Toast.makeText(MainActivity.this, "Reflect on the day!", Toast.LENGTH_SHORT).show();
-                            setEnableBtns(value);
-                            myTimer.stopAll();
+                            setEnableBtns(value);//Deactivate all buttons, except adjust and endDay
+                            myTimer.stopAll();//stops all myTimers
                         }
                     }
                 })
@@ -58,11 +81,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Reset all myTimers
+     */
     public void reset(){
         orange.reset();red.reset();purple.reset(); blue.reset();grey.reset();cyan.reset(); yellow.reset();pink.reset();
 
     }
 
+    /**
+     * Enable or disable  all buttons, except adjust and endDay
+     * @param val used to enable or disable the buttons
+     */
     public void setEnableBtns(Boolean val){
         ib_o.setEnabled(val);
         ib_p.setEnabled(val);
@@ -77,16 +107,22 @@ public class MainActivity extends AppCompatActivity {
         reflect.setEnabled(val);
     }
 
+    /**
+     * Get results from adjustTimer class and apply that to the proper myTimer
+     * @param requestCode
+     * @param resultCode
+     * @param data get the Intent data from adjustTimer
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case (FINAL_INT) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    result = data.getLongExtra("sub",0);
-                    String cat = data.getStringExtra("cat");
+                    result = data.getLongExtra("sub",0);//get the result from data
+                    String cat = data.getStringExtra("cat");//get the categories from data
                     if(cat.equals("Leisure")){
-                        orange.add(result);
+                        orange.add(result);//add the results
                     }
                     if(cat.equals("Exercise")){
                         red.add(result);
@@ -110,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                         pink.add(result);
                     }
                     ib_g.setEnabled(false);
-                    // TODO Update your TextView.
+
                 }
                 break;
             }
@@ -121,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //set imagebuttons to corresponding imagebuttons on layout
         ib_o = findViewById(R.id.imgBtnOrange);
         ib_r = findViewById(R.id.imgBtnRed);
         ib_g = findViewById(R.id.imgBtnGreen);
@@ -131,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
         ib_y = findViewById(R.id.imgBtnYellow);
         ib_pk =findViewById(R.id.imgBtnPink);
 
+        //set chronometer to corresponding chronometer on layout
         cm_o = findViewById(R.id.chronometerOrange);
         cm_r = findViewById(R.id.chronometerRed);
         cm_p = findViewById(R.id.chronometerPurple);
@@ -141,10 +179,12 @@ public class MainActivity extends AppCompatActivity {
         cm_y = findViewById(R.id.chronometerYellow);
         cm_pk = findViewById(R.id.chronometerPink);
 
+        //set buttons to corresponding buttons on layout
         endDay = findViewById(R.id.btnEndDay);
         reflect = findViewById(R.id.btnReset);
         adjust = findViewById(R.id.btnAdjust);
 
+        //set myTimers, which requier a chronometer and a boolean value(true only for wakeUp)
         green = new myTimer(cm_g,true);
         orange = new myTimer(cm_o,false);//lp_o);
         red = new myTimer(cm_r,false);//lp_r);
@@ -158,6 +198,9 @@ public class MainActivity extends AppCompatActivity {
         final Animation animAlpha = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
         final Animation animScale = AnimationUtils.loadAnimation(this, R.anim.anim_scale);
 
+        /**
+         * When clicked start adjustTimer for a result
+         */
         adjust.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,6 +214,9 @@ public class MainActivity extends AppCompatActivity {
         });
        // animScale.setAnimationListener();
 
+        /**
+         * When clicked call showAlert() and pass a message and true
+         */
         endDay.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 v.startAnimation(animScale);
@@ -178,6 +224,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        /**
+         * When clicked call showAlert() and pass a message and false
+         */
         reflect.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,11 +236,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
+        /**
+         * When a imageButton is clicked start the corresponding myTimer and disable ib_g
+         */
         ib_g.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 v.startAnimation(animAlpha);
-                myTimer.wakeUp();
+                myTimer.wakeUp();//start the wakeUp timer
                 ib_g.setEnabled(false);
             }
         });
