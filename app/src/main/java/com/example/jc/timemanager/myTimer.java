@@ -1,7 +1,13 @@
 package com.example.jc.timemanager;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Chronometer;
+import android.widget.Toast;
 
 /**
  * Created by JC on 4/29/2018.
@@ -21,6 +27,8 @@ public class myTimer {
     private long lastPause;
     private static myTimer lastTimer;
     private static Chronometer wakeUp;
+    private long startingPoint= SystemClock.elapsedRealtime();
+  //  private boolean canResume = false;
 
     /**
      * myTimer empty constructor
@@ -30,6 +38,8 @@ public class myTimer {
         lastPause=0;
 
     }
+
+
 
     /**
      * myTimer constructor
@@ -52,6 +62,19 @@ public class myTimer {
         lastPause = l;
     }
 
+    public  myTimer(Chronometer c, long l, long base){
+        timer = c;
+       // timer.setBase(base);
+
+        if(base!= timer.getBase()){
+            Log.d("test","inside");
+            lastTimer=this;
+            timer.setBase(base);
+            timer.start();
+        }
+        lastPause = l;
+    }
+
     /**
      * start the myTimer
      */
@@ -68,6 +91,7 @@ public class myTimer {
             timer.setBase(timer.getBase() + SystemClock.elapsedRealtime() - lastPause);//Yes, set the base to our current time plus Realtime minus the time from last pause
         else
             timer.setBase(SystemClock.elapsedRealtime());//start counting up from 00:00
+
         timer.start();//start timer
         lastTimer = this;//set the last timer to this
 
@@ -126,6 +150,9 @@ public class myTimer {
             wakeUp.setEnabled(false);
 
     }
+    public static Chronometer getWakeUp(){
+        return wakeUp;
+    }
 
     /**
      * reset all timers including wakeUP
@@ -139,6 +166,13 @@ public class myTimer {
         wakeUp.stop();
 
     }
+    public static myTimer getLastTimer(){
+        return lastTimer;
+    }
+    public static void setLastTimer(myTimer t){
+        lastTimer = t;
+    }
+
 
 
     public Chronometer getTimer(){
@@ -152,6 +186,30 @@ public class myTimer {
     }
     public void setLastPause(long l){
         lastPause = l;
+    }
+
+    public  void setDefaults(String key, /*String value,*/ Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+       // editor.putString(key, value);
+        editor.putLong(key,timer.getBase());
+        editor.apply();
+    }
+
+    public void getDefaults(String key, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        timer.setBase(preferences.getLong(key, timer.getBase()));
+        timer.stop();
+
+    }
+    public double getTextValueMilli(){
+        String a[];
+        a = timer.getText().toString().split(":");
+        if(a.length == 2)
+            return  ( (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000));
+        else
+            return ( (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000));
+
     }
 
 }

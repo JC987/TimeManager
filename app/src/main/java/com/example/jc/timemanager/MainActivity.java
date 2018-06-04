@@ -2,11 +2,25 @@ package com.example.jc.timemanager;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Calendar;
+import java.util.Map;
+import java.util.TreeMap;
+
+
+import android.content.SharedPreferences;
+import android.os.Build;
+import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -21,6 +35,9 @@ import android.widget.Toast;
  * and another for adjusting the values for a myTimer
  */
 public class MainActivity extends AppCompatActivity {
+
+
+
     /**
      * Chronometers to pass the id of the chronometers to a myTimer
      */
@@ -34,8 +51,19 @@ public class MainActivity extends AppCompatActivity {
     ImageButton ib_o,ib_r,ib_p,ib_g,ib_b,ib_gr,ib_c,ib_y,ib_pk;
     long result;
     myTimer orange,red,purple,green,blue,grey,cyan,yellow,pink;
-    Button endDay,reflect,adjust;
+    Button endDay,reflect,adjust,stat;
 
+    public static void setDefaults(String key, String value, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    public static String getDefaults(String key, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(key, null);
+    }
     /**
      * -Display a dialog box that ask the users if they want to end the day
      * or ask the user if they want to reflect on the day.
@@ -65,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
                         if(value) {
                             Toast.makeText(MainActivity.this, "Day has ended!", Toast.LENGTH_SHORT).show();
+                           // saveData();
                             setEnableBtns(value);//activate all buttons, except adjust and endDay
                             reset();//resets all timers
                         }
@@ -153,10 +182,65 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void calc(){
+
+        final SharedPreferences pref = this.getSharedPreferences("MyPref", 0); // 0 - for private mode
+         final SharedPreferences.Editor editor = pref.edit();
+
+        double o,r,p,b,gr,c,y,pk,sum;
+        float to,tr,tp,tb,tgr,tc,ty,tpk;
+        o = orange.getTextValueMilli();
+        r = red.getTextValueMilli();
+        p = purple.getTextValueMilli();
+        b = blue.getTextValueMilli();
+        gr = grey.getTextValueMilli();
+        c = cyan.getTextValueMilli();
+        y = yellow.getTextValueMilli();
+        pk = pink.getTextValueMilli();
+        sum = o+r+p+b+gr+c+y+pk;
+
+        int day = pref.getInt("Day",0);
+        if (day>7)
+            day = 7;
+            String str="";
+        to = (float) o;//(Math.round((o / sum) * 10000d) / 100d);
+            //total = (float) d;
+        tr = (float) r;//(Math.round((r / sum) * 10000d) / 100d);
+        tp = (float) p;//(Math.round((p / sum) * 10000d) / 100d);
+        tb = (float) b;//(Math.round((b / sum) * 10000d) / 100d);
+        tgr = (float) gr;//(Math.round((gr / sum) * 10000d) / 100d);
+        tc = (float) c;//(Math.round((c / sum) * 10000d) / 100d);
+        ty = (float) y;//(Math.round((y / sum) * 10000d) / 100d);
+        tpk = (float) pk;//(Math.round((pk / sum) * 10000d) / 100d);
+
+
+        str = to + ","+tr + ","+tp + ","+tb + ","+tgr + ","+tc + ","+ty + ","+tpk + ","+sum;
+
+            Toast.makeText(MainActivity.this, str + "", Toast.LENGTH_SHORT).show();
+            //editor.clear();
+            //  editor.putFloat("orange",total);
+            editor.putInt("Day", (day + 1));
+            Log.i("map","Day is "+day);
+            Date currentDate = Calendar.getInstance().getTime();
+
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+            String currentDateandTime = sdf.format(new Date());
+        if(day>=7) {
+
+            TreeMap<String, ?> keys = new TreeMap<String, Object>(pref.getAll());
+            String firstEntry = keys.firstKey();
+            editor.remove(firstEntry);
+        }
+        editor.putString(currentDateandTime, str);
+        editor.apply();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toast.makeText(this,"Creating!",Toast.LENGTH_LONG).show();
         //set imagebuttons to corresponding imagebuttons on layout
         ib_o = findViewById(R.id.imgBtnOrange);
         ib_r = findViewById(R.id.imgBtnRed);
@@ -183,13 +267,26 @@ public class MainActivity extends AppCompatActivity {
         endDay = findViewById(R.id.btnEndDay);
         reflect = findViewById(R.id.btnReset);
         adjust = findViewById(R.id.btnAdjust);
+        stat = findViewById(R.id.btnStat);
+
+        final SharedPreferences pref = this.getSharedPreferences("MyPref", 0); // 0 - for private mode
+        // final SharedPreferences.Editor editor = pref.edit();
+
 
         //set myTimers, which requier a chronometer and a boolean value(true only for wakeUp)
+        long tmp = pref.getLong("endTime",0);
         green = new myTimer(cm_g,true);
-        orange = new myTimer(cm_o,false);//lp_o);
-        red = new myTimer(cm_r,false);//lp_r);
-        purple = new myTimer(cm_p,false);//lp_p);
-        blue = new myTimer(cm_b,false);//lp_b);
+        orange = new myTimer(cm_o,false);//0,//pref.getLong("l",cm_o.getBase()));//orange = new myTimer(cm_o,false);//lp_o);
+        red = new myTimer(cm_r,false);//0,pref.getLong("r",cm_r.getBase())-(tmp-SystemClock.elapsedRealtime()));//lp_r);
+        purple = new myTimer(cm_p,false);//0,pref.getLong("p",cm_p.getBase())-(tmp-SystemClock.elapsedRealtime()));//lp_p);
+        purple.getTimer().stop();
+        red.getTimer().stop();
+        /*if(pref.getLong("lastTimer",0) == red.getTimer().getBase())
+            myTimer.setLastTimer(red);
+        if(pref.getLong("lastTimer",0) == purple.getTimer().getBase())
+            myTimer.setLastTimer(purple);
+        */
+        blue = new myTimer(cm_b,false);//0,pref.getLong("b",cm_b.getBase()));//lp_b);
         grey = new myTimer(cm_gr,false);//lp_gr);
         cyan = new myTimer(cm_c,false);//lp_c);
         yellow = new myTimer(cm_y,false);//0);
@@ -197,6 +294,11 @@ public class MainActivity extends AppCompatActivity {
 
         final Animation animAlpha = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
         final Animation animScale = AnimationUtils.loadAnimation(this, R.anim.anim_scale);
+       // setDefaults("name","Baseball",this);
+
+
+
+
 
         /**
          * When clicked start adjustTimer for a result
@@ -212,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-       // animScale.setAnimationListener();
+
 
         /**
          * When clicked call showAlert() and pass a message and true
@@ -220,6 +322,9 @@ public class MainActivity extends AppCompatActivity {
         endDay.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 v.startAnimation(animScale);
+                calc();
+
+             //   editor.putFloat("name", 50.0f);
                 showAlert(v,"Do you want to end the day",true);
 
             }
@@ -230,8 +335,21 @@ public class MainActivity extends AppCompatActivity {
         reflect.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final SharedPreferences.Editor editor = pref.edit();
                 v.startAnimation(animScale);
+                editor.clear();
+                editor.commit();
                 showAlert(v,"Do you want to reflect on the day",false);
+
+            }
+        }));
+        stat.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent i = new Intent(MainActivity.this,statsMain.class);
+                startActivity(i);
 
             }
         }));
@@ -306,4 +424,104 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onResume(){
+      //  Toast.makeText(this,"Resuming!!",Toast.LENGTH_LONG).show();
+
+        super.onResume();
+    }
+    @Override
+    public void onStart(){
+       // Toast.makeText(this,"Starting!",Toast.LENGTH_LONG).show();
+        super.onStart();
+
+    }
+    @Override
+    public void onStop(){
+      //  Toast.makeText(this,"Stopping!",Toast.LENGTH_LONG).show();
+
+        super.onStop();
+    }
+    @Override
+    public void onPause(){
+      //  Toast.makeText(this,"Pauseing!",Toast.LENGTH_LONG).show();
+
+        super.onPause();
+    }
+    @Override
+    public void onDestroy(){
+      //  Toast.makeText(this,"Destroying!",Toast.LENGTH_LONG).show();
+        super.onDestroy();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this,"Min!",Toast.LENGTH_LONG).show();
+        moveTaskToBack(true);
+        //orange.setDefaults("orange",this);
+       // finish();
+
+    }
+
+
+    @Override
+    public void finish(){
+        SharedPreferences pref = this.getSharedPreferences("MyPref", 0); // 0 - for private mode
+        final SharedPreferences.Editor editor = pref.edit();
+        String [] z = myTimer.getWakeUp().getText().toString().split(":");
+
+       // if(Integer.parseInt(z[1])>0) {
+       /*if(orange.getLastPause()!=0)
+            editor.putLong("l", orange.getTimer().getBase());
+        if(red.getLastPause()!=0)
+            editor.putLong("r", red.getTimer().getBase());
+        if(purple.getLastPause()!=0)
+            editor.putLong("p", purple.getTimer().getBase());
+        if(blue.getLastPause()!=0)
+            editor.putLong("b",blue.getTimer().getBase());*/
+        if(myTimer.getLastTimer()==orange){
+            editor.putLong("l",orange.getTimer().getBase());
+            editor.putLong("p",purple.getTimer().getBase()+SystemClock.elapsedRealtime()-purple.getLastPause());
+
+            editor.putLong("r",red.getTimer().getBase()+SystemClock.elapsedRealtime()-red.getLastPause());
+            editor.putLong("endTime",SystemClock.elapsedRealtime());
+            editor.putLong("lastTimer",myTimer.getLastTimer().getTimer().getBase());
+            editor.putBoolean("bool",true);
+        }
+        //}
+
+
+        editor.remove("name");
+        editor.putString("name","explostion");
+
+
+        editor.apply();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            super.finishAndRemoveTask();
+        }
+        else {
+            super.finish();
+        }
+    }
+
+
+    /*@Override
+    public void onStop(){
+        SharedPreferences pref = this.getSharedPreferences("MyPref", 0); // 0 - for private mode
+        final SharedPreferences.Editor editor = pref.edit();
+        editor.putLong("l",orange.getTimer().getBase());
+        editor.putLong("r",red.getTimer().getBase());
+        editor.putLong("p",purple.getTimer().getBase());
+        editor.putLong("b",blue.getTimer().getBase());
+        editor.remove("name");
+        editor.putString("name","Bam");
+        editor.putLong("gr",grey.getTimer().getBase());
+        editor.putLong("c",cyan.getTimer().getBase());
+        editor.putLong("y",yellow.getTimer().getBase());
+        editor.putLong("p",pink.getTimer().getBase());
+        editor.apply();
+        super.onStop();
+    }*/
+
 }

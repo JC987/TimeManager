@@ -10,59 +10,58 @@
 
     <Button
         android:id="@+id/btnEndDay"
-        android:layout_width="100dp"
+        android:layout_width="72dp"
         android:layout_height="wrap_content"
         android:background="@drawable/roundbtrn"
         android:text="End Day!"
 
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintHorizontal_bias="0.02"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.968" />
+        app:layout_constraintVertical_bias="0.030" />
 
     <Button
         android:id="@+id/btnAdjust"
-        android:layout_width="98dp"
+        android:layout_width="72dp"
         android:layout_height="wrap_content"
         android:background="@drawable/roundbtrn"
-        android:text="+ / -"
-        android:textSize="12pt"
+        android:text="Adjust"
+
 
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.63"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.968"
-        />
+        app:layout_constraintVertical_bias="0.03" />
 
     <Button
         android:id="@+id/btnReset"
-        android:layout_width="100dp"
+        android:layout_width="72dp"
         android:layout_height="60dp"
         android:background="@drawable/roundbtrn"
-        android:text="Reflection"
+        android:text="Reflect"
         android:textColor="#ff00ff"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.992"
+        app:layout_constraintHorizontal_bias="0.98"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.968" />
+        app:layout_constraintVertical_bias="0.03" />
 
     <ImageButton
         android:id="@+id/imgBtnGreen"
         android:layout_width="112dp"
         android:layout_height="112dp"
+        android:background="@drawable/greenbtn"
         android:contentDescription="Start your day"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/greenbtn"
-        app:layout_constraintVertical_bias="0.41"
-        />
+        app:layout_constraintVertical_bias="0.5" />
 
 
     <TextView
@@ -104,10 +103,10 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.01"
+        app:layout_constraintVertical_bias="0.2"
 
 
-         />
+        />
 
     <TextView
         android:id="@+id/txtViewOrange"
@@ -142,12 +141,12 @@
         android:id="@+id/imgBtnRed"
         android:layout_width="112dp"
         android:layout_height="112dp"
+        android:background="@drawable/redbtn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.01"
-        android:background="@drawable/redbtn" />
+        app:layout_constraintVertical_bias="0.2" />
 
     <TextView
         android:id="@+id/txtViewRed"
@@ -182,13 +181,13 @@
         android:id="@+id/imgBtnPurple"
         android:layout_width="112dp"
         android:layout_height="112dp"
+        android:background="@drawable/purplebtn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.99"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.01"
-        android:background="@drawable/purplebtn" />
+        app:layout_constraintVertical_bias="0.2" />
 
     <TextView
         android:id="@+id/txtViewPurple"
@@ -224,14 +223,13 @@
         android:id="@+id/imgBtnBlue"
         android:layout_width="112dp"
         android:layout_height="112dp"
+        android:background="@drawable/bluebtn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/bluebtn"
-        app:layout_constraintVertical_bias="0.41"
-        />
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
         android:id="@+id/txtViewBlue"
@@ -272,7 +270,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.81"
+        app:layout_constraintVertical_bias="0.8"
         android:background="@drawable/cyanbtn"
 
         />
@@ -314,7 +312,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.81"
+        app:layout_constraintVertical_bias="0.8"
         android:background="@drawable/yellowbtn" />
 
     <TextView
@@ -356,7 +354,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.81" />
+            app:layout_constraintVertical_bias="0.8" />
 
         <TextView
             android:id="@+id/txtViewPink"
@@ -389,20 +387,19 @@
             app:layout_constraintTop_toTopOf="@id/imgBtnPink"
             app:layout_constraintVertical_bias="0.6" />
 
-        <ImageButton
-            android:id="@+id/imgBtnGrey"
-            android:layout_width="112dp"
-            android:layout_height="112dp"
+    <ImageButton
+        android:id="@+id/imgBtnGrey"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
 
-            android:background="@drawable/greybtn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.99"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/greybtn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.99"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
 
-            app:layout_constraintVertical_bias="0.41"
-            />
+        app:layout_constraintVertical_bias="0.5" />
 
         <EditText
             android:id="@+id/txtViewGrey"
@@ -475,6 +472,20 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.0" />
+
+    <Button
+        android:id="@+id/btnStat"
+        android:layout_width="72dp"
+        android:layout_height="60dp"
+
+        android:background="@drawable/roundbtrn"
+        android:text="Stat"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.33"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.03" />
 
 
 </android.support.constraint.ConstraintLayout>

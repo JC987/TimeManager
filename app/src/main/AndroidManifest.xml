@@ -26,7 +26,9 @@
             android:name=".ScrollingActivity"
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".testActivity"></activity>
+        <activity android:name=".testActivity" />
+        <activity android:name=".statsMain"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
