@@ -27,8 +27,14 @@
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".testActivity" />
-        <activity android:name=".statsMain"
+        <activity
+            android:name=".statsMain"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".statsTabbed"
+            android:label="@string/title_activity_stats_tabbed"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".singleDay"></activity>
     </application>
 
 </manifest>

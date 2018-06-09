@@ -14,20 +14,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class statsMain extends AppCompatActivity {
-    /*SharedPreferences pref = this.getSharedPreferences("MyPref", 0); // 0 - for private mode
-    SharedPreferences.Editor editor = pref.edit();
-
-    public static void setDefaults(String key, String value, Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(key, value);
-        editor.apply();
-    }
-
-    public static String getDefaults(String key, Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(key, null);
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
