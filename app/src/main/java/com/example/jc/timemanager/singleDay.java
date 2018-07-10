@@ -16,6 +16,8 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class singleDay extends AppCompatActivity {
@@ -65,7 +67,9 @@ public class singleDay extends AppCompatActivity {
 
         pie = (PieChart) findViewById(R.id.pie);
         Description d = new Description();
-        String desc  = "Total Time (hh:mm:ss) " + hr+":"+ min +":"+sec+" for "+getIntent().getStringExtra("day").substring(0,10);
+        NumberFormat numberFormat = new DecimalFormat("00");
+        
+        String desc  = "Total Time (hh:mm:ss) " + numberFormat.format(hr)+":"+ numberFormat.format(min) +":"+numberFormat.format(sec)+" for "+getIntent().getStringExtra("day").substring(0,10);
         d.setText(desc);
         d.setTextSize(16f);
         pie.setDescription(d);

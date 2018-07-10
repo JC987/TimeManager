@@ -80,7 +80,7 @@ public class myTimer {
      */
     public void start(){
         if(wakeUp.isEnabled()) {//if wakeUp has not been started call wakeUp()
-            wakeUp();
+            wakeUp(SystemClock.elapsedRealtime());
 
         }
         if(lastTimer!=null) {//if we have started another timer
@@ -111,16 +111,22 @@ public class myTimer {
     else if(lastPause == 0) {//if we have never started the timer we are adjusting
         timer.setBase(SystemClock.elapsedRealtime()+ l);//add the result and count up from realtime
         lastPause = SystemClock.elapsedRealtime();//set the last time we paused
+        if(lastTimer == null) {
+            timer.start();
+            lastTimer = this;
+        }
     }
     else{//We have started this timer before and it is not running
         timer.setBase(timer.getBase()+SystemClock.elapsedRealtime()-lastPause + l);
         lastPause = SystemClock.elapsedRealtime();
     }
-    if(lastTimer!=null)//if we have activated wakeUp before
-        wakeUp.setBase(wakeUp.getBase()+l);// add the result to wakeUp
+    if(wakeUp.isEnabled()) {//if we have activated wakeUp before
+        wakeUp(SystemClock.elapsedRealtime() + l);// add the result to wakeUp
+
+    }
     else {
-        wakeUp();//start wakeUp
-        wakeUp.setBase(wakeUp.getBase() + l);//add the result
+      //  wakeUp();//start wakeUp
+        wakeUp(wakeUp.getBase() + l);//add the result
     }
 
     }
@@ -143,9 +149,9 @@ public class myTimer {
     /**
      * start wakeUp timer and then disable it
      */
-    public static void wakeUp(){
+    public static void wakeUp(long l){
 
-            wakeUp.setBase(SystemClock.elapsedRealtime());
+            wakeUp.setBase(l);
             wakeUp.start();
             wakeUp.setEnabled(false);
 

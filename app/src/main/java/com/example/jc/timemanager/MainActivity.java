@@ -27,6 +27,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 /**
  * MainActivity
@@ -160,29 +161,128 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == Activity.RESULT_OK) {
                     result = data.getLongExtra("sub", 0);//get the result from data
                     String cat = data.getStringExtra("cat");//get the categories from data
-                    if (cat.equals("Leisure")) {
+                    if (cat.equals("Leisure") ) {
+                        String a [] = orange.getTimer().getText().toString().split(":");
+                        int x;
+                        if(a.length==3)
+                            x = (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000);
+
+                        else
+                            x = (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000);
+                        //Toast.makeText(MainActivity.this,"x is " + x + "\n" + "t is "+orange.getTimer().getBase() + "\n" + "r is "+result,Toast.LENGTH_LONG).show();
+
+                        if(x-result>0)
                         orange.add(result);//add the results
+                        else
+                            Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
                     }
-                    if (cat.equals("Exercise")) {
+                    else if (cat.equals("Exercise") ) {
+                        String a [] = red.getTimer().getText().toString().split(":");
+                        int x;
+                        if(a.length==3)
+                            x = (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000);
+
+                        else
+                            x = (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000);
+                        //Toast.makeText(MainActivity.this,"x is " + x + "\n" + "t is "+orange.getTimer().getBase() + "\n" + "r is "+result,Toast.LENGTH_LONG).show();
+
+                        if(x-result>0)
                         red.add(result);
+                        else
+                            Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
                     }
-                    if (cat.equals("Education")) {
+                    else if (cat.equals("Education")) {
+                        String a [] = purple.getTimer().getText().toString().split(":");
+                        int x;
+                        if(a.length==3)
+                            x = (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000);
+
+                        else
+                            x = (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000);
+                        //Toast.makeText(MainActivity.this,"x is " + x + "\n" + "t is "+orange.getTimer().getBase() + "\n" + "r is "+result,Toast.LENGTH_LONG).show();
+
+                        if(x-result>0)
                         purple.add(result);
+                        else
+                            Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
                     }
-                    if (cat.equals("Work")) {
+                    else if (cat.equals("Work")) {
+                        String a [] = blue.getTimer().getText().toString().split(":");
+                        int x;
+                        if(a.length==3)
+                            x = (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000);
+
+                        else
+                            x = (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000);
+                        //Toast.makeText(MainActivity.this,"x is " + x + "\n" + "t is "+orange.getTimer().getBase() + "\n" + "r is "+result,Toast.LENGTH_LONG).show();
+
+                        if(x-result>0)
                         blue.add(result);
+                        else
+                            Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
                     }
-                    if (cat.equals("Other")) {
+                    else if (cat.equals("Other") ) {
+                        String a [] = grey.getTimer().getText().toString().split(":");
+                        int x;
+                        if(a.length==3)
+                            x = (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000);
+
+                        else
+                            x = (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000);
+                        //Toast.makeText(MainActivity.this,"x is " + x + "\n" + "t is "+orange.getTimer().getBase() + "\n" + "r is "+result,Toast.LENGTH_LONG).show();
+
+                        if(x-result>0)
                         grey.add(result);
+                        else
+                            Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
                     }
-                    if (cat.equals("Preparation")) {
+                    else if (cat.equals("Preparation")) {
+                        String a [] = cyan.getTimer().getText().toString().split(":");
+                        int x;
+                        if(a.length==3)
+                            x = (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000);
+
+                        else
+                            x = (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000);
+                        //Toast.makeText(MainActivity.this,"x is " + x + "\n" + "t is "+orange.getTimer().getBase() + "\n" + "r is "+result,Toast.LENGTH_LONG).show();
+
+                        if(x-result>0)
                         cyan.add(result);
+                        else
+                            Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
                     }
-                    if (cat.equals("Traveling")) {
+                    else if (cat.equals("Traveling") ) {
+                        String a [] = yellow.getTimer().getText().toString().split(":");
+                        int x;
+                        if(a.length==3)
+                            x = (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000);
+
+                        else
+                            x = (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000);
+                        //Toast.makeText(MainActivity.this,"x is " + x + "\n" + "t is "+orange.getTimer().getBase() + "\n" + "r is "+result,Toast.LENGTH_LONG).show();
+
+                        if(x-result>0)
                         yellow.add(result);
+                        else
+                            Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
                     }
-                    if (cat.equals("Nap")) {
+                    else if (cat.equals("Nap") ) {
+                        String a [] = pink.getTimer().getText().toString().split(":");
+                        int x;
+                        if(a.length==3)
+                            x = (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000);
+
+                        else
+                            x = (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000);
+                        //Toast.makeText(MainActivity.this,"x is " + x + "\n" + "t is "+orange.getTimer().getBase() + "\n" + "r is "+result,Toast.LENGTH_LONG).show();
+
+                        if(x-result>0)
                         pink.add(result);
+                        else
+                            Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
                     }
                     ib_g.setEnabled(false);
 
@@ -220,8 +320,8 @@ public class MainActivity extends AppCompatActivity {
         //day is a counter for my current day which can not be more than 7
         //this counter is not necessary and will probably be removed
         int day = pref.getInt("Day",0);
-        if (day>7)
-            day = 7;
+        if (day>30)
+            day = 30;
 
         //str is going to hold our value
         String str= o + ","+r + ","+p + ","+b + ","+gr + ","+c + ","+y + ","+pk + ","+sum;
@@ -236,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
         //currentDateandTime is going to hold our key
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String currentDateAndTime = sdf.format(new Date());
-        if(day>=7) {
+        if(day>=30) {
             //Since 7 is our maximum amount of days we remove the first day we put in
             TreeMap<String, ?> keys = new TreeMap<String, Object>(pref.getAll());
             String firstEntry = keys.firstKey();
@@ -282,6 +382,8 @@ public class MainActivity extends AppCompatActivity {
         adjust = findViewById(R.id.btnAdjust);
         stat = findViewById(R.id.btnStat);
 
+        TextView textView = findViewById(R.id.textView);
+        textView.append("  "+endDay.getTextSize());
         final SharedPreferences pref = this.getSharedPreferences("MyPref", 0); // 0 - for private mode
         // final SharedPreferences.Editor editor = pref.edit();
 
@@ -304,7 +406,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+        Button testButton = findViewById(R.id.testButton);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,testActivity.class);
+                startActivity(intent);
+            }
+        });
 
         /**
          * When clicked start adjustTimer for a result
@@ -363,8 +472,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 v.startAnimation(animAlpha);
-                myTimer.wakeUp();//start the wakeUp timer
+                myTimer.wakeUp(SystemClock.elapsedRealtime());//start the wakeUp timer
                 ib_g.setEnabled(false);
+               // Toast.makeText(MainActivity.this,"Start another timer to start wake up",Toast.LENGTH_SHORT).show();
             }
         });
         ib_o.setOnClickListener(new View.OnClickListener() {

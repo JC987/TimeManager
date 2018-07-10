@@ -2,10 +2,11 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF "
     android:orientation="vertical"
-    android:id="@+id/cl"
     tools:context="com.example.jc.timemanager.MainActivity">
 
     <Button
@@ -14,7 +15,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/roundbtrn"
         android:text="End Day!"
-
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.02"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -24,14 +25,14 @@
 
     <Button
         android:id="@+id/btnAdjust"
-        android:layout_width="72dp"
+        android:layout_width="73dp"
         android:layout_height="wrap_content"
+
         android:background="@drawable/roundbtrn"
         android:text="Adjust"
-
-
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.63"
+        app:layout_constraintHorizontal_bias="0.65"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -43,7 +44,8 @@
         android:layout_height="60dp"
         android:background="@drawable/roundbtrn"
         android:text="Reflect"
-        android:textColor="#ff00ff"
+        android:textColor="#e75480"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.98"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -55,8 +57,9 @@
         android:id="@+id/imgBtnGreen"
         android:layout_width="112dp"
         android:layout_height="112dp"
-        android:background="@drawable/greenbtn"
+        android:background="@drawable/green_btn"
         android:contentDescription="Start your day"
+        android:rotation="45"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -77,7 +80,7 @@
         app:layout_constraintLeft_toLeftOf="@id/imgBtnGreen"
         app:layout_constraintRight_toRightOf="@id/imgBtnGreen"
         app:layout_constraintTop_toTopOf="@id/imgBtnGreen"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <Chronometer
         android:id="@+id/chronometerGreen"
@@ -97,7 +100,8 @@
         android:id="@+id/imgBtnOrange"
         android:layout_width="112dp"
         android:layout_height="112dp"
-        android:background="@drawable/orangebtn"
+        android:background="@drawable/orange_btn"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -121,7 +125,7 @@
         app:layout_constraintLeft_toLeftOf="@id/imgBtnOrange"
         app:layout_constraintRight_toRightOf="@id/imgBtnOrange"
         app:layout_constraintTop_toTopOf="@id/imgBtnOrange"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <Chronometer
         android:id="@+id/chronometerOrange"
@@ -141,7 +145,7 @@
         android:id="@+id/imgBtnRed"
         android:layout_width="112dp"
         android:layout_height="112dp"
-        android:background="@drawable/redbtn"
+        android:background="@drawable/red_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -161,7 +165,7 @@
         app:layout_constraintLeft_toLeftOf="@id/imgBtnRed"
         app:layout_constraintRight_toRightOf="@id/imgBtnRed"
         app:layout_constraintTop_toTopOf="@id/imgBtnRed"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <Chronometer
         android:id="@+id/chronometerRed"
@@ -181,7 +185,7 @@
         android:id="@+id/imgBtnPurple"
         android:layout_width="112dp"
         android:layout_height="112dp"
-        android:background="@drawable/purplebtn"
+        android:background="@drawable/purple_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.99"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -202,7 +206,7 @@
         app:layout_constraintLeft_toLeftOf="@id/imgBtnPurple"
         app:layout_constraintRight_toRightOf="@id/imgBtnPurple"
         app:layout_constraintTop_toTopOf="@id/imgBtnPurple"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <Chronometer
         android:id="@+id/chronometerPurple"
@@ -223,7 +227,7 @@
         android:id="@+id/imgBtnBlue"
         android:layout_width="112dp"
         android:layout_height="112dp"
-        android:background="@drawable/bluebtn"
+        android:background="@drawable/blue_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -244,7 +248,7 @@
         app:layout_constraintLeft_toLeftOf="@id/imgBtnBlue"
         app:layout_constraintRight_toRightOf="@id/imgBtnBlue"
         app:layout_constraintTop_toTopOf="@id/imgBtnBlue"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <Chronometer
         android:id="@+id/chronometerBlue"
@@ -265,13 +269,13 @@
         android:id="@+id/imgBtnCyan"
         android:layout_width="112dp"
         android:layout_height="112dp"
+        android:background="@drawable/cyan_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.8"
-        android:background="@drawable/cyanbtn"
 
         />
 
@@ -279,7 +283,7 @@
         android:id="@+id/txtViewCyan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Preperation"
+        android:text="Preparing"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="16sp"
@@ -288,7 +292,7 @@
         app:layout_constraintLeft_toLeftOf="@id/imgBtnCyan"
         app:layout_constraintRight_toRightOf="@id/imgBtnCyan"
         app:layout_constraintTop_toTopOf="@id/imgBtnCyan"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <Chronometer
         android:id="@+id/chronometerCyan"
@@ -308,12 +312,12 @@
         android:id="@+id/imgBtnYellow"
         android:layout_width="112dp"
         android:layout_height="112dp"
+        android:background="@drawable/yellow_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8"
-        android:background="@drawable/yellowbtn" />
+        app:layout_constraintVertical_bias="0.8" />
 
     <TextView
         android:id="@+id/txtViewYellow"
@@ -328,7 +332,7 @@
         app:layout_constraintLeft_toLeftOf="@id/imgBtnYellow"
         app:layout_constraintRight_toRightOf="@id/imgBtnYellow"
         app:layout_constraintTop_toTopOf="@id/imgBtnYellow"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <Chronometer
         android:id="@+id/chronometerYellow"
@@ -344,55 +348,55 @@
         app:layout_constraintTop_toTopOf="@id/imgBtnYellow"
         app:layout_constraintVertical_bias="0.6" />
 
-        <ImageButton
-            android:id="@+id/imgBtnPink"
-            android:layout_width="112dp"
-            android:layout_height="112dp"
-            android:background="@drawable/pinkhalfcicrle"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.99"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.8" />
+    <ImageButton
+        android:id="@+id/imgBtnPink"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
+        android:background="@drawable/pink_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.99"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8" />
 
-        <TextView
-            android:id="@+id/txtViewPink"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:text="Nap"
+    <TextView
+        android:id="@+id/txtViewPink"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="Nap"
 
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/imgBtnPink"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintLeft_toLeftOf="@id/imgBtnPink"
-            app:layout_constraintRight_toRightOf="@id/imgBtnPink"
-            app:layout_constraintTop_toTopOf="@id/imgBtnPink"
-            app:layout_constraintVertical_bias="0.2" />
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/imgBtnPink"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@id/imgBtnPink"
+        app:layout_constraintRight_toRightOf="@id/imgBtnPink"
+        app:layout_constraintTop_toTopOf="@id/imgBtnPink"
+        app:layout_constraintVertical_bias="0.3" />
 
-        <Chronometer
-            android:id="@+id/chronometerPink"
-            android:layout_width="105dp"
-            android:layout_height="20dp"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/imgBtnPink"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintLeft_toLeftOf="@id/imgBtnPink"
-            app:layout_constraintRight_toRightOf="@id/imgBtnPink"
-            app:layout_constraintTop_toTopOf="@id/imgBtnPink"
-            app:layout_constraintVertical_bias="0.6" />
+    <Chronometer
+        android:id="@+id/chronometerPink"
+        android:layout_width="105dp"
+        android:layout_height="20dp"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/imgBtnPink"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@id/imgBtnPink"
+        app:layout_constraintRight_toRightOf="@id/imgBtnPink"
+        app:layout_constraintTop_toTopOf="@id/imgBtnPink"
+        app:layout_constraintVertical_bias="0.6" />
 
     <ImageButton
         android:id="@+id/imgBtnGrey"
         android:layout_width="112dp"
         android:layout_height="112dp"
 
-        android:background="@drawable/greybtn"
+        android:background="@drawable/gray_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.99"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -401,87 +405,87 @@
 
         app:layout_constraintVertical_bias="0.5" />
 
-        <EditText
-            android:id="@+id/txtViewGrey"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Other"
-            android:background="@null"
-            android:cursorVisible="false"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/imgBtnGrey"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintLeft_toLeftOf="@id/imgBtnGrey"
-            app:layout_constraintRight_toRightOf="@id/imgBtnGrey"
-            app:layout_constraintTop_toTopOf="@id/imgBtnGrey"
-            app:layout_constraintVertical_bias="0.2" />
+    <TextView
+        android:id="@+id/txtViewGrey"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
 
-        <Chronometer
-            android:id="@+id/chronometerGrey"
-            android:layout_width="105dp"
-            android:layout_height="20dp"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/imgBtnGrey"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintLeft_toLeftOf="@id/imgBtnGrey"
-            app:layout_constraintRight_toRightOf="@id/imgBtnGrey"
-            app:layout_constraintTop_toTopOf="@id/imgBtnGrey"
-            app:layout_constraintVertical_bias="0.6" />
+        android:ems="10"
+
+        android:text="Other"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/imgBtnGrey"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@id/imgBtnGrey"
+        app:layout_constraintRight_toRightOf="@id/imgBtnGrey"
+        app:layout_constraintTop_toTopOf="@id/imgBtnGrey"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <Chronometer
+        android:id="@+id/chronometerGrey"
+        android:layout_width="105dp"
+        android:layout_height="20dp"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/imgBtnGrey"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@id/imgBtnGrey"
+        app:layout_constraintRight_toRightOf="@id/imgBtnGrey"
+        app:layout_constraintTop_toTopOf="@id/imgBtnGrey"
+        app:layout_constraintVertical_bias="0.6" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="17dp"
-        android:layout_marginBottom="244dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="248dp"
         android:layout_marginLeft="16dp"
-        android:text="TextView"
+        android:text="Normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="20dp" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="0dp" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="0dp" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="-42dp" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="-42dp" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.0" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.0" />
 
     <Button
         android:id="@+id/btnStat"
         android:layout_width="72dp"
         android:layout_height="60dp"
-
         android:background="@drawable/roundbtrn"
         android:text="Stat"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.33"
+        app:layout_constraintHorizontal_bias="0.35"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"

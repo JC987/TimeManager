@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 /**
@@ -48,7 +50,7 @@ public class statsTab1 extends Fragment {
         TreeMap<String, ?> keys = new TreeMap<String, Object>(pref.getAll());
         //if the user has saved before
         if (!keys.isEmpty()) {
-            String[] arr = new String[8];//array is 8 instead of 7 because I am saving "Day"
+            String[] arr = new String[31];//array is 8 instead of 7 because I am saving "Day"
             int ct = 0;
             for (Map.Entry<String, ?> entry : keys.entrySet()) {
                 Log.i("map", entry.getKey());
@@ -98,7 +100,8 @@ public class statsTab1 extends Fragment {
 
             //hh:mm:ss
             Log.d("map", "getValues: " + pref.getInt("Day",0));
-           description = "Total Time (hh:mm:ss) " + hr+":"+ min +":"+sec+" over the past "+(pref.getInt("Day",0))+ " days!";
+            NumberFormat numberFormat = new DecimalFormat("00");
+           description = "Total Time (hh:mm:ss) " + numberFormat.format(hr)+":"+ numberFormat.format(min) +":"+numberFormat.format(sec)+" over the past "+(pref.getInt("Day",0))+ " days!";
         }
     }
 
