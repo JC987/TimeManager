@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -113,4 +114,11 @@ public class adjustTimers extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent resultIntent = new Intent();
+        setResult(Activity.RESULT_CANCELED,resultIntent);
+        Log.d("adjustTimers", "onBackPressed: ");
+        super.onBackPressed();
+    }
 }

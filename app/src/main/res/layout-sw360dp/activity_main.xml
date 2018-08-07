@@ -284,7 +284,7 @@
         android:id="@+id/txtViewCyan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Preparing"
+        android:text="Preparation"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="@dimen/text_size"
@@ -366,7 +366,7 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="Nap"
+        android:text="Relaxing"
 
         android:textAlignment="center"
         android:textColor="#000000"
@@ -437,7 +437,7 @@
         app:layout_constraintRight_toRightOf="@id/imgBtnGrey"
         app:layout_constraintTop_toTopOf="@id/imgBtnGrey"
         app:layout_constraintVertical_bias="0.6" />
-
+<!--
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -449,7 +449,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
-
+-->
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
@@ -491,17 +491,17 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.03" />
-
+<!--
     <Button
         android:id="@+id/testButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="goto test"
-        android:visibility="gone"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
-
+-->
 
 </android.support.constraint.ConstraintLayout>

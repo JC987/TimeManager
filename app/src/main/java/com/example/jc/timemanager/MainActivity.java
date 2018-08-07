@@ -3,6 +3,9 @@ package com.example.jc.timemanager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,22 +14,29 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
 import java.util.Map;
+import java.util.Timer;
 import java.util.TreeMap;
 
 
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
+import android.widget.RemoteViews;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 /**
@@ -52,7 +62,13 @@ public class MainActivity extends AppCompatActivity {
     long result;
     myTimer orange, red, purple, green, blue, grey, cyan, yellow, pink;
     Button endDay, reflect, adjust, stat;
+    Boolean comingFromActivity = false;
+    String cat="";
+    ScrollView mScrollView;
+    Button curr;
+    Chronometer curr_c;
 
+    //following methods are not currently in use
     public static void setDefaults(String key, String value, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
@@ -93,16 +109,27 @@ public class MainActivity extends AppCompatActivity {
 
                         dialogInterface.dismiss();
 
-                        if (value) {
-                            Toast.makeText(MainActivity.this, "Day has ended!", Toast.LENGTH_SHORT).show();
-                            // saveData();
-                            save();
-                            setEnableBtns(value);//activate all buttons, except adjust and endDay
-                            reset();//resets all timers
-                        } else {
-                            Toast.makeText(MainActivity.this, "Reflect on the day!", Toast.LENGTH_SHORT).show();
-                            setEnableBtns(value);//Deactivate all buttons, except adjust and endDay
-                            myTimer.stopAll();//stops all myTimers
+                        if (value) { //Ending day
+                            Toast.makeText(MainActivity.this,
+                                    "Day has ended!", Toast.LENGTH_SHORT).show();
+                            final SharedPreferences preferences = MainActivity.this.getSharedPreferences("timerValues", 0); // 0 - for private mode
+                            final SharedPreferences.Editor editor = preferences.edit();
+                            editor.clear();
+                            editor.apply();
+                            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                            manager.cancelAll();
+                            cat="";
+                            //Activate all buttons and reset
+                            saveDay();
+                            setEnableBtns(value);
+                            reset();
+                        }
+                        else {//Reflecting on day
+                            Toast.makeText(MainActivity.this,
+                                    "Reflect on the day!", Toast.LENGTH_SHORT).show();
+                            //Deactivate all buttons and stops all timers
+                            setEnableBtns(value);
+                            myTimer.stopAll();
                         }
                     }
                 })
@@ -125,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
         yellow.reset();
         pink.reset();
 
+
     }
 
     /**
@@ -144,7 +172,11 @@ public class MainActivity extends AppCompatActivity {
         ib_y.setEnabled(val);
         ib_pk.setEnabled(val);
         reflect.setEnabled(val);
+
+
     }
+
+
 
     /**
      * Get results from adjustTimer class and apply that to the proper myTimer
@@ -156,140 +188,74 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case (FINAL_INT): {
-                if (resultCode == Activity.RESULT_OK) {
-                    result = data.getLongExtra("sub", 0);//get the result from data
-                    String cat = data.getStringExtra("cat");//get the categories from data
-                    if (cat.equals("Leisure") ) {
-                        String a [] = orange.getTimer().getText().toString().split(":");
-                        int x;
-                        if(a.length==3)
-                            x = (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000);
 
-                        else
-                            x = (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000);
-                        //Toast.makeText(MainActivity.this,"x is " + x + "\n" + "t is "+orange.getTimer().getBase() + "\n" + "r is "+result,Toast.LENGTH_LONG).show();
+        result = data.getLongExtra("sub", 0);//get the result from data
+        String cat1 = data.getStringExtra("cat");//get the categories from data
+        int x;
+        if (resultCode == Activity.RESULT_OK) {
+            switch (cat1) {
+                case "Leisure":
+                    x = orange.getTextValueMilli();
+                    if (x - result > 0)
+                        orange.add(result);
+                    build(orange,"Leisure");
+                    break;
 
-                        if(x-result>0)
-                        orange.add(result);//add the results
-                        else
-                            Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
-                    }
-                    else if (cat.equals("Exercise") ) {
-                        String a [] = red.getTimer().getText().toString().split(":");
-                        int x;
-                        if(a.length==3)
-                            x = (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000);
-
-                        else
-                            x = (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000);
-                        //Toast.makeText(MainActivity.this,"x is " + x + "\n" + "t is "+orange.getTimer().getBase() + "\n" + "r is "+result,Toast.LENGTH_LONG).show();
-
-                        if(x-result>0)
+                case "Exercise":
+                    x = red.getTextValueMilli();
+                    if (x - result > 0)
                         red.add(result);
-                        else
-                            Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
-                    }
-                    else if (cat.equals("Education")) {
-                        String a [] = purple.getTimer().getText().toString().split(":");
-                        int x;
-                        if(a.length==3)
-                            x = (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000);
+                    build(red,"Exercise");
+                    break;
 
-                        else
-                            x = (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000);
-                        //Toast.makeText(MainActivity.this,"x is " + x + "\n" + "t is "+orange.getTimer().getBase() + "\n" + "r is "+result,Toast.LENGTH_LONG).show();
-
-                        if(x-result>0)
+                case "Education":
+                    x = purple.getTextValueMilli();
+                    if (x - result > 0)
                         purple.add(result);
-                        else
-                            Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
-                    }
-                    else if (cat.equals("Work")) {
-                        String a [] = blue.getTimer().getText().toString().split(":");
-                        int x;
-                        if(a.length==3)
-                            x = (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000);
+                    build(purple,"Education");
+                    break;
 
-                        else
-                            x = (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000);
-                        //Toast.makeText(MainActivity.this,"x is " + x + "\n" + "t is "+orange.getTimer().getBase() + "\n" + "r is "+result,Toast.LENGTH_LONG).show();
-
-                        if(x-result>0)
+                case "Work":
+                    x = blue.getTextValueMilli();
+                    if (x - result > 0)
                         blue.add(result);
-                        else
-                            Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
-                    }
-                    else if (cat.equals("Other") ) {
-                        String a [] = grey.getTimer().getText().toString().split(":");
-                        int x;
-                        if(a.length==3)
-                            x = (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000);
+                    build(blue,"Work");
+                    break;
 
-                        else
-                            x = (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000);
-                        //Toast.makeText(MainActivity.this,"x is " + x + "\n" + "t is "+orange.getTimer().getBase() + "\n" + "r is "+result,Toast.LENGTH_LONG).show();
-
-                        if(x-result>0)
+                case "Other":
+                    x = grey.getTextValueMilli();
+                    if (x - result > 0)
                         grey.add(result);
-                        else
-                            Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
-                    }
-                    else if (cat.equals("Preparation")) {
-                        String a [] = cyan.getTimer().getText().toString().split(":");
-                        int x;
-                        if(a.length==3)
-                            x = (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000);
+                    build(grey,"Other");
+                    break;
 
-                        else
-                            x = (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000);
-                        //Toast.makeText(MainActivity.this,"x is " + x + "\n" + "t is "+orange.getTimer().getBase() + "\n" + "r is "+result,Toast.LENGTH_LONG).show();
-
-                        if(x-result>0)
+                case "Preparation":
+                    x = cyan.getTextValueMilli();
+                    if (x - result > 0)
                         cyan.add(result);
-                        else
-                            Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
-                    }
-                    else if (cat.equals("Traveling") ) {
-                        String a [] = yellow.getTimer().getText().toString().split(":");
-                        int x;
-                        if(a.length==3)
-                            x = (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000);
+                    build(cyan,"Preparation");
+                    break;
 
-                        else
-                            x = (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000);
-                        //Toast.makeText(MainActivity.this,"x is " + x + "\n" + "t is "+orange.getTimer().getBase() + "\n" + "r is "+result,Toast.LENGTH_LONG).show();
-
-                        if(x-result>0)
+                case "Traveling":
+                    x = yellow.getTextValueMilli();
+                    if (x - result > 0)
                         yellow.add(result);
-                        else
-                            Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
-                    }
-                    else if (cat.equals("Nap") ) {
-                        String a [] = pink.getTimer().getText().toString().split(":");
-                        int x;
-                        if(a.length==3)
-                            x = (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000);
+                    build(yellow,"Traveling");
+                    break;
 
-                        else
-                            x = (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000);
-                        //Toast.makeText(MainActivity.this,"x is " + x + "\n" + "t is "+orange.getTimer().getBase() + "\n" + "r is "+result,Toast.LENGTH_LONG).show();
-
-                        if(x-result>0)
+                case "Nap":
+                    x = pink.getTextValueMilli();
+                    if (x - result > 0)
                         pink.add(result);
-                        else
-                            Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
-                    }
-                    else{
-                        Toast.makeText(MainActivity.this,"Can not remove more time than you have",Toast.LENGTH_LONG).show();
-                    }
-                    ib_g.setEnabled(false);
+                    build(pink,"Relaxing");
+                    break;
 
-                }
-                break;
+                default:
+
             }
+            ib_g.setEnabled(false);
         }
+
     }
 
     /**
@@ -297,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
 
      */
 
-    public void save(){
+    public void saveDay(){
 
         final SharedPreferences pref = this.getSharedPreferences("MyPref", 0); // 0 - for private mode
         final SharedPreferences.Editor editor = pref.edit();
@@ -349,6 +315,24 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
+  /*  private Boolean isViewVisible(View view) {
+        Rect scrollBounds = new Rect();
+        mScrollView.getHitRect(scrollBounds);
+        if (view.getLocalVisibleRect(scrollBounds)) {
+       //     Toast.makeText(MainActivity.this,"in",Toast.LENGTH_SHORT).show();
+            curr.setVisibility(View.GONE);
+            curr_c.setVisibility(View.GONE);
+            return true;
+            // Any portion of the imageView, even a single pixel, is within the visible window
+        } else {
+            curr.setVisibility(View.VISIBLE);
+            curr_c.setVisibility(View.VISIBLE);
+        //    Toast.makeText(MainActivity.this,"out",Toast.LENGTH_SHORT).show();
+            return false;
+            // NONE of the imageView is within the visible window
+        }
+        }
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -382,23 +366,81 @@ public class MainActivity extends AppCompatActivity {
         adjust = findViewById(R.id.btnAdjust);
         stat = findViewById(R.id.btnStat);
 
-        TextView textView = findViewById(R.id.textView);
-        textView.append("  "+endDay.getTextSize());
+
         final SharedPreferences pref = this.getSharedPreferences("MyPref", 0); // 0 - for private mode
+        final SharedPreferences pref2 = this.getSharedPreferences("timerValues", 0); // 0 - for private mode
+        final SharedPreferences.Editor editor = pref2.edit();
+        cat = pref2.getString("running","");
         // final SharedPreferences.Editor editor = pref.edit();
 
 
         //set myTimers, which requier a chronometer and a boolean value(true only for wakeUp)
         long tmp = pref.getLong("endTime",0);
+
+        Log.d("mainActivity", "onCreate: "+cat);
         green = new myTimer(cm_g,true);
-        orange = new myTimer(cm_o,false);
-        red = new myTimer(cm_r,false);
-        purple = new myTimer(cm_p,false);
-        blue = new myTimer(cm_b,false);
-        grey = new myTimer(cm_gr,false);
-        cyan = new myTimer(cm_c,false);
-        yellow = new myTimer(cm_y,false);
-        pink = new myTimer(cm_pk,false);
+        orange = new myTimer(cm_o,pref2.getLong("orange",0),cat.equals("orange"));
+        red = new myTimer(cm_r,pref2.getLong("red",0),cat.equals("red"));
+        purple = new myTimer(cm_p,pref2.getLong("purple",0),cat.equals("purple"));
+        blue = new myTimer(cm_b,pref2.getLong("blue",0),cat.equals("blue"));
+        grey = new myTimer(cm_gr,pref2.getLong("grey",0),cat.equals("grey"));
+        cyan = new myTimer(cm_c,pref2.getLong("cyan",0),cat.equals("cyan"));
+        yellow = new myTimer(cm_y,pref2.getLong("yellow",0),cat.equals("yellow"));
+        pink = new myTimer(cm_pk,pref2.getLong("pink",0),cat.equals("pink"));
+
+        switch (cat) {
+            case "orange":
+                orange.start();
+                myTimer.wakeUp(pref2.getLong("green",0));
+           //     ib_o.setPressed(true);
+                Log.d("mainActivity", "onCreate: orange");
+                break;
+
+            case "red":
+                Log.d("mainActivity", "onCreate: red");
+                red.start();
+                myTimer.wakeUp(pref2.getLong("green",0));
+                break;
+            case "purple":
+                Log.d("mainActivity", "onCreate: purple");
+                purple.start();
+                myTimer.wakeUp(pref2.getLong("green",0));
+                break;
+            case "blue":
+                blue.start();
+                myTimer.wakeUp(pref2.getLong("green",0));
+                //     ib_o.setPressed(true);
+                Log.d("mainActivity", "onCreate: blue");
+                break;
+
+            case "grey":
+                Log.d("mainActivity", "onCreate: grey");
+                grey.start();
+                myTimer.wakeUp(pref2.getLong("green",0));
+                break;
+            case "cyan":
+                Log.d("mainActivity", "onCreate: cyan");
+                cyan.start();
+                myTimer.wakeUp(pref2.getLong("green",0));
+                break;
+            case "yellow":
+                Log.d("mainActivity", "onCreate: yellow");
+                yellow.start();
+                myTimer.wakeUp(pref2.getLong("green",0));
+                break;
+            case "pink":
+                Log.d("mainActivity", "onCreate: pink");
+                pink.start();
+                myTimer.wakeUp(pref2.getLong("green",0));
+                break;
+            case "paused":
+                Log.d("mainActivity", "onCreate: paused");
+
+                myTimer.wakeUp(pref2.getLong("green",0));
+
+            default:
+                Log.d("mainActivity", "onCreate: def");
+        }
 
         final Animation animAlpha = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
         final Animation animScale = AnimationUtils.loadAnimation(this, R.anim.anim_scale);
@@ -406,14 +448,17 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        Button testButton = findViewById(R.id.testButton);
+/*        Button testButton = findViewById(R.id.testButton);
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,testActivity.class);
-                startActivity(intent);
+           // build();
+           //     Intent intent = new Intent(MainActivity.this,testActivity.class);
+             //   startActivity(intent);
             }
-        });
+        });*/
+
+
 
         /**
          * When clicked start adjustTimer for a result
@@ -448,16 +493,20 @@ public class MainActivity extends AppCompatActivity {
         reflect.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(animScale);
 
                 showAlert(v,"Do you want to reflect on the day",false);
+                final SharedPreferences pref3 = MainActivity.this.getSharedPreferences("timerValues", 0); // 0 - for private mode
+                final SharedPreferences.Editor ed = pref3.edit();
+                ed.clear();
+                ed.apply();
+
 
             }
         }));
         stat.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 Intent i = new Intent(MainActivity.this,statsTabbed.class);
                 startActivity(i);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -465,13 +514,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
+
         /**
          * When a imageButton is clicked start the corresponding myTimer and disable ib_g
          */
         ib_g.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.startAnimation(animAlpha);
+                v.startAnimation(animScale);
                 myTimer.wakeUp(SystemClock.elapsedRealtime());//start the wakeUp timer
                 ib_g.setEnabled(false);
                // Toast.makeText(MainActivity.this,"Start another timer to start wake up",Toast.LENGTH_SHORT).show();
@@ -479,92 +529,272 @@ public class MainActivity extends AppCompatActivity {
         });
         ib_o.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                v.startAnimation(animAlpha);
+                //setCurr(orange,ib_o);
+                v.startAnimation(animScale);
                 orange.start();
+                Log.d("mainActivity", "onCreate: ib_o");
+
+                cat = "orange";
+                if(orange.isPaused())
+                    cat = "paused";
+
+                build(orange,"Leisure");
 
                 ib_g.setEnabled(false);
+                Log.d("mainActivity", "onCreate: "+cat);
             }
         });
         ib_r.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                v.startAnimation(animAlpha);
+              //  setCurr(red,ib_r);
+                v.startAnimation(animScale);
                 red.start();
-
+                cat = "red";
+                if(red.isPaused())
+                    cat = "paused";
+                build(red,"Exercise");
                 ib_g.setEnabled(false);
+                Log.d("mainActivity", "onCreate: "+cat);
             }
         });
         ib_p.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                v.startAnimation(animAlpha);
+               // setCurr(purple,ib_p);
+                v.startAnimation(animScale);
                 purple.start();
-                ib_g.setEnabled(false);
+                cat = "purple";
+
+                if(purple.isPaused())
+                    cat = "paused";
+                build(purple,"Education");
+                ib_g.setEnabled(false);Log.d("mainActivity", "onCreate: "+cat);
             }
         });
         ib_b.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                v.startAnimation(animAlpha);
+                //setCurr(blue,ib_b);
+                v.startAnimation(animScale);
                 blue.start();
+                cat = "blue";
+                if(blue.isPaused())
+                    cat = "paused";
+                build(blue,"Work");
                 ib_g.setEnabled(false);
+
             }
         });
         ib_gr.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                v.startAnimation(animAlpha);
+             //   setCurr(grey,ib_gr);
+                v.startAnimation(animScale);
                 grey.start();
+                cat = "grey";
+                if(grey.isPaused())
+                    cat = "paused";
+                build(grey,"Other");
                 ib_g.setEnabled(false);
             }
         });
         ib_c.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                v.startAnimation(animAlpha);
+             //   setCurr(cyan,ib_c);
+                v.startAnimation(animScale);
                 cyan.start();
+                cat = "cyan";
+                if(cyan.isPaused())
+                    cat = "paused";
+                build(cyan,"Preparation");
                 ib_g.setEnabled(false);
             }
         });
         ib_y.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                v.startAnimation(animAlpha);
+               // setCurr(yellow,ib_y);
+                v.startAnimation(animScale);
                 yellow.start();
+                cat = "yellow";
+                if(yellow.isPaused())
+                    cat = "paused";
+                build(yellow,"Traveling");
                 ib_g.setEnabled(false);
             }
         });
         ib_pk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                v.startAnimation(animAlpha);
+               // setCurr(pink,ib_pk);
+                v.startAnimation(animScale);
                 pink.start();
+                cat = "pink";
+                if(pink.isPaused())
+                    cat = "paused";
+                build(pink,"Relaxing");
                 ib_g.setEnabled(false);
+
             }
         });
+
+
+
     }
+
+
+
+    private void build(myTimer timer,String name) {
+
+
+        RemoteViews remoteViews = new RemoteViews(getPackageName(),R.layout.remote_view_test);
+        remoteViews.setChronometer(R.id.remoteChrono,timer.getTimer().getBase(),timer.getTimer().getFormat(),true);
+        remoteViews.setTextViewText(R.id.remoteText,name + " \t");
+        //remoteViews.setTextColor(R.id.remoteText,);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"channelId")
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentTitle("Title")
+             //   .setContentText(orange.getTimer().getText().toString())
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setOngoing(false)
+                .setCustomBigContentView(remoteViews)
+                .setPriority(NotificationCompat.PRIORITY_MAX);
+
+        Intent notificationIntent = new Intent(this,MainActivity.class);
+        PendingIntent contentIntent =  PendingIntent.getActivity(this,0,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        int PROGRESS_MAX = 100;
+        int PROGRESS_CURRENT = 0;
+        //builder.setProgress(0, 0, true);
+        builder.setContentIntent(contentIntent);
+
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if(timer.isPaused())
+            manager.cancelAll();
+        else
+            manager.notify(0,builder.build());
+}
+
+    public void saveTimerValue(SharedPreferences.Editor editor){
+
+        /*switch (cat){
+            case "orange":
+
+        }*/
+        if(cat.equals("orange") )
+            editor.putLong("orange",orange.getTimer().getBase());
+        else
+            editor.putLong("orange",orange.getTextValueMilli());
+
+        if(cat.equals("red") )
+            editor.putLong("red",red.getTimer().getBase());
+        else
+            editor.putLong("red",red.getTextValueMilli());
+
+        if(cat.equals("purple") )
+            editor.putLong("purple",purple.getTimer().getBase());
+        else
+            editor.putLong("purple",purple.getTextValueMilli());
+
+        if(cat.equals("blue") )
+            editor.putLong("blue",blue.getTimer().getBase());
+        else
+            editor.putLong("blue",blue.getTextValueMilli());
+
+        if(cat.equals("grey") )
+            editor.putLong("grey",grey.getTimer().getBase());
+        else
+            editor.putLong("grey",grey.getTextValueMilli());
+
+        if(cat.equals("cyan") )
+            editor.putLong("cyan",cyan.getTimer().getBase());
+        else
+            editor.putLong("cyan",cyan.getTextValueMilli());
+
+        if(cat.equals("yellow") )
+            editor.putLong("yellow",yellow.getTimer().getBase());
+        else
+            editor.putLong("yellow",yellow.getTextValueMilli());
+
+        if(cat.equals("pink") )
+            editor.putLong("pink",pink.getTimer().getBase());
+        else
+            editor.putLong("pink",pink.getTextValueMilli());
+
+    }
+    public void saveClose(){
+        Log.d("mainActivity", "saveClose: entered");
+        final SharedPreferences preferences = this.getSharedPreferences("timerValues", 0); // 0 - for private mode
+        final SharedPreferences.Editor editor = preferences.edit();
+        Log.d("mainActivity", "saveClose: preferences and editor");
+        saveTimerValue(editor);
+        editor.putLong("green",myTimer.getWakeUpBase());
+
+
+        editor.putString("running",cat);
+
+        Log.d("mainActivity", "saveClose: before applied");
+        editor.apply();
+        Log.d("mainActivity", "saveClose: applied");
+        Toast.makeText(this," saveClose!! ",Toast.LENGTH_SHORT).show();
+    }
+
+
     @Override
     public void onResume(){
-      //  Toast.makeText(this,"Resuming!!",Toast.LENGTH_LONG).show();
-
+        Log.d("mainActivity", "onResume: entered");
+        Toast.makeText(this," Resuming!! ",Toast.LENGTH_SHORT).show();
+        /*if(!comingFromActivity){
+            Log.d("mainActivity", "onResume: !comingFromActivity");
+            final SharedPreferences pref = this.getSharedPreferences("timerValues", 0); // 0 - for private mode
+            final SharedPreferences.Editor editor = pref.edit();
+            Log.d("mainActivity", "onResume: pref");
+            orange.getTimer().setBase(pref.getLong("orange",0));
+            Log.d("mainActivity", "onResume: orange");
+            red.getTimer().setBase(pref.getLong("red",0));
+            purple.getTimer().setBase(pref.getLong("purple",0));
+            blue.getTimer().setBase(pref.getLong("blue",0));
+            grey.getTimer().setBase(pref.getLong("grey",0));
+            cyan.getTimer().setBase(pref.getLong("cyan",0));
+            yellow.getTimer().setBase(pref.getLong("yellow",0));
+            pink.getTimer().setBase(pref.getLong("pink",0));
+          //  green.getTimer().setBase(pref.getLong("green",0));
+            Log.d("mainActivity", "onResume: received");
+        }*/
         super.onResume();
     }
     @Override
     public void onStart(){
-       // Toast.makeText(this,"Starting!",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Starting!",Toast.LENGTH_SHORT).show();
+       // comingFromActivity = true;
         super.onStart();
-
     }
     @Override
     public void onStop(){
-      //  Toast.makeText(this,"Stopping!",Toast.LENGTH_LONG).show();
-
+        Toast.makeText(this,"Stopping!",Toast.LENGTH_SHORT).show();
+        saveClose();
         super.onStop();
     }
-    @Override
+/*    @Override
     public void onPause(){
-      //  Toast.makeText(this,"Pauseing!",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Pauseing! "+ orange.getTimer().getBase(),Toast.LENGTH_SHORT).show();
 
+
+        final SharedPreferences pref = this.getSharedPreferences("timerValues", 0); // 0 - for private mode
+        final SharedPreferences.Editor editor = pref.edit();
+        if(orange.getLastPause()!=0)
+            editor.putLong("green",orange.getTimer().getBase());
+        editor.putString("orange", orange.getTimer().getText().toString() );//
+        editor.apply();
         super.onPause();
     }
     @Override
-    public void onDestroy(){
-      //  Toast.makeText(this,"Destroying!",Toast.LENGTH_LONG).show();
-        super.onDestroy();
+    public void finish(){
+        Toast.makeText(this,"Finishing!",Toast.LENGTH_SHORT).show();
+        super.finish();
     }
+
+    @Override
+    public void onDestroy(){
+        Toast.makeText(this,"Destroying!",Toast.LENGTH_SHORT).show();
+        super.onDestroy();
+    }*/
 
 
     @Override
