@@ -59,17 +59,20 @@ public class myTimer {
             lastPause = 0;
         }
     }
-    public myTimer(Chronometer c, long l,boolean b){
+    public myTimer(Chronometer c, long val,boolean running){
         timer = c;
         lastPause = 0;
-        if(l!=0) {
-            if(!b) {
-                timer.setBase(timer.getBase() - l);
+        Log.d(TAG, "myTimer: create myTimer");
+        if(val!=0) {
+            if(!running) {
+                timer.setBase(timer.getBase() - val);
                 lastPause = SystemClock.elapsedRealtime();
+                Log.d(TAG, "myTimer: timer was not running");
             }
             else {
-                timer.setBase(l);
+                timer.setBase(val);
                 lastPause = SystemClock.elapsedRealtime();
+                Log.d(TAG, "myTimer: timer was running");
             }
         }
     }
@@ -125,10 +128,17 @@ public class myTimer {
      * Adjust time of a myTimer
      * @param l the value(result from adjustTimers) to add to the myTimer
      */
-    public void add(long l){
-    if(lastTimer == this){
-        timer.setBase(timer.getBase()+ l);//add the result
-        Log.d(TAG, "add: timer is currently running");
+    public void add(long l, boolean b){
+    if(lastTimer == this ) {
+        if (!paused) {
+            timer.setBase(timer.getBase() + l);//add the result
+            Log.d(TAG, "add: timer is currently running");
+        }
+        else{
+            Log.d(TAG, "add: timer has been paused");
+            timer.setBase(timer.getBase()+SystemClock.elapsedRealtime()-lastPause + l);
+            lastPause = SystemClock.elapsedRealtime();
+        }
     }
     else if(lastPause == 0) {
         Log.d(TAG, "add: timer has not been started");
@@ -144,13 +154,14 @@ public class myTimer {
         timer.setBase(timer.getBase()+SystemClock.elapsedRealtime()-lastPause + l);
         lastPause = SystemClock.elapsedRealtime();
     }
-    if(wakeUp.isEnabled()) {//if we have activated wakeUp before
-        wakeUp(SystemClock.elapsedRealtime() + l);// add the result to wakeUp
-        Log.d(TAG, "add: adjust wakeUp");
-    }
-    else {
-        wakeUp(wakeUp.getBase() + l);
-        Log.d(TAG, "add: adjust wakeUp");
+    if(b) {
+        if (wakeUp.isEnabled()) {//if we have activated wakeUp before
+            wakeUp(SystemClock.elapsedRealtime() + l);// add the result to wakeUp
+            Log.d(TAG, "add: adjust wakeUp");
+        } else {
+            wakeUp(wakeUp.getBase() + l);
+            Log.d(TAG, "add: adjust wakeUp");
+        }
     }
 
     }
@@ -160,7 +171,7 @@ public class myTimer {
      * start wakeUp timer and then disable it
      */
     public static void wakeUp(long l){
-
+        Log.d(TAG, "wakeUp: ");
         wakeUp.setBase(l);
         wakeUp.start();
         wakeUp.setEnabled(false);
@@ -174,6 +185,7 @@ public class myTimer {
     public static void stopAll(){
         Log.d(TAG, "stopAll: ");
         if(lastTimer!=null) {//if we have started a timer before
+            //lastTimer.start();
             lastTimer.setLastPause(SystemClock.elapsedRealtime());
             lastTimer.getTimer().stop();
         }
@@ -200,6 +212,7 @@ public class myTimer {
     }
 
     public int getTextValueMilli(){
+        Log.d(TAG, "getTextValueMilli: ");
         String a[];
         a = timer.getText().toString().split(":");
         if(a.length == 2)
@@ -208,23 +221,14 @@ public class myTimer {
             return ( (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000));
 
     }
-
-
-
-    public  void setDefaults(String key, /*String value,*/ Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = preferences.edit();
-       // editor.putString(key, value);
-        editor.putLong(key,timer.getBase());
-        editor.apply();
-    }
-
-    public void getDefaults(String key, Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        timer.setBase(preferences.getLong(key, timer.getBase()));
-        timer.stop();
-
-        ;
+    public static int getWakeUpText(){
+        Log.d(TAG, "getWakeUpText: ");
+        String a[];
+        a = wakeUp.getText().toString().split(":");
+        if(a.length == 2)
+            return  ( (Integer.parseInt(a[0])*60*1000) + (Integer.parseInt(a[1])*1000));
+        else
+            return ( (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000));
 
     }
 
@@ -255,34 +259,6 @@ public class myTimer {
         paused = b;
     }
     public static long getWakeUpBase(){return  wakeUp.getBase();}
-    public void getPref(){
+    public static boolean isWakeUpEnabled(){return wakeUp.isEnabled();}
 
-    }
-
-
-    private void build(Context context) {
-        timer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
-            @Override
-            public void onChronometerTick(Chronometer chronometer) {
-
-            }
-        });
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setContentTitle("Title")
-                .setContentText(this.getTimer().getText().toString())
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setOngoing(true)
-                .setPriority(NotificationCompat.PRIORITY_MAX);
-
-        Intent notificationIntent = new Intent(context,MainActivity.class);
-        PendingIntent contentIntent =  PendingIntent.getActivity(context,0,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        int PROGRESS_MAX = 100;
-        int PROGRESS_CURRENT = 0;
-        //builder.setProgress(0, 0, true);
-        builder.setContentIntent(contentIntent);
-
-        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0,builder.build());
-    }
 }

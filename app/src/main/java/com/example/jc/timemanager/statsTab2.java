@@ -101,7 +101,7 @@ public class statsTab2 extends Fragment {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Toast.makeText(getActivity(), "Selected item " + i + " is " + list.get(i), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Opening day", Toast.LENGTH_SHORT).show();
 
                         if(i<pref.getInt("Day", 0)) {
 

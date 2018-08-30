@@ -2,28 +2,18 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <layer-list>
-            <!--  <item android:left="1dp" android:top="1dp" android:right="1dp" android:bottom="0dp">
-                  <shape android:shape="oval">
-
-                      <stroke android:width="7dp" android:color="#d4d4d4" />
-                      <corners android:radius="4dp" />
-                      <size android:width="60dp"
-                          android:height="60dp"/>
-
-                  </shape>
-              </item>-->
-            <item >
+            <item  >
                 <shape android:shape="oval" >
                     <corners android:radius="0dp" />
-                    <stroke android:width="3.75dp" android:color="#FFA500" />
-                    <size android:width="60dp"
-                        android:height="60dp"/>
+                    <stroke android:width="3dp" android:color="#FFA500" />
+                    <size android:width="120dp"
+                        android:height="120dp"/>
                 </shape>
             </item>
-            <item android:left="3.75dp" android:top="3.75dp" android:right="3.75dp" android:bottom="3.75dp">
+            <item android:left="3dp" android:top="3dp" android:right="3dp" android:bottom="3dp">
                 <shape android:shape="oval">
 
-                    <stroke android:width="5.25dp" android:color="#FFB733" />
+                    <stroke android:width="4dp" android:color="#FFB733" />
                     <corners android:radius="4dp" />
                     <size android:width="60dp"
                         android:height="60dp"/>

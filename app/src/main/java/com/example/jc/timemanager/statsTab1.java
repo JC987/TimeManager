@@ -40,8 +40,10 @@ public class statsTab1 extends Fragment {
     PieChart pie;
     final String TAG = "map";
     private float[] val=  {0f,0f,0f,0f,0f,0f,0f,0f};
-    private String[] name = {"Leisure","Exercise","Education","Work","Other","Preparation","Traveling","Nap"};
+    private String[] name = {"Leisure","Exercise","Education","Work","Other","Preparation","Traveling","Relaxing"}; //{getString(R.string.Leisure),getString(R.string.Exercise),getString(R.string.Education),getString(R.string.Work),getString(R.string.Other),getString(R.string.Preparation),getString(R.string.Traveling),getString(R.string.Relaxing)};
+  //  {R.string.Leisure,R.string.Exercise,R.string.Education,R.string.Work,R.string.Other,R.string.Preparation,R.string.Traveling,R.string.}
     private String description = "";
+    private float orangeTotal = 0, redTotal = 0, purpleTotal = 0, blueTotal = 0, greyTotal = 0, cyanTotal = 0, yellowTotal = 0, pinkTotal = 0, greenTotal = 0;
 
 
 
@@ -60,7 +62,6 @@ public class statsTab1 extends Fragment {
                 Log.d(TAG, "getValues: inside map for loop");
             }
 
-            float orangeTotal = 0, redTotal = 0, purpleTotal = 0, blueTotal = 0, greyTotal = 0, cyanTotal = 0, yellowTotal = 0, pinkTotal = 0, greenTotal = 0;
             for (int i = 0; i < arr.length; i++) {
                 String tmp = arr[i];
 
@@ -120,7 +121,7 @@ public class statsTab1 extends Fragment {
         pie.setTransparentCircleAlpha(128);
         pie.setTransparentCircleRadius(30f);
      //   pie.setRotationEnabled(true);
-        pie.setHoleRadius(15f);
+        pie.setHoleRadius(20f);
         pie.setCenterText("Total Time!");
         pie.setCenterTextSize(10);
 
@@ -133,15 +134,31 @@ public class statsTab1 extends Fragment {
                 Log.d("chart", "onValueSelected: "+e.toString());
                 int pos = e.toString().indexOf("y: ");
                 String sub = e.toString().substring(pos+3);
-                Toast.makeText(getActivity(),sub,Toast.LENGTH_SHORT).show();
+
+                float x = greenTotal/1000;
+
                 for(int i = 0; i<val.length;i++){
                     if(val[i]==Float.parseFloat(sub)){
                         pos = i;
+                        //  z = val[i];
                         break;
                     }
                 }
-                String cat = name[pos];
-                Toast.makeText(getActivity(),cat,Toast.LENGTH_SHORT).show();
+
+
+                int sec =  Math.round(x*(val[pos]/100));
+                int min = (int) Math.floor(sec / 60);
+                int hr = (int) Math.floor(min / 60);
+                sec = sec - (min * 60);
+                min = min - (hr * 60);
+
+
+                NumberFormat numberFormat = new DecimalFormat("00");
+
+                String text  =  "Time spent: "+numberFormat.format(hr)+":"+ numberFormat.format(min) +":"+numberFormat.format(sec);
+
+                Toast.makeText(getActivity(),text,Toast.LENGTH_SHORT).show();
+
             }
             @Override
             public void onNothingSelected(){

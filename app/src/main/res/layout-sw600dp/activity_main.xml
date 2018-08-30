@@ -53,23 +53,22 @@
 
     <ImageButton
         android:id="@+id/imgBtnGreen"
-        android:layout_width="168dp"
-        android:layout_height="168dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         android:background="@drawable/green_btn"
 
-        android:contentDescription="Start your day"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.55" />
 
 
     <TextView
         android:id="@+id/txtViewGreen"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:text="Wake Up!"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wake_up"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -82,8 +81,8 @@
 
     <Chronometer
         android:id="@+id/chronometerGreen"
-        android:layout_width="105dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -92,12 +91,12 @@
         app:layout_constraintLeft_toLeftOf="@id/imgBtnGreen"
         app:layout_constraintRight_toRightOf="@id/imgBtnGreen"
         app:layout_constraintTop_toTopOf="@id/imgBtnGreen"
-        app:layout_constraintVertical_bias="0.7" />
+        app:layout_constraintVertical_bias="0.6" />
 
     <ImageButton
         android:id="@+id/imgBtnOrange"
-        android:layout_width="168dp"
-        android:layout_height="168dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         android:background="@drawable/orange_btn"
 
         app:layout_constraintBottom_toBottomOf="parent"
@@ -105,7 +104,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2"
+        app:layout_constraintVertical_bias="0.225"
 
 
         />
@@ -114,7 +113,7 @@
         android:id="@+id/txtViewOrange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Leisure"
+        android:text="@string/Leisure"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -127,8 +126,8 @@
 
     <Chronometer
         android:id="@+id/chronometerOrange"
-        android:layout_width="105dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -141,20 +140,20 @@
 
     <ImageButton
         android:id="@+id/imgBtnRed"
-        android:layout_width="168dp"
-        android:layout_height="168dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         android:background="@drawable/red_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.225" />
 
     <TextView
         android:id="@+id/txtViewRed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Exercise"
+        android:text="@string/Exercise"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -167,8 +166,8 @@
 
     <Chronometer
         android:id="@+id/chronometerRed"
-        android:layout_width="105dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -181,21 +180,21 @@
 
     <ImageButton
         android:id="@+id/imgBtnPurple"
-        android:layout_width="168dp"
-        android:layout_height="168dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         android:background="@drawable/purple_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.99"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.225" />
 
     <TextView
         android:id="@+id/txtViewPurple"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Education"
+        android:text="@string/Education"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -208,8 +207,8 @@
 
     <Chronometer
         android:id="@+id/chronometerPurple"
-        android:layout_width="105dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -223,21 +222,21 @@
 
     <ImageButton
         android:id="@+id/imgBtnBlue"
-        android:layout_width="168dp"
-        android:layout_height="168dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         android:background="@drawable/blue_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.55" />
 
     <TextView
         android:id="@+id/txtViewBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Work"
+        android:text="@string/Work"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -250,8 +249,8 @@
 
     <Chronometer
         android:id="@+id/chronometerBlue"
-        android:layout_width="105dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -265,14 +264,14 @@
 
     <ImageButton
         android:id="@+id/imgBtnCyan"
-        android:layout_width="168dp"
-        android:layout_height="168dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8"
+        app:layout_constraintVertical_bias="0.875"
         android:background="@drawable/cyan_btn"
 
         />
@@ -281,7 +280,7 @@
         android:id="@+id/txtViewCyan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Preparing"
+        android:text="@string/Preparation"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -294,8 +293,8 @@
 
     <Chronometer
         android:id="@+id/chronometerCyan"
-        android:layout_width="105dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -308,20 +307,20 @@
 
     <ImageButton
         android:id="@+id/imgBtnYellow"
-        android:layout_width="168dp"
-        android:layout_height="168dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8"
+        app:layout_constraintVertical_bias="0.875"
         android:background="@drawable/yellow_btn"/>
 
     <TextView
         android:id="@+id/txtViewYellow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Travling"
+        android:text="@string/Traveling"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -334,8 +333,8 @@
 
     <Chronometer
         android:id="@+id/chronometerYellow"
-        android:layout_width="105dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -348,22 +347,22 @@
 
     <ImageButton
         android:id="@+id/imgBtnPink"
-        android:layout_width="168dp"
-        android:layout_height="168dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         android:background="@drawable/pink_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.99"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintVertical_bias="0.875" />
 
     <TextView
         android:id="@+id/txtViewPink"
-        android:layout_width="80dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="Nap"
+        android:text="@string/Relaxing"
 
         android:textAlignment="center"
         android:textColor="#000000"
@@ -377,8 +376,8 @@
 
     <Chronometer
         android:id="@+id/chronometerPink"
-        android:layout_width="105dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -391,8 +390,8 @@
 
     <ImageButton
         android:id="@+id/imgBtnGrey"
-        android:layout_width="168dp"
-        android:layout_height="168dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
 
         android:background="@drawable/gray_btn"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -401,15 +400,15 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
 
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.55" />
 
     <TextView
         android:id="@+id/txtViewGrey"
-        android:layout_width="80dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
 
-        android:text="Other"
+        android:text="@string/Other"
 
         android:textAlignment="center"
         android:textColor="#000000"
@@ -423,8 +422,8 @@
 
     <Chronometer
         android:id="@+id/chronometerGrey"
-        android:layout_width="105dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -435,17 +434,7 @@
         app:layout_constraintTop_toTopOf="@id/imgBtnGrey"
         app:layout_constraintVertical_bias="0.6" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="17dp"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="248dp"
-        android:layout_marginLeft="16dp"
-        android:text="sw600"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -488,15 +477,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.03" />
-    <Button
-        android:id="@+id/testButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="goto test"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+
 
 
 </android.support.constraint.ConstraintLayout>

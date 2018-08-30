@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">TimeManager</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -101,4 +102,13 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_basic">basicActivity</string>
+    <string name = "Leisure"> Leisure </string>
+    <string name = "Exercise"> Exercise </string>
+    <string name = "Education"> Education </string>
+    <string name = "Work"> Work </string>
+    <string name = "Other"> Other </string>
+    <string name = "Preparation"> Preparation </string>
+    <string name = "Traveling"> Traveling </string>
+    <string name = "Relaxing"> Relaxing </string>
+    <string name = "wake_up"> Wake Up! </string>
 </resources>

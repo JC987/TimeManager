@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class singleDay extends AppCompatActivity {
     PieChart pie;
     private float[] val= {8.09f,10.09f,16.09f,12.59f,18.88f,10.03f,11.5f,21.26f};
-    private String[] name = {"Leisure","Exercise","Education","Work","Other","Preparation","Traveling","Nap"};
+    private String[] name = {"Leisure","Exercise","Education","Work","Other","Preparation","Traveling","Relaxing"};
     @Override
     public void finish() {
         super.finish();
@@ -77,7 +77,7 @@ public class singleDay extends AppCompatActivity {
         pie.setTransparentCircleAlpha(128);
         pie.setTransparentCircleRadius(30f);
         pie.setRotationEnabled(true);
-        pie.setHoleRadius(15f);
+        pie.setHoleRadius(20f);
         pie.setCenterText(getIntent().getStringExtra("day").substring(0,10));
         pie.setCenterTextSize(10);
 
@@ -90,15 +90,31 @@ public class singleDay extends AppCompatActivity {
                 Log.d("chart", "onValueSelected: "+e.toString());
                 int pos = e.toString().indexOf("y: ");
                 String sub = e.toString().substring(pos+3);
-                Toast.makeText(singleDay.this,sub,Toast.LENGTH_SHORT).show();
+                String[] s = getIntent().getStringExtra("value").split(",");
+                float x = Float.parseFloat(s[s.length-1])/1000;
+
                 for(int i = 0; i<val.length;i++){
                     if(val[i]==Float.parseFloat(sub)){
                         pos = i;
+                      //  z = val[i];
                         break;
                     }
                 }
-                String cat = name[pos];
-                Toast.makeText(singleDay.this,cat,Toast.LENGTH_SHORT).show();
+
+
+                int sec =  Math.round(x*(val[pos]/100));
+                int min = (int) Math.floor(sec / 60);
+                int hr = (int) Math.floor(min / 60);
+                sec = sec - (min * 60);
+                min = min - (hr * 60);
+
+
+                NumberFormat numberFormat = new DecimalFormat("00");
+
+                String text  =  "Time spent: "+numberFormat.format(hr)+":"+ numberFormat.format(min) +":"+numberFormat.format(sec);
+
+                Toast.makeText(singleDay.this,text,Toast.LENGTH_SHORT).show();
+
             }
             @Override
             public void onNothingSelected(){

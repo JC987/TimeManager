@@ -162,7 +162,7 @@ public class testActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        boolean affect = data.getBooleanExtra("affect",true);
         result = data.getLongExtra("sub", 0);//get the result from data
         String cat = data.getStringExtra("cat");//get the categories from data
         int x;
@@ -174,49 +174,49 @@ public class testActivity extends AppCompatActivity {
                         case "Leisure":
                             x = orange.getTextValueMilli();
                             if (x - result > 0)
-                                orange.add(result);
+                                orange.add(result,affect);
                             break;
 
                         case "Exercise":
                             x = red.getTextValueMilli();
                             if (x - result > 0)
-                                red.add(result);
+                                red.add(result,affect);
                             break;
 
                         case "Education":
                             x = purple.getTextValueMilli();
                             if (x - result > 0)
-                                purple.add(result);
+                                purple.add(result,affect);
                             break;
 
                         case "Work":
                             x = blue.getTextValueMilli();
                             if (x - result > 0)
-                                blue.add(result);
+                                blue.add(result,affect);
                             break;
 
                         case "Other":
                             x = grey.getTextValueMilli();
                             if (x - result > 0)
-                                grey.add(result);
+                                grey.add(result,affect);
                             break;
 
                         case "Preparation":
                             x = cyan.getTextValueMilli();
                             if (x - result > 0)
-                                cyan.add(result);
+                                cyan.add(result,affect);
                             break;
 
                         case "Traveling":
                             x = yellow.getTextValueMilli();
                             if (x - result > 0)
-                                yellow.add(result);
+                                yellow.add(result,affect);
                             break;
 
                         case "Nap":
                             x = pink.getTextValueMilli();
                             if (x - result > 0)
-                                pink.add(result);
+                                pink.add(result,affect);
                             break;
 
                         default:

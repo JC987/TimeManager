@@ -59,20 +59,20 @@
         android:layout_width="112dp"
         android:layout_height="112dp"
         android:background="@drawable/green_btn"
-        android:contentDescription="Start your day"
+
         android:rotation="45"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.55" />
 
 
     <TextView
         android:id="@+id/txtViewGreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Wake Up!"
+        android:text="@string/wake_up"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="@dimen/text_size"
@@ -108,7 +108,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2"
+        app:layout_constraintVertical_bias="0.225"
 
 
         />
@@ -117,7 +117,7 @@
         android:id="@+id/txtViewOrange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Leisure"
+        android:text="@string/Leisure"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="@dimen/text_size"
@@ -151,13 +151,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.225" />
 
     <TextView
         android:id="@+id/txtViewRed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Exercise"
+        android:text="@string/Exercise"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="@dimen/text_size"
@@ -192,13 +192,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.225" />
 
     <TextView
         android:id="@+id/txtViewPurple"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Education"
+        android:text="@string/Education"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="@dimen/text_size"
@@ -234,13 +234,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.55" />
 
     <TextView
         android:id="@+id/txtViewBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Work"
+        android:text="@string/Work"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="@dimen/text_size"
@@ -276,7 +276,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8"
+        app:layout_constraintVertical_bias="0.875"
 
         />
 
@@ -284,7 +284,7 @@
         android:id="@+id/txtViewCyan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Preparation"
+        android:text="@string/Preparation"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="@dimen/text_size"
@@ -318,13 +318,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintVertical_bias="0.875" />
 
     <TextView
         android:id="@+id/txtViewYellow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Travling"
+        android:text="@string/Traveling"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="@dimen/text_size"
@@ -359,14 +359,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintVertical_bias="0.875" />
 
     <TextView
         android:id="@+id/txtViewPink"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="Relaxing"
+        android:text="@string/Relaxing"
 
         android:textAlignment="center"
         android:textColor="#000000"
@@ -404,7 +404,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
 
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.55" />
 
     <TextView
         android:id="@+id/txtViewGrey"
@@ -413,7 +413,7 @@
 
         android:ems="10"
 
-        android:text="Other"
+        android:text="@string/Other"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="@dimen/text_size"
@@ -437,6 +437,21 @@
         app:layout_constraintRight_toRightOf="@id/imgBtnGrey"
         app:layout_constraintTop_toTopOf="@id/imgBtnGrey"
         app:layout_constraintVertical_bias="0.6" />
+
+    <TextView
+        android:id="@+id/textViewTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textColor="#000000"
+        android:text=""
+        android:textAlignment="center"
+        android:textSize="18sp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 <!--
     <TextView
         android:id="@+id/textView"
@@ -491,6 +506,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.03" />
+
+
 <!--
     <Button
         android:id="@+id/testButton"
