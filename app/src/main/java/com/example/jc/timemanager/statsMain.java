@@ -19,6 +19,7 @@ public class statsMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats_main);
+        Log.d("statsTab1", "onCreate: FOR STATSMAIN");
         SharedPreferences pref = this.getSharedPreferences("MyPref", 0); // 0 - for private mode
 
         TextView tv1 = findViewById(R.id.textViewStats);

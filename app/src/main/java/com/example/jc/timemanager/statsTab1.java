@@ -38,16 +38,17 @@ import static android.content.ContentValues.TAG;
 
 public class statsTab1 extends Fragment {
     PieChart pie;
-    final String TAG = "map";
-    private float[] val=  {0f,0f,0f,0f,0f,0f,0f,0f};
-    private String[] name = {"Leisure","Exercise","Education","Work","Other","Preparation","Traveling","Relaxing"}; //{getString(R.string.Leisure),getString(R.string.Exercise),getString(R.string.Education),getString(R.string.Work),getString(R.string.Other),getString(R.string.Preparation),getString(R.string.Traveling),getString(R.string.Relaxing)};
-  //  {R.string.Leisure,R.string.Exercise,R.string.Education,R.string.Work,R.string.Other,R.string.Preparation,R.string.Traveling,R.string.}
+    final String TAG = "statsTab1";
+    private float[] val=  {0f,0f,0f,0f,0f,0f,0f,0f,0f};
+    private String[] name = {"Leisure","Exercise","Education","Work","Other","Preparation","Traveling","Relaxing","Unaccounted"}; //{getString(R.string.Leisure),getString(R.string.Exercise),getString(R.string.Education),getString(R.string.Work),getString(R.string.Other),getString(R.string.Preparation),getString(R.string.Traveling),getString(R.string.Relaxing)};
+    //  {R.string.Leisure,R.string.Exercise,R.string.Education,R.string.Work,R.string.Other,R.string.Preparation,R.string.Traveling,R.string.}
     private String description = "";
     private float orangeTotal = 0, redTotal = 0, purpleTotal = 0, blueTotal = 0, greyTotal = 0, cyanTotal = 0, yellowTotal = 0, pinkTotal = 0, greenTotal = 0;
 
 
 
     public void getValues() {
+        Log.d(TAG, "getValues: entering getValues");
         SharedPreferences pref = getActivity().getSharedPreferences("MyPref", 0); // 0 - for private mode
         TreeMap<String, ?> keys = new TreeMap<String, Object>(pref.getAll());
         //if the user has saved before
@@ -60,16 +61,18 @@ public class statsTab1 extends Fragment {
                 arr[ct] = entry.getKey();
                 ct++;
                 Log.d(TAG, "getValues: inside map for loop");
+                Log.d(TAG, "getValues: map loop");
             }
 
             for (int i = 0; i < arr.length; i++) {
                 String tmp = arr[i];
-
+                Log.d(TAG, "getValues: loop after map before if statment");
                 if (i < ct - 1) {
+                    Log.d(TAG, "getValues: loop after map AFTER if statment");
                     String a = keys.get(tmp).toString();
                     String[] split = a.split(",");
 
-                     //add up each position form each savedPreferences
+                    //add up each position form each savedPreferences
                     orangeTotal += Float.parseFloat(split[0]);
                     redTotal += Float.parseFloat(split[1]);
                     purpleTotal += Float.parseFloat(split[2]);
@@ -91,6 +94,7 @@ public class statsTab1 extends Fragment {
             val[5] = (cyanTotal/greenTotal)*100;
             val[6] = (yellowTotal/greenTotal)*100;
             val[7] = (pinkTotal/greenTotal)*100;
+            val[8] = (greenTotal - (orangeTotal + redTotal + purpleTotal + blueTotal + greyTotal + cyanTotal + yellowTotal + pinkTotal))/greenTotal * 100;
 
             // display the total time in a normal format
             int sec = Math.round(greenTotal / 1000);
@@ -102,7 +106,9 @@ public class statsTab1 extends Fragment {
             //hh:mm:ss
             Log.d("map", "getValues: " + pref.getInt("Day",0));
             NumberFormat numberFormat = new DecimalFormat("00");
-           description = "Total Time (hh:mm:ss) " + numberFormat.format(hr)+":"+ numberFormat.format(min) +":"+numberFormat.format(sec)+" over the past "+(pref.getInt("Day",0))+ " days!";
+            description = "Total Time (hh:mm:ss) " + numberFormat.format(hr)+":"+ numberFormat.format(min) +":"+numberFormat.format(sec)+" over the past "+(pref.getInt("Day",0))+ " days!";
+
+            Log.d(TAG, "getValues: exiting getResults");
         }
     }
 
@@ -120,18 +126,22 @@ public class statsTab1 extends Fragment {
         pie.setDescription(d);
         pie.setTransparentCircleAlpha(128);
         pie.setTransparentCircleRadius(30f);
-     //   pie.setRotationEnabled(true);
+        //   pie.setRotationEnabled(true);
         pie.setHoleRadius(20f);
         pie.setCenterText("Total Time!");
         pie.setCenterTextSize(10);
 
+        Log.d(TAG, "onCreateView: before setting dataSet");
         addDataSet();
+        Log.d(TAG, "onCreateView: after setting dataSet");
         pie.setEntryLabelColor(Color.BLACK);
 
+        Log.d(TAG, "onCreateView: before chartValue");
         pie.setOnChartValueSelectedListener( new OnChartValueSelectedListener(){
             @Override
             public void onValueSelected(Entry e, Highlight h){
-                Log.d("chart", "onValueSelected: "+e.toString());
+                Log.d(TAG, "onValueSelected: entered");
+                Log.d(TAG, "onValueSelected: "+e.toString());
                 int pos = e.toString().indexOf("y: ");
                 String sub = e.toString().substring(pos+3);
 
@@ -167,7 +177,7 @@ public class statsTab1 extends Fragment {
         });
 
 
-
+        Log.d(TAG, "onCreateView: after chartValue");
 
         return rootView;
     }
@@ -187,7 +197,6 @@ public class statsTab1 extends Fragment {
 
         PieDataSet pieDataSet = new PieDataSet(yEntry,"");
         pieDataSet.setSliceSpace(2);
-        pieDataSet.setValueTextSize(16);
 
 
         pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
@@ -209,6 +218,8 @@ public class statsTab1 extends Fragment {
             colors.add(Color.parseColor("#FFFF00"));
         if(val[7] > 1)
             colors.add(Color.parseColor("#FFC0CB"));
+        if(val[8] > 1)
+            colors.add(Color.parseColor("#44FF44"));
 
 
         Legend legend = pie.getLegend();
@@ -217,12 +228,19 @@ public class statsTab1 extends Fragment {
         // pie.setDrawEntryLabels(false);
         pie.animateXY(1000,1000);
         legend.setTextSize(10f);
-        legend.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend.setDrawInside(false);
+        legend.setDirection(Legend.LegendDirection.LEFT_TO_RIGHT);
+      //  legend.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
 
         pieDataSet.setColors(colors);
 
         PieData pieData = new PieData(pieDataSet);
         pie.setData(pieData);
         pie.invalidate();
+
+        Log.d(TAG, "addDataSet: leaving");
     }
 }

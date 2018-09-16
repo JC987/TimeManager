@@ -71,7 +71,8 @@ public class statsTab2 extends Fragment {
                 for (int i = 1; i < arr.length; i++) {
 
                     if (arr[i] != null && arr[i].contains("_")) { //i < pref.getInt("Day", 0) &&
-                        list.add(arr[i].substring(4, 6) + "/" + arr[i].substring(6, 8) + "/" + arr[i].substring(0, 4) + " @ " + arr[i].substring(9, 11) + ":" + arr[i].substring(11, 13) + ":" + arr[i].substring(13));
+                        String[] tmp = convertTime(arr[i].substring(9));
+                        list.add(arr[i].substring(4, 6) + "/" + arr[i].substring(6, 8) + "/" + arr[i].substring(0, 4) + " @ " + tmp[0]+ ":" + tmp[1] + ":" + tmp[2]);
                     } else if(!arr[i].equals("Day"))
                         list.add("Day " + i);
 
@@ -81,8 +82,8 @@ public class statsTab2 extends Fragment {
                 for (int i = 0; i < arr.length-1 ; i++) {
 
                     if (arr[i] != null && arr[i].contains("_")) { //i < pref.getInt("Day", 0) &&
-
-                        list.add(arr[i].substring(4, 6) + "/" + arr[i].substring(6, 8) + "/" + arr[i].substring(0, 4) + " @ " + arr[i].substring(9, 11) + ":" + arr[i].substring(11, 13) + ":" + arr[i].substring(13));
+                        String[] tmp = convertTime(arr[i].substring(9));
+                        list.add(arr[i].substring(4, 6) + "/" + arr[i].substring(6, 8) + "/" + arr[i].substring(0, 4) + " @ " + tmp[0]+ ":" + tmp[1] + ":" + tmp[2]);
                     } else
                         list.add("Day " + i);
 
@@ -129,4 +130,20 @@ public class statsTab2 extends Fragment {
 
             return rootView;
         }
+        public String[] convertTime(String str){
+            String[] output = new String[3];
+          //  String timeOfDay = "AM";
+            if(Integer.parseInt(str.substring(0,2))%12 != 0)
+                output[0] = Integer.parseInt(str.substring(0,2))%12+"";
+            else
+                output[0] = "12";
+
+            output[1] = str.substring(2,4);
+            if(Integer.parseInt(str.substring(0,2))>11)
+                output[2] = str.substring(4)+" PM";
+            else
+                output[2] = str.substring(4)+" AM";
+            return output;
+        }
+
 }

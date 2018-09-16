@@ -22,8 +22,9 @@ import java.util.ArrayList;
 
 public class singleDay extends AppCompatActivity {
     PieChart pie;
-    private float[] val= {8.09f,10.09f,16.09f,12.59f,18.88f,10.03f,11.5f,21.26f};
-    private String[] name = {"Leisure","Exercise","Education","Work","Other","Preparation","Traveling","Relaxing"};
+    private float[] val= {8.09f,10.09f,16.09f,12.59f,18.88f,10.03f,11.5f,21.26f,0f};
+    private String[] name = {"Leisure","Exercise","Education","Work","Other","Preparation","Traveling","Relaxing","Unaccounted"};
+    private static final String TAG = "singleDay";
     @Override
     public void finish() {
         super.finish();
@@ -45,10 +46,16 @@ public class singleDay extends AppCompatActivity {
         setContentView(R.layout.fragment_stats_tabbed);
         // Intent intent = new Intent();
         String[] s = getIntent().getStringExtra("value").split(",");
-
-        for(int i = 0; i<val.length;i++){
+        float total = 0f;
+        for(int i = 0; i<val.length-1;i++){
             val[i] = (Float.parseFloat(s[i])/Float.parseFloat(s[s.length-1]))*100;
+            total += Float.parseFloat(s[i]);
+            Log.d(TAG, "onCreate: s[i] is " + s[i]);
+            Log.d(TAG, "onCreate: total is " + total);
         }
+        Log.d(TAG, "onCreate: last one is " + s[s.length-1]);
+        if(Float.parseFloat(s[s.length-1]) > total)
+        val[val.length-1] = ((Float.parseFloat(s[s.length-1]) - total) / Float.parseFloat(s[s.length-1])) * 100;
         //float greenTotal = Float.parseFloat(s[s.length-1]);
 
 
@@ -170,6 +177,8 @@ public class singleDay extends AppCompatActivity {
             colors.add(Color.parseColor("#FFFF00"));
         if(val[7] > 1)
             colors.add(Color.parseColor("#FFC0CB"));
+        if(val[8] > 1)
+            colors.add(Color.parseColor("#44FF44"));
 
 
         Legend legend = pie.getLegend();

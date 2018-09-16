@@ -11,6 +11,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import java.sql.Time;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
@@ -28,6 +30,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -36,9 +39,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
+import android.widget.NumberPicker;
 import android.widget.RemoteViews;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 /**
  * MainActivity
@@ -419,6 +424,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        textViewTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!textViewTime.getText().toString().equals(""))
+                    showTextTimePicker();
+            }
+        });
 
 
 
@@ -501,27 +513,15 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, "showAlert: reflecting: clear notification");
                             //Deactivate all buttons and stops all timers
                             setEnableBtns(value);
-                            myTimer.stopAll();
+
                           //  myTimer.getLastTimer().start();
                             cat = "reflect";
                             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                             manager.cancelAll();
 
                             setTextViewTime();
-
-                            /*SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-                            String currentDateAndTime = sdf.format(new Date());
-                            String split[] = currentDateAndTime.split("_");
-
-                            String out = textViewTime.getText().toString();
-                            for(int z = 0; z<split[1].length(); z+=2){
-
-                                out+=split[1].substring(z,z+2);
-                                if(z<3)
-                                    out += " : ";
-                            }
-
-                            textViewTime.setText(out);*/
+                            myTimer.stopAll();
+                            myTimer.setWakeUpEnabled();
                         }
                     }
                 })
@@ -531,6 +531,36 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void  showTextTimePicker(){
+        final AlertDialog.Builder d = new AlertDialog.Builder(MainActivity.this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.time_picker_dialog, null);
+        d.setTitle("Set start day start value");
+        d.setView(dialogView);
+        final TimePicker timePicker = dialogView.findViewById(R.id.timePicker);
+
+        d.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String tmp = timePicker.getCurrentMinute().toString();
+                if(Integer.parseInt(timePicker.getCurrentMinute().toString()) < 10)
+                {
+                     tmp = "0"+timePicker.getCurrentMinute().toString();
+                }
+
+                String out2 = timePicker.getCurrentHour()+" : "+tmp+ " : " + "00";
+                out2 = convertNormalTime(out2);
+                textViewTime.setText(out2+" - ");
+            }
+        });
+        d.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        AlertDialog alertDialog = d.create();
+        alertDialog.show();
+    }
     /**
      * Reset all myTimers
      */
@@ -565,6 +595,7 @@ public class MainActivity extends AppCompatActivity {
         ib_y.setEnabled(val);
         ib_pk.setEnabled(val);
         reflect.setEnabled(val);
+        adjust.setEnabled(val);
         Log.d(TAG, "setEnableBtns: enable/disable buttons");
 
     }
@@ -587,8 +618,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onActivityResult: retrieve data from adjustTimers");
         //int x;
         if (resultCode == Activity.RESULT_OK) {
-            if(myTimer.isWakeUpEnabled())
+            if(myTimer.isWakeUpEnabled() && reflect.isEnabled())
                 setTextViewTime();
+
             switch (data.getStringExtra("cat")) {
                 case "Leisure":
                     Log.d(TAG, "onActivityResult: adjust orange");
@@ -678,19 +710,23 @@ public class MainActivity extends AppCompatActivity {
 
                 case "Wake Up!":
                     Log.d(TAG, "onActivityResult: adjust green");
-                    if (myTimer.getWakeUpText() - result < 0) {
+                    if (myTimer.getWakeUpTextInt() - result < 0) {
                         Toast.makeText(MainActivity.this, "Can not remove more time than you have", Toast.LENGTH_LONG).show();
                         break;
-                    }
-                    if(!myTimer.isWakeUpEnabled())
+                    } // Log.d(TAG, "onActivityResult: asdfadsfasdfasdfasdfsadf"+reflect.isEnabled());
+                   // adjustTextTime();
+                    if(!myTimer.isWakeUpEnabled() ) {
                         myTimer.wakeUp(result + myTimer.getWakeUpBase());
+
+                    }
                     else
                         myTimer.wakeUp(result + SystemClock.elapsedRealtime());
                 default:
 
             }
             ib_g.setEnabled(false);
-
+            //if(myTimer.isWakeUpEnabled())
+        //        adjustTextTime();
         }
 
     }
@@ -704,7 +740,7 @@ public class MainActivity extends AppCompatActivity {
         final SharedPreferences pref = this.getSharedPreferences("MyPref", 0); // 0 - for private mode
         final SharedPreferences.Editor editor = pref.edit();
 
-        float o,r,p,b,gr,c,y,pk,sum;
+        float o,r,p,b,gr,c,y,pk,sum,g;
         //gets the value from the text of each chronometer
 
         o = (float) orange.getTextValueMilli();
@@ -715,10 +751,12 @@ public class MainActivity extends AppCompatActivity {
         c = (float) cyan.getTextValueMilli();
         y = (float) yellow.getTextValueMilli();
         pk = (float) pink.getTextValueMilli();
+        g = (float) myTimer.getWakeUpTextInt();
 
         //use the sum of all the timers instead of text from the wakeUp timer.
         sum = o+r+p+b+gr+c+y+pk;
-
+        if(g>sum)
+            sum = g;
         //day is a counter for my current day which can not be more than 7
         //this counter is not necessary and will probably be removed
         int day = pref.getInt("Day",0);
@@ -748,11 +786,37 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
         Log.d(TAG, "saveDay: saving data");
     }
+/*
+    private void adjustTextTime(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String currentDateAndTime = sdf.format(new Date());
+        String split[] = currentDateAndTime.split("_");
+        String wakeSplit[] = myTimer.getWakeUpTextString().split(":");
+        String out="";
 
+            if(wakeSplit.length == 3) {
+                out += (Integer.parseInt(split[1].substring(0, 2)) - Integer.parseInt(wakeSplit[0]) + ":")
+                        + ((Integer.parseInt(split[1].substring(2, 4)) - Integer.parseInt(wakeSplit[1]) % 60)+ ":")
+                        + ((Integer.parseInt(split[1].substring(4)) - Integer.parseInt(wakeSplit[2]) % 60));
+            }
+            else{
+                out += (Integer.parseInt(split[1].substring(0, 2))+ ":")
+                        + ((Integer.parseInt(split[1].substring(2, 4)) - Integer.parseInt(wakeSplit[1]) % 60)+ ":")
+                        + ((Integer.parseInt(split[1].substring(4)) - Integer.parseInt(wakeSplit[2]) % 60));
+            }
+                 //   out+=split[1].substring(i,i+2);
+
+        out = convertNormalTime(out);
+        if(textViewTime.getText().toString().equals(""))
+            out += "  -  ";
+        textViewTime.append(out);
+    }
+    */
     private void setTextViewTime(){
 
         if(!ib_g.isEnabled() && reflect.isEnabled())
             return ;
+        
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String currentDateAndTime = sdf.format(new Date());
         String split[] = currentDateAndTime.split("_");
@@ -772,6 +836,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String convertNormalTime(String time){
+
         String split[] = time.split(" : ");
         String end = " AM", out="";
         if(Integer.parseInt(split[0]) > 11)
@@ -862,7 +927,7 @@ public class MainActivity extends AppCompatActivity {
         else
             editor.putLong("pink",pink.getTextValueMilli());
         if(cat.equals("reflect"))
-            editor.putLong("green",myTimer.getWakeUpText());
+            editor.putLong("green",myTimer.getWakeUpTextInt());
         else
             editor.putLong("green",myTimer.getWakeUpBase());
     }

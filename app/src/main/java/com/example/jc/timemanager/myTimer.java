@@ -190,8 +190,8 @@ public class myTimer {
             lastTimer.getTimer().stop();
         }
 
-        wakeUp.stop();// stop wakeUp timer
-        wakeUp.setEnabled(true);
+        //wakeUp.stop();// stop wakeUp timer
+        //wakeUp.setEnabled(true);
 
 
     }
@@ -221,7 +221,7 @@ public class myTimer {
             return ( (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000));
 
     }
-    public static int getWakeUpText(){
+    public static int getWakeUpTextInt(){
         Log.d(TAG, "getWakeUpText: ");
         String a[];
         a = wakeUp.getText().toString().split(":");
@@ -230,6 +230,9 @@ public class myTimer {
         else
             return ( (Integer.parseInt(a[0])*60*60*1000) + (Integer.parseInt(a[1])*60*1000) + (Integer.parseInt(a[2])*1000));
 
+    }
+    public static String getWakeUpTextString(){
+        return wakeUp.getText().toString();
     }
 
 
@@ -245,6 +248,11 @@ public class myTimer {
     }
     public void setTimer(Chronometer c){
         timer = c;
+    }
+    public static void setWakeUpEnabled(){
+        wakeUp.setEnabled(false);
+        wakeUp.stop();
+
     }
     public long getLastPause(){
         return lastPause;
