@@ -19,7 +19,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginRight="10dp" />
         <TextView
-            android:textSize="14dp"
+            android:textSize="18dp"
             android:textColor="#000"
             android:text="Testing"
 
@@ -31,12 +31,23 @@
         <Chronometer
             android:textSize="24dp"
             android:textColor="#000"
-            android:text="Testing is awecome"
+            android:text="Testing is awesome"
             android:id="@+id/remoteChrono"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/image"
             android:layout_below="@id/remoteText"
             />
+
+        <Button
+            android:id="@+id/remoteButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/remote_close_button"
+            android:text="X"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
     </RelativeLayout>
 </LinearLayout>

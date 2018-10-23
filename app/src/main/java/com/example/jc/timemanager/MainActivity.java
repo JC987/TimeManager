@@ -1,11 +1,13 @@
 package com.example.jc.timemanager;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -434,6 +436,18 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 9);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Intent intent1 = new Intent(MainActivity.this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) MainActivity.this.getSystemService(MainActivity.this.ALARM_SERVICE);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+
+
+
     }
 
     /**
@@ -857,13 +871,14 @@ public class MainActivity extends AppCompatActivity {
         remoteViews.setTextViewText(R.id.remoteText,name + " \t");
         //remoteViews.setTextColor(R.id.remoteText,);
 
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"channelId")
                 .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setContentTitle("Title")
                 .setContent(remoteViews)
              //   .setContentText(orange.getTimer().getText().toString())
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setOngoing(false)
+                .setOngoing(true)
                // .setCustomContentView(remoteViews);
 //                .setCustomBigContentView(remoteViews)
                 .setPriority(NotificationCompat.PRIORITY_MAX);
@@ -875,6 +890,17 @@ public class MainActivity extends AppCompatActivity {
 
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+
+
+        //this is the intent that is supposed to be called when the
+        //button is clicked
+        Intent switchIntent = new Intent(this, switchButtonListener.class);
+        PendingIntent pendingSwitchIntent = PendingIntent.getBroadcast(this, 0,
+                switchIntent, 0);
+
+        remoteViews.setOnClickPendingIntent(R.id.remoteButton,
+                pendingSwitchIntent);
+        Log.d("Here", "I am here2");
         if(timer.isPaused()) {
             manager.cancelAll();
             Log.d(TAG, "build: close noti");
@@ -884,7 +910,15 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "build: build noti");
         }
 }
+    public static class switchButtonListener extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("Here", "I am here");
 
+            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.cancelAll();
+        }
+    }
     public void saveTimerValue(SharedPreferences.Editor editor){
 
         if(cat.equals("orange") )

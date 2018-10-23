@@ -29,7 +29,10 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+
+        />
+
         <activity
             android:name=".adjustTimers"
             android:screenOrientation="portrait"
@@ -57,7 +60,9 @@
         <activity
             android:name=".basicActivity"
             android:label="@string/title_activity_basic"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <receiver android:name="MainActivity$switchButtonListener" />
     </application>
+
 
 </manifest>

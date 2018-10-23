@@ -8,4 +8,7 @@
     <dimen name="appbar_padding_top">8dp</dimen>
     <dimen name="text_size">12sp</dimen>
     <dimen name="text_size_util_btn">12sp</dimen>
+
+    <dimen name="text_size_stats_legend">3.5sp</dimen>
+    <dimen name="text_size_stats_description">4sp</dimen>
 </resources>
