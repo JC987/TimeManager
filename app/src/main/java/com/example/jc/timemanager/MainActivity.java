@@ -65,29 +65,9 @@ public class MainActivity extends AppCompatActivity {
     String cat="";
     private static final String TAG = "mainActivity";
     TextView textViewTime;
-    //Button curr;
-    //Chronometer curr_c;
-    //ScrollView mScrollView;
-    //  Boolean comingFromActivity = false;
- 
-  /*  private Boolean isViewVisible(View view) {
-        Rect scrollBounds = new Rect();
-        mScrollView.getHitRect(scrollBounds);
-        if (view.getLocalVisibleRect(scrollBounds)) {
-       //     Toast.makeText(MainActivity.this,"in",Toast.LENGTH_SHORT).show();
-            curr.setVisibility(View.GONE);
-            curr_c.setVisibility(View.GONE);
-            return true;
-            // Any portion of the imageView, even a single pixel, is within the visible window
-        } else {
-            curr.setVisibility(View.VISIBLE);
-            curr_c.setVisibility(View.VISIBLE);
-        //    Toast.makeText(MainActivity.this,"out",Toast.LENGTH_SHORT).show();
-            return false;
-            // NONE of the imageView is within the visible window
-        }
-        }
-*/
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,28 +105,36 @@ public class MainActivity extends AppCompatActivity {
 
 
         final SharedPreferences pref = this.getSharedPreferences("MyPref", 0); // 0 - for private mode
-        final SharedPreferences pref2 = this.getSharedPreferences("timerValues", 0); // 0 - for private mode
+        final SharedPreferences timerPref = this.getSharedPreferences("timerValues", 0); // 0 - for private mode
+        // cat holds the last category that was running when app was previously killed
+        cat = timerPref.getString("running","");
 
-        cat = pref2.getString("running","");
-
-        green = new myTimer(cm_g,true);
-        orange = new myTimer(cm_o,pref2.getLong("orange",0),cat.equals("orange"));
-        red = new myTimer(cm_r,pref2.getLong("red",0),cat.equals("red"));
-        purple = new myTimer(cm_p,pref2.getLong("purple",0),cat.equals("purple"));
-        blue = new myTimer(cm_b,pref2.getLong("blue",0),cat.equals("blue"));
-        grey = new myTimer(cm_gr,pref2.getLong("grey",0),cat.equals("grey"));
-        cyan = new myTimer(cm_c,pref2.getLong("cyan",0),cat.equals("cyan"));
-        yellow = new myTimer(cm_y,pref2.getLong("yellow",0),cat.equals("yellow"));
-        pink = new myTimer(cm_pk,pref2.getLong("pink",0),cat.equals("pink"));
-        textViewTime.setText(pref2.getString("textTime",""));
+        //assign myTimers
+        green = new myTimer(cm_g,true);//wake up timer
+        //myTimer mytimer = new myTimer(Chronometer,previous timer value, was this timer running last)
+        orange = new myTimer(cm_o,timerPref.getLong("orange",0),cat.equals("orange"));
+        red = new myTimer(cm_r,timerPref.getLong("red",0),cat.equals("red"));
+        purple = new myTimer(cm_p,timerPref.getLong("purple",0),cat.equals("purple"));
+        blue = new myTimer(cm_b,timerPref.getLong("blue",0),cat.equals("blue"));
+        grey = new myTimer(cm_gr,timerPref.getLong("grey",0),cat.equals("grey"));
+        cyan = new myTimer(cm_c,timerPref.getLong("cyan",0),cat.equals("cyan"));
+        yellow = new myTimer(cm_y,timerPref.getLong("yellow",0),cat.equals("yellow"));
+        pink = new myTimer(cm_pk,timerPref.getLong("pink",0),cat.equals("pink"));
+        textViewTime.setText(timerPref.getString("textTime",""));
 
 
         Log.d(TAG, "onCreate: Instantiating myTimers");
 
         switch (cat) {
+            /*
+                if this timer was running last
+                    start timer
+                    adjust the wake up timer
+                    disable wake up button
+             */
             case "orange":
                 orange.start();
-                myTimer.wakeUp(pref2.getLong("green",0));
+                myTimer.wakeUp(timerPref.getLong("green",0));
                 ib_g.setEnabled(false);
                 Log.d(TAG, "onCreate: resuming, start orange");
                 break;
@@ -154,18 +142,18 @@ public class MainActivity extends AppCompatActivity {
             case "red":
                 Log.d(TAG, "onCreate: resuming, start red");
                 red.start();
-                myTimer.wakeUp(pref2.getLong("green",0));
+                myTimer.wakeUp(timerPref.getLong("green",0));
                 ib_g.setEnabled(false);
                 break;
             case "purple":
                 Log.d(TAG, "onCreate: resuming, start purple");
                 purple.start();
-                myTimer.wakeUp(pref2.getLong("green",0));
+                myTimer.wakeUp(timerPref.getLong("green",0));
                 ib_g.setEnabled(false);
                 break;
             case "blue":
                 blue.start();
-                myTimer.wakeUp(pref2.getLong("green",0));
+                myTimer.wakeUp(timerPref.getLong("green",0));
                 Log.d(TAG, "onCreate: resuming, start blue");
                 ib_g.setEnabled(false);
                 break;
@@ -173,74 +161,55 @@ public class MainActivity extends AppCompatActivity {
             case "grey":
                 Log.d(TAG, "onCreate: resuming, start grey");
                 grey.start();
-                myTimer.wakeUp(pref2.getLong("green",0));
+                myTimer.wakeUp(timerPref.getLong("green",0));
                 ib_g.setEnabled(false);
                 break;
             case "cyan":
                 Log.d(TAG, "onCreate: resuming, start cyan");
                 cyan.start();
-                myTimer.wakeUp(pref2.getLong("green",0));
+                myTimer.wakeUp(timerPref.getLong("green",0));
                 ib_g.setEnabled(false);
                 break;
             case "yellow":
                 Log.d(TAG, "onCreate: resuming, start yellow");
                 yellow.start();
-                myTimer.wakeUp(pref2.getLong("green",0));
+                myTimer.wakeUp(timerPref.getLong("green",0));
                 ib_g.setEnabled(false);
                 break;
             case "pink":
                 Log.d(TAG, "onCreate: resuming, start pink");
                 pink.start();
-                myTimer.wakeUp(pref2.getLong("green",0));
+                myTimer.wakeUp(timerPref.getLong("green",0));
                 ib_g.setEnabled(false);
                 break;
             case "green":
                 Log.d(TAG, "onCreate: resuming, start green");
-                myTimer.wakeUp(pref2.getLong("green",0));
+                myTimer.wakeUp(timerPref.getLong("green",0));
                 ib_g.setEnabled(false);
                 break;
             case "reflect":
-                Log.d(TAG, "onCreate: ref");
-                myTimer.wakeUp(myTimer.getWakeUpBase() - pref2.getLong("green",0));
+                Log.d(TAG, "onCreate: case reflect");
+                myTimer.wakeUp(myTimer.getWakeUpBase() - timerPref.getLong("green",0));
                 myTimer.stopAll();
                 setEnableBtns(false);
                 break;
             case "paused":
                 Log.d(TAG, "onCreate: resuming, timers paused");
-                myTimer.wakeUp(pref2.getLong("green",0));
+                myTimer.wakeUp(timerPref.getLong("green",0));
                 ib_g.setEnabled(false);
                 break;
 
             default:
-                Log.d(TAG, "onCreate: def");
+                Log.d(TAG, "onCreate: default");
         }
 
-        if(textViewTime.getText().toString().endsWith("M")){
-       //     setEnableBtns(false);
-
-            //myTimer.stopAll();
-        }
-
+        //change activities animation
         final Animation animAlpha = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
         final Animation animScale = AnimationUtils.loadAnimation(this, R.anim.anim_scale);
 
 
-
-
-        /*Button testButton = findViewById(R.id.testButton);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-           // build();
-           //     Intent intent = new Intent(MainActivity.this,testActivity.class);
-             //   startActivity(intent);
-            }
-        });*/
-
-
-
         /**
-         * When clicked start adjustTimer for a result
+         * When adjust pressed start adjustTimer activity for a result
          */
         adjust.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,7 +223,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        /**
+         * When endDay pressed calls a function that shows a dialog box
+         */
         endDay.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 v.startAnimation(animScale);
@@ -264,6 +235,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * When reflect pressed calls a function that shows a dialog box
+         */
         reflect.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -276,6 +250,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
+        /**
+         * When stat pressed change activity to the stats activity
+         */
         stat.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -288,8 +265,13 @@ public class MainActivity extends AppCompatActivity {
         }));
 
 
+        /*ImageButton pressed events
+            On image btn pressed
+                start wake up timer and disable wakeup btn
+                set the textView
+                set this timer as last started
 
-        //ImageButton pressed events
+        */
 
         ib_g.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -300,21 +282,6 @@ public class MainActivity extends AppCompatActivity {
                 ib_g.setEnabled(false);
                 cat = "green";
                 Log.d(TAG, "ib_g: onClick: starting green");
-
-              /*  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-                String currentDateAndTime = sdf.format(new Date());
-                String split[] = currentDateAndTime.split("_");
-
-                String out="";
-                for(int i = 0; i<split[1].length(); i+=2){
-
-                    out+=split[1].substring(i,i+2);
-                    if(i<3)
-                        out += " : ";
-                }
-                out += "  -  ";
-                textViewTime.setText(out);
-                */
 
             }
         });
@@ -437,7 +404,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        Calendar calendar = Calendar.getInstance();
+      /*  Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 9);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
@@ -446,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
         AlarmManager am = (AlarmManager) MainActivity.this.getSystemService(MainActivity.this.ALARM_SERVICE);
         am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
 
-
+*/
 
     }
 
@@ -480,7 +447,7 @@ public class MainActivity extends AppCompatActivity {
                         if (value) { //Ending day
 
                             AlertDialog.Builder alert2 = new AlertDialog.Builder(MainActivity.this);
-                            //Display msg
+                            //Display second msg
                             alert2.setMessage("Do you want to save the day?")
                                     .setPositiveButton("Yes, Save Data", new DialogInterface.OnClickListener() {
                                                 @Override
@@ -545,6 +512,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * creates a dialog that has a time picker, the value from the time picker gets set
+     * to the text view
+     */
+
     public void  showTextTimePicker(){
         final AlertDialog.Builder d = new AlertDialog.Builder(MainActivity.this);
         LayoutInflater inflater = this.getLayoutInflater();
@@ -575,6 +547,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alertDialog = d.create();
         alertDialog.show();
     }
+
     /**
      * Reset all myTimers
      */
@@ -627,15 +600,18 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // result is the value that will be removed from a timer
         long result = data.getLongExtra("sub", 0);
+        //true if we affecting wake up timer as well
         boolean affect = data.getBooleanExtra("affect",true);
         Log.d(TAG, "onActivityResult: retrieve data from adjustTimers");
-        //int x;
+
         if (resultCode == Activity.RESULT_OK) {
             if(myTimer.isWakeUpEnabled() && reflect.isEnabled())
                 setTextViewTime();
 
             switch (data.getStringExtra("cat")) {
+
                 case "Leisure":
                     Log.d(TAG, "onActivityResult: adjust orange");
                     if (orange.getTextValueMilli() - result > 0)
@@ -727,11 +703,10 @@ public class MainActivity extends AppCompatActivity {
                     if (myTimer.getWakeUpTextInt() - result < 0) {
                         Toast.makeText(MainActivity.this, "Can not remove more time than you have", Toast.LENGTH_LONG).show();
                         break;
-                    } // Log.d(TAG, "onActivityResult: asdfadsfasdfasdfasdfsadf"+reflect.isEnabled());
-                   // adjustTextTime();
+                    }
+
                     if(!myTimer.isWakeUpEnabled() ) {
                         myTimer.wakeUp(result + myTimer.getWakeUpBase());
-
                     }
                     else
                         myTimer.wakeUp(result + SystemClock.elapsedRealtime());
@@ -739,8 +714,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
             ib_g.setEnabled(false);
-            //if(myTimer.isWakeUpEnabled())
-        //        adjustTextTime();
+
         }
 
     }
@@ -755,8 +729,8 @@ public class MainActivity extends AppCompatActivity {
         final SharedPreferences.Editor editor = pref.edit();
 
         float o,r,p,b,gr,c,y,pk,sum,g;
-        //gets the value from the text of each chronometer
 
+        //gets the value from the text of each chronometer
         o = (float) orange.getTextValueMilli();
         r = (float) red.getTextValueMilli();
         p =(float) purple.getTextValueMilli();
@@ -769,10 +743,11 @@ public class MainActivity extends AppCompatActivity {
 
         //use the sum of all the timers instead of text from the wakeUp timer.
         sum = o+r+p+b+gr+c+y+pk;
+
         if(g>sum)
             sum = g;
-        //day is a counter for my current day which can not be more than 7
-        //this counter is not necessary and will probably be removed
+
+        //day is a counter for my current day which can not be more than 30
         int day = pref.getInt("Day",0);
         if (day>30)
             day = 30;
@@ -800,32 +775,10 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
         Log.d(TAG, "saveDay: saving data");
     }
-/*
-    private void adjustTextTime(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String currentDateAndTime = sdf.format(new Date());
-        String split[] = currentDateAndTime.split("_");
-        String wakeSplit[] = myTimer.getWakeUpTextString().split(":");
-        String out="";
 
-            if(wakeSplit.length == 3) {
-                out += (Integer.parseInt(split[1].substring(0, 2)) - Integer.parseInt(wakeSplit[0]) + ":")
-                        + ((Integer.parseInt(split[1].substring(2, 4)) - Integer.parseInt(wakeSplit[1]) % 60)+ ":")
-                        + ((Integer.parseInt(split[1].substring(4)) - Integer.parseInt(wakeSplit[2]) % 60));
-            }
-            else{
-                out += (Integer.parseInt(split[1].substring(0, 2))+ ":")
-                        + ((Integer.parseInt(split[1].substring(2, 4)) - Integer.parseInt(wakeSplit[1]) % 60)+ ":")
-                        + ((Integer.parseInt(split[1].substring(4)) - Integer.parseInt(wakeSplit[2]) % 60));
-            }
-                 //   out+=split[1].substring(i,i+2);
-
-        out = convertNormalTime(out);
-        if(textViewTime.getText().toString().equals(""))
-            out += "  -  ";
-        textViewTime.append(out);
-    }
-    */
+    /**
+     * set the text view value
+     */
     private void setTextViewTime(){
 
         if(!ib_g.isEnabled() && reflect.isEnabled())
@@ -849,6 +802,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Converts a string that represent time in military time and convert it to standard format
+     * @param time is a string that represents a time in military i.e. "20:30:15"
+     * @return a string that reprsents time in normal format i.e. "10:30:15PM"
+     */
     private String convertNormalTime(String time){
 
         String split[] = time.split(" : ");
@@ -863,24 +821,26 @@ public class MainActivity extends AppCompatActivity {
         return out;
 
     }
+
+    /**
+     * Create a custom notification that display which category is currently running and it's
+     * timer value
+     * @param timer myTimer that is currently running
+     * @param name name of the category
+     */
     private void build(myTimer timer,String name) {
-
-
+        //set up remote view
         RemoteViews remoteViews = new RemoteViews(getPackageName(),R.layout.remote_view_test);
         remoteViews.setChronometer(R.id.remoteChrono,timer.getTimer().getBase(),timer.getTimer().getFormat(),true);
         remoteViews.setTextViewText(R.id.remoteText,name + " \t");
-        //remoteViews.setTextColor(R.id.remoteText,);
 
-
+        //build noti
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"channelId")
                 .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setContentTitle("Title")
                 .setContent(remoteViews)
-             //   .setContentText(orange.getTimer().getText().toString())
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setOngoing(true)
-               // .setCustomContentView(remoteViews);
-//                .setCustomBigContentView(remoteViews)
                 .setPriority(NotificationCompat.PRIORITY_MAX);
 
         Intent notificationIntent = new Intent(this,MainActivity.class);
@@ -893,14 +853,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         //this is the intent that is supposed to be called when the
-        //button is clicked
+        //button on the notification is clicked
         Intent switchIntent = new Intent(this, switchButtonListener.class);
         PendingIntent pendingSwitchIntent = PendingIntent.getBroadcast(this, 0,
                 switchIntent, 0);
 
         remoteViews.setOnClickPendingIntent(R.id.remoteButton,
                 pendingSwitchIntent);
-        Log.d("Here", "I am here2");
+
         if(timer.isPaused()) {
             manager.cancelAll();
             Log.d(TAG, "build: close noti");
@@ -919,6 +879,12 @@ public class MainActivity extends AppCompatActivity {
             manager.cancelAll();
         }
     }
+
+    /**
+     * save timers value if timer is running save its base
+     else save timer text value.
+     * @param editor goes to shared preferences "timerValues"
+     */
     public void saveTimerValue(SharedPreferences.Editor editor){
 
         if(cat.equals("orange") )
@@ -960,23 +926,26 @@ public class MainActivity extends AppCompatActivity {
             editor.putLong("pink",pink.getTimer().getBase());
         else
             editor.putLong("pink",pink.getTextValueMilli());
+
         if(cat.equals("reflect"))
             editor.putLong("green",myTimer.getWakeUpTextInt());
         else
             editor.putLong("green",myTimer.getWakeUpBase());
     }
 
+    /**
+     * call saveTimerValue and save which category is currently running and apply changes
+     */
     public void saveClose(){
+        final SharedPreferences timerPref = this.getSharedPreferences("timerValues", 0); // 0 - for private mode
+        final SharedPreferences.Editor timerEditor = timerPref.edit();
 
-        final SharedPreferences preferences = this.getSharedPreferences("timerValues", 0); // 0 - for private mode
-        final SharedPreferences.Editor editor = preferences.edit();
+        saveTimerValue(timerEditor);
 
-        saveTimerValue(editor);
+        timerEditor.putString("running",cat);
+        timerEditor.putString("textTime",textViewTime.getText().toString());
 
-        editor.putString("running",cat);
-        editor.putString("textTime",textViewTime.getText().toString());
-
-        editor.apply();
+        timerEditor.apply();
         Log.d(TAG, "saveClose: applied");
 
     }

@@ -37,10 +37,6 @@
             android:name=".adjustTimers"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity
-            android:name=".ScrollingActivity"
-            android:label="@string/title_activity_scrolling"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".testActivity" />
         <activity
             android:name=".statsMain"
@@ -53,14 +49,7 @@
         <activity
             android:name=".singleDay"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".nav_Activity"
-            android:label="@string/title_activity_nav_"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".basicActivity"
-            android:label="@string/title_activity_basic"
-            android:theme="@style/AppTheme.NoActionBar"/>
+
         <receiver android:name="MainActivity$switchButtonListener" />
     </application>
 

@@ -45,7 +45,7 @@ public class myTimer {
     }
 
     /**
-     * myTimer constructor
+     * myTimer constructor for wakeup timer
      * @param c a chronometer
      * @param isWakeUp is this myTimer the wakeUp timer
      */
@@ -59,6 +59,14 @@ public class myTimer {
             lastPause = 0;
         }
     }
+
+    /**
+     * myTimer constructor used in main for the rest of myTimers.
+     * @param c is a chronometer
+     * @param val is a long that hold value to determine the base for myTimer
+     * @param running is a bool, hold the value of if timer was running before the activity
+     *                was destroyed .
+     */
     public myTimer(Chronometer c, long val,boolean running){
         timer = c;
         lastPause = 0;
@@ -77,6 +85,9 @@ public class myTimer {
         }
     }
 
+    /**
+     * checks if timer is paused
+     */
     private void pausingHandler(){
         if(lastTimer!=null) {
             Log.d(TAG, "pausingHandler: we have previously started a timer");
@@ -127,6 +138,7 @@ public class myTimer {
     /**
      * Adjust time of a myTimer
      * @param l the value(result from adjustTimers) to add to the myTimer
+     * @param b are we affecting the wakeup timer
      */
     public void add(long l, boolean b){
     if(lastTimer == this ) {

@@ -60,7 +60,7 @@ public class adjustTimers extends AppCompatActivity {
         //categories to be added to the first spinner
         List<String> categories = new ArrayList<String>();
         categories.add("~~Please Select a Category~~");
-      // ,getString(R.string.Relaxing)};
+
         categories.add(getString(R.string.Leisure));
         categories.add(getString(R.string.Exercise));
         categories.add(getString(R.string.Education));
@@ -71,12 +71,13 @@ public class adjustTimers extends AppCompatActivity {
         categories.add(getString(R.string.Relaxing));
         categories.add(getString(R.string.wake_up));
 
-        //categories to be added to second spinner
+        //categories for second spinner
         List<String> categories2 = new ArrayList<String>();
         categories2.add("~~Add or Remove Time~~");
         categories2.add("Add Time");
         categories2.add("Remove Time");
 
+        //categories for third spinner
         List<String> categories3 = new ArrayList<String>();
         categories3.add("~~Affect WakeUp Timer~~");
         categories3.add("Yes");
@@ -84,12 +85,12 @@ public class adjustTimers extends AppCompatActivity {
 
 
 
-        // Creating adapter for spinner
+        // Creating adapter for spinners
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
         ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories2);
         ArrayAdapter<String> dataAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories3);
 
-        // Drop down layout style - list view with radio button
+        // Drop down layout style
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dataAdapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -101,6 +102,7 @@ public class adjustTimers extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: created spinner adapters");
 
+        //change third spinner value when the second spinners value is Wake Up!
         spnTimerCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
@@ -132,11 +134,11 @@ public class adjustTimers extends AppCompatActivity {
 
                 //-1 raised to the spinners position gives us the sign of result
                 //convert the desired min, ten min, and hour to millisecond then add them up and
-                    // multiple it by the sign to get the result
+                // multiple it by the sign to get the result
                 result=((long)Math.pow (-1,spnAdjustTime.getSelectedItemPosition()) *((60 * 1000 * min) + (60 * 10000 * tmin) + (60 * 60 * 1000 * hr)) );
 
                 //return the result and category
-                resultIntent.putExtra("sub",result);//(-1* ((60 * 1000 * min) + (60 * 10000 * tmin) + (60 * 60 * 1000 * hr))) );
+                resultIntent.putExtra("sub",result);
                 resultIntent.putExtra("sign",spnAdjustTime.getSelectedItemPosition());
                 resultIntent.putExtra("cat",spnTimerCategories.getSelectedItem().toString());
                 boolean tmpBool = true;
