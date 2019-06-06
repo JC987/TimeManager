@@ -32,7 +32,12 @@ public class singleDay extends AppCompatActivity {
     private float[] val= {8.09f,10.09f,16.09f,12.59f,18.88f,10.03f,11.5f,21.26f,0f};
     private String[] name = {"Leisure","Exercise","Education","Work","Other","Preparation","Traveling","Relaxing","Unaccounted"};
     private static final String TAG = "singleDay";
-    private boolean showUnacc=true;
+    private String description = "";
+    private float totalTime = 0f;
+    private boolean showUnacc=true, showDesc = true, showName = false;
+    private Button button;
+    private String[] s;
+
     @Override
     public void finish() {
         super.finish();
@@ -46,57 +51,55 @@ public class singleDay extends AppCompatActivity {
         //overridePendingTransition(R.anim.hold, R.anim.pull_out_to_left);
         super.onPause();
     }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
-        //  overridePendingTransition(R.anim.pull_in_from_left, R.anim.hold);
-        setContentView(R.layout.fragment_stats_tabbed);
-        // Intent intent = new Intent();
-        String[] s = getIntent().getStringExtra("value").split(",");
-        float total = 0f;
-        Spinner spinner = findViewById(R.id.tab1Spinner);
-        Button button = findViewById(R.id.tab1Button);
-        spinner.setVisibility(View.GONE);
-        button.setVisibility(View.GONE);
-        for(int i = 0; i<val.length-1;i++){
-            val[i] = (Float.parseFloat(s[i])/Float.parseFloat(s[s.length-1]))*100;
-            total += Float.parseFloat(s[i]);
-            Log.d(TAG, "onCreate: s[i] is " + s[i]);
-            Log.d(TAG, "onCreate: total is " + total);
+    /**
+     * Get values from intent and create pie chart
+     */
+    protected  void getValues(){
+        //s is a string array that holds each categories values, s[8] holds the value from wake up timer(GREEN)
+        float sum = Float.parseFloat(s[0]) + Float.parseFloat(s[1]) + Float.parseFloat(s[2]) + Float.parseFloat(s[3]) + Float.parseFloat(s[4]) + Float.parseFloat(s[5]) + Float.parseFloat(s[6]) + Float.parseFloat(s[7]);
+        totalTime = Float.parseFloat(s[s.length-1]);
+        
+        //if the wakeup timer is larger than the sum of all other timers
+        if(Float.parseFloat(s[s.length-1]) > sum) {
+            if (showUnacc) { //show unaccounted slice
+                val[val.length - 1] = ((Float.parseFloat(s[s.length - 1]) - sum) / Float.parseFloat(s[s.length - 1])) * 100;
+                
+            }else {
+                //don't show unaccounted slice
+                //any slice with a val < 1 will not be shown
+                val[val.length - 1] = 0.5f;
+                totalTime = sum;
+            }
         }
-        Log.d(TAG, "onCreate: last one is " + s[s.length-1]);
-        if(Float.parseFloat(s[s.length-1]) > total)
-        val[val.length-1] = ((Float.parseFloat(s[s.length-1]) - total) / Float.parseFloat(s[s.length-1])) * 100;
-        //float greenTotal = Float.parseFloat(s[s.length-1]);
 
+        for(int i = 0; i<val.length-1;i++){
+            val[i] = (Float.parseFloat(s[i])/totalTime)*100;
+            Log.d(TAG, "onCreate: s["+ i + "] is " + s[i]);
+        }
 
+        pie = (PieChart) findViewById(R.id.pie);
 
-
-        int sec = Math.round(Float.parseFloat(s[s.length-1]) / 1000);
+        //convert totalTime form milli to (HH:MM:SS) and add description
+        int sec = Math.round(totalTime / 1000);
         int min = (int) Math.floor(sec / 60);
         int hr = (int) Math.floor(min / 60);
         sec = sec - (min * 60);
         min = min - (hr * 60);
 
-
-
-
-
-
-        pie = (PieChart) findViewById(R.id.pie);
         Description d = new Description();
         NumberFormat numberFormat = new DecimalFormat("00");
-        
-        String desc  = "Total Time (hh:mm:ss) " + numberFormat.format(hr)+":"+ numberFormat.format(min) +":"+numberFormat.format(sec)+" for "+getIntent().getStringExtra("day").substring(0,10);
-        d.setText(desc);
-        //d0.setTextSize(16f);
+
+        if(showDesc)
+            description  = "Total Time " + numberFormat.format(hr)+":"+ numberFormat.format(min) +":"+numberFormat.format(sec)+" for "+getIntent().getStringExtra("day").substring(0,10);
+        else
+            description = " ";
+        d.setText(description);
         d.setTextSize(getResources().getDimensionPixelSize(R.dimen.text_size_stats_description));
         pie.setDescription(d);
 
         pie.setTransparentCircleAlpha(128);
         pie.setTransparentCircleRadius(30f);
-        pie.setRotationEnabled(true);
         pie.setHoleRadius(22f);
         pie.setCenterText(getIntent().getStringExtra("day").substring(0,10));
         pie.setCenterTextSize(10);
@@ -106,48 +109,83 @@ public class singleDay extends AppCompatActivity {
         pie.setEntryLabelColor(Color.BLACK);
 
 
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_stats_tabbed);
+        
+        s = getIntent().getStringExtra("value").split(",");
+
+        Spinner spinner = findViewById(R.id.tab1Spinner);
+        button = findViewById(R.id.tab1Button);
+        spinner.setVisibility(View.GONE);
+
+
+        getValues();
+
+        //creates a dialog box for pie chart settings
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final AlertDialog.Builder dialog = new AlertDialog.Builder(singleDay.this);
-                 LayoutInflater inflater = singleDay.this.getLayoutInflater();
+                LayoutInflater inflater = singleDay.this.getLayoutInflater();
                 View dialogView = inflater.inflate(R.layout.dialog_stats_tab1,null);
 
                 final CheckBox name = dialogView.findViewById(R.id.checkboxShowName);
-                CheckBox percent = dialogView.findViewById(R.id.checkboxShowPercent);
+                final CheckBox desc = dialogView.findViewById(R.id.checkboxShowDesc);
                 final CheckBox rotation = dialogView.findViewById(R.id.checkboxEnableRotation);
                 final CheckBox unaccounted = dialogView.findViewById(R.id.checkboxShowUnaccounted);
 
                 dialog.setTitle("Set parameters for pie chart");
                 dialog.setView(dialogView);
 
-                if(!pie.isDrawEntryLabelsEnabled())
+                if(!pie.isDrawEntryLabelsEnabled()) {
                     name.setChecked(false);
+                }
+                else
+                    name.setChecked(true);
+
                 if(!pie.isRotationEnabled())
                     rotation.setChecked(false);
+
                 if(!showUnacc)
                     unaccounted.setChecked(false);
+
+                if(!showDesc)
+                    desc.setChecked(false);
 
                 dialog.setPositiveButton("Show", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (!name.isChecked()){
+                            showName = false;
                             pie.setDrawEntryLabels(false);
                         }
-                        else
+                        else {
+                            showName = true;
                             pie.setDrawEntryLabels(true);
+                        }
 
                         if(!rotation.isChecked())
                             pie.setRotationEnabled(false);
-                        else pie.setRotationEnabled(true);
+                        else
+                            pie.setRotationEnabled(true);
 
                         if(!unaccounted.isChecked())
                             showUnacc=false;
                         else
                             showUnacc=true;
-                       // orangeTotal = 0; redTotal = 0; purpleTotal = 0; blueTotal = 0; greyTotal = 0; cyanTotal = 0; yellowTotal = 0; pinkTotal = 0; greenTotal = 0;
-                        //getValues(zz);
-                        //addDataSet();
+
+                        if(!desc.isChecked()) {
+                            description="";
+                            showDesc=false;
+                        }
+                        else {
+                            showDesc = true;
+                        }
+                        getValues();
                     }
                 });
 
@@ -156,21 +194,20 @@ public class singleDay extends AppCompatActivity {
             }
         });
 
-
-
+        //Listen foe when a slice is pressed and display a relevant toast
         pie.setOnChartValueSelectedListener( new OnChartValueSelectedListener(){
             @Override
             public void onValueSelected(Entry e, Highlight h){
                 Log.d("chart", "onValueSelected: "+e.toString());
                 int pos = e.toString().indexOf("y: ");
                 String sub = e.toString().substring(pos+3);
-                String[] s = getIntent().getStringExtra("value").split(",");
-                float x = Float.parseFloat(s[s.length-1])/1000;
+               // String[] s = getIntent().getStringExtra("value").split(",");
+                float x = totalTime/1000;
 
                 for(int i = 0; i<val.length;i++){
                     if(val[i]==Float.parseFloat(sub)){
                         pos = i;
-                      //  z = val[i];
+                        //  z = val[i];
                         break;
                     }
                 }
@@ -184,9 +221,7 @@ public class singleDay extends AppCompatActivity {
 
 
                 NumberFormat numberFormat = new DecimalFormat("00");
-
                 String text  =  "Time spent: "+numberFormat.format(hr)+":"+ numberFormat.format(min) +":"+numberFormat.format(sec);
-
                 Toast.makeText(singleDay.this,text,Toast.LENGTH_SHORT).show();
 
             }
@@ -195,13 +230,12 @@ public class singleDay extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
     }
 
+    /**
+     * Adds each categories value, corresponding color, and name to the pie chart's data set
+     * Creates a legend for pie chart
+     */
     private void addDataSet() {
         ArrayList<PieEntry> yEntry = new ArrayList<>();
         ArrayList<String> xEntry = new ArrayList<>();
@@ -210,12 +244,7 @@ public class singleDay extends AppCompatActivity {
                 yEntry.add(new PieEntry(val[i], name[i], i));
             }
         }
-        /*for(int i = 0; i<val.length;i++){
-            if(yEntry.get(i).getValue()<10f){
-                yEntry.get(i).setLabel("");
-            }
-        }*/
-        //   PieEntry p = new PieEntry(val[0],name[0],0);
+
         for(int i = 1; i<name.length;i++){
             xEntry.add(name[i]);
         }
@@ -223,7 +252,6 @@ public class singleDay extends AppCompatActivity {
         PieDataSet pieDataSet = new PieDataSet(yEntry,"");
         pieDataSet.setSliceSpace(2);
         pieDataSet.setValueTextSize(16);
-        //pieDataSet.setColor(Color.RED);
 
         pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         pieDataSet.setValueTextSize(18f);
@@ -251,7 +279,7 @@ public class singleDay extends AppCompatActivity {
         Legend legend = pie.getLegend();
 
         legend.setForm(Legend.LegendForm.SQUARE);
-       // pie.setDrawEntryLabels(false);
+        pie.setDrawEntryLabels(showName);
         pie.animateXY(1000,1000);
         legend.setTextSize(getResources().getDimensionPixelSize(R.dimen.text_size_stats_legend));
      //   legend.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
@@ -268,12 +296,9 @@ public class singleDay extends AppCompatActivity {
 
 
         pieDataSet.setValueTextSize(getResources().getDimensionPixelSize(R.dimen.text_size_stats_description));
-        //pieDataSet.setLabel("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        PieData pieData = new PieData(pieDataSet);
-        /*DecimalFormat df = new DecimalFormat("###,###,##1");
-        pieData.setValueFormatter(new PercentFormatter(df));
 
-        */pie.setData(pieData);
+        PieData pieData = new PieData(pieDataSet);
+        pie.setData(pieData);
         pie.getLegend().setWordWrapEnabled(true);
         pie.invalidate();
     }

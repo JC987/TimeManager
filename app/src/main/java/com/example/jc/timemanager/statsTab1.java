@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,8 +55,8 @@ public class statsTab1 extends Fragment {
     private String description = "";
     private Button button;
     private float orangeTotal = 0, redTotal = 0, purpleTotal = 0, blueTotal = 0, greyTotal = 0, cyanTotal = 0, yellowTotal = 0, pinkTotal = 0, greenTotal = 0;
-    int zz = 0;
-    private boolean showUnacc = true;
+    int num = 0;
+    private boolean showUnacc = true, showDesc = true, showName = false;
 
     public void getValues(int numberOfDays) {
         Log.d(TAG, "getValues: entering getValues");
@@ -124,6 +125,7 @@ public class statsTab1 extends Fragment {
             val[7] = (pinkTotal/greenTotal)*100;
 
             // display the total time in a normal format
+
             int sec = Math.round(greenTotal / 1000);
             int min = (int) Math.floor(sec / 60);
             int hr = (int) Math.floor(min / 60);
@@ -133,14 +135,19 @@ public class statsTab1 extends Fragment {
             //hh:mm:ss
             Log.d("map", "getValues: " + pref.getInt("Day",0));
             NumberFormat numberFormat = new DecimalFormat("00");
-            description = "Total Time (hh:mm:ss) " + numberFormat.format(hr)+":"+ numberFormat.format(min) +":"+numberFormat.format(sec)+" over the past "+numberOfDays+ " days!";
-
+            if(showDesc)
+                description = "Total Time "+ numberFormat.format(hr)+":"+ numberFormat.format(min) +":"+numberFormat.format(sec)+" over the past "+numberOfDays+ " days!";
+            else
+                description = " ";
             Log.d(TAG, "getValues: exiting getResults");
 
             Description d = new Description();
+
             d.setText(description);
+            d.setTextAlign(Paint.Align.RIGHT);
             d.setTextSize(getResources().getDimensionPixelSize(R.dimen.text_size_stats_description));
             pie.setDescription(d);
+
             pie.setTransparentCircleAlpha(128);
             pie.setTransparentCircleRadius(30f);
             //   pie.setRotationEnabled(true);
@@ -158,7 +165,6 @@ public class statsTab1 extends Fragment {
             pie.setEntryLabelColor(Color.BLACK);
         }
     }
-
 
     //draw pie chart and populate it.
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -192,7 +198,7 @@ public class statsTab1 extends Fragment {
                     Log.d(TAG, "onItemSelected: selected 31 ");
                     orangeTotal = 0; redTotal = 0; purpleTotal = 0; blueTotal = 0; greyTotal = 0; cyanTotal = 0; yellowTotal = 0; pinkTotal = 0; greenTotal = 0;
                     getValues(31);
-                    zz=31;
+                    num=31;
                     addDataSet();
                     //orangeTotal = 0; redTotal = 0; purpleTotal = 0; blueTotal = 0; greyTotal = 0; cyanTotal = 0; yellowTotal = 0; pinkTotal = 0; greenTotal = 0;
 //                    rootView.refreshDrawableState();
@@ -203,7 +209,7 @@ public class statsTab1 extends Fragment {
                     //getValues(15);
                     orangeTotal = 0; redTotal = 0; purpleTotal = 0; blueTotal = 0; greyTotal = 0; cyanTotal = 0; yellowTotal = 0; pinkTotal = 0; greenTotal = 0;
                     getValues(15);
-                    zz=15;
+                    num=15;
                     addDataSet();
                     Log.d(TAG, "onItemSelected: selected 15 ");
 
@@ -212,7 +218,7 @@ public class statsTab1 extends Fragment {
                     //getValues(8);
                     orangeTotal = 0; redTotal = 0; purpleTotal = 0; blueTotal = 0; greyTotal = 0; cyanTotal = 0; yellowTotal = 0; pinkTotal = 0; greenTotal = 0;
                     getValues(8);
-                    zz=8;
+                    num=8;
                     addDataSet();
                     Log.d(TAG, "onItemSelected: selected 8 ");
                 }
@@ -232,28 +238,37 @@ public class statsTab1 extends Fragment {
                 View dialogView = inflater.inflate(R.layout.dialog_stats_tab1,null);
 
                 final CheckBox name = dialogView.findViewById(R.id.checkboxShowName);
-                CheckBox percent = dialogView.findViewById(R.id.checkboxShowPercent);
+                final CheckBox desc = dialogView.findViewById(R.id.checkboxShowDesc);
                 final CheckBox rotation = dialogView.findViewById(R.id.checkboxEnableRotation);
                 final CheckBox unaccounted = dialogView.findViewById(R.id.checkboxShowUnaccounted);
 
                 dialog.setTitle("Set parameters for pie chart");
                 dialog.setView(dialogView);
 
-                if(!pie.isDrawEntryLabelsEnabled())
+                if(!pie.isDrawEntryLabelsEnabled()) {
                     name.setChecked(false);
+                }
+                else
+                    name.setChecked(true);
                 if(!pie.isRotationEnabled())
                     rotation.setChecked(false);
                 if(!showUnacc)
                     unaccounted.setChecked(false);
+                if(!showDesc)
+                    desc.setChecked(false);
+
 
                 dialog.setPositiveButton("Show", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (!name.isChecked()){
+                            showName = false;
                             pie.setDrawEntryLabels(false);
                         }
-                        else
+                        else {
+                            showName = true;
                             pie.setDrawEntryLabels(true);
+                        }
 
                         if(!rotation.isChecked())
                             pie.setRotationEnabled(false);
@@ -263,9 +278,18 @@ public class statsTab1 extends Fragment {
                             showUnacc=false;
                         else
                             showUnacc=true;
+                        if(!desc.isChecked()) {
+                            description="";
+                            showDesc=false;
+
+                            //pie.invalidate();
+                        }
+                        else {
+                            showDesc = true;
+                            //pie.invalidate();
+                        }
                         orangeTotal = 0; redTotal = 0; purpleTotal = 0; blueTotal = 0; greyTotal = 0; cyanTotal = 0; yellowTotal = 0; pinkTotal = 0; greenTotal = 0;
-                        getValues(zz);
-                        //addDataSet();
+                        getValues(num);
                     }
                 });
 
@@ -385,7 +409,7 @@ public class statsTab1 extends Fragment {
         Legend legend = pie.getLegend();
 
         legend.setForm(Legend.LegendForm.SQUARE);
-        // pie.setDrawEntryLabels(false);
+        pie.setDrawEntryLabels(showName);
         pie.animateXY(1000,1000);
         legend.setTextSize(getResources().getDimensionPixelSize(R.dimen.text_size_stats_legend));
 
